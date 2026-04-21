@@ -715,12 +715,12 @@ async function saveToSheet(){
     '&combo='        + encodeURIComponent(S.combo||'') +
     '&origen='       + encodeURIComponent(S.origen) +
     '&vivienda='     + encodeURIComponent(S.vivienda);
-  try {
-    await fetch(url, { method:'GET', mode:'no-cors' });
-    const t = document.getElementById('toast');
-    t.classList.add('show');
-    setTimeout(()=>t.classList.remove('show'), 3500);
-  } catch(e){ console.warn('Sheet save failed:', e); }
+  // Usar Image beacon para evitar CORB
+  new Image().src = url;
+
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 3500);
 }
 // ═══════════════════════════════════════════
 // INPUT
