@@ -703,32 +703,25 @@ const EXTRA = {
 // GOOGLE SHEETS — CRM Integration
 // ═══════════════════════════════════════════
 async function saveToSheet(){
-  const payload = {
-    action:       'crearLeadExterno',
-    nombre:       S.nombre,
-    telefono:     S.telefono,
-    email:        S.email,
-    flujo:        S.flujo,
-    consumo_kwh:  S.consumo,
-    gasolina_usd: S.gasolina,
-    vivienda:     S.vivienda,
-    n_vehiculos:  S.n_vehiculos,
-    tipo_carga:   S.tipo_carga,
-    combo:        S.combo,
-    origen:       S.origen,
-  };
+  const url = APPS_SCRIPT_URL +
+    '?action=crearLeadExterno' +
+    '&nombre='       + encodeURIComponent(S.nombre) +
+    '&telefono='     + encodeURIComponent(S.telefono) +
+    '&email='        + encodeURIComponent(S.email) +
+    '&flujo='        + encodeURIComponent(S.flujo) +
+    '&consumo_kwh='  + encodeURIComponent(S.consumo) +
+    '&n_vehiculos='  + encodeURIComponent(S.n_vehiculos) +
+    '&tipo_carga='   + encodeURIComponent(S.tipo_carga) +
+    '&combo='        + encodeURIComponent(S.combo||'') +
+    '&origen='       + encodeURIComponent(S.origen) +
+    '&vivienda='     + encodeURIComponent(S.vivienda);
   try {
-    await fetch(APPS_SCRIPT_URL, {
-      method:'POST', mode:'no-cors',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify(payload),
-    });
+    await fetch(url, { method:'GET', mode:'no-cors' });
     const t = document.getElementById('toast');
     t.classList.add('show');
     setTimeout(()=>t.classList.remove('show'), 3500);
   } catch(e){ console.warn('Sheet save failed:', e); }
 }
-
 // ═══════════════════════════════════════════
 // INPUT
 // ═══════════════════════════════════════════
