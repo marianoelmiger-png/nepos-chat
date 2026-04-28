@@ -1,1 +1,1107 @@
-hello
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nepos Energy × BYD — Energía Solar</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul: #3E5A8B;
+    --azul-dark: #2c4070;
+    --azul-light: #5a7ab5;
+    --amarillo: #FFD931;
+    --amarillo-dark: #e6c000;
+    --blanco: #ffffff;
+    --gris-bg: #f4f6fa;
+    --gris-card: #eef1f8;
+    --texto: #1a2540;
+    --texto-suave: #556080;
+    --borde: #d0d8ec;
+    --verde: #22c55e;
+    --verde-bg: #dcfce7;
+    --sombra: 0 4px 24px rgba(62,90,139,0.13);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    width: 100%; height: 100%;
+    font-family: 'Outfit', sans-serif;
+    background: var(--azul);
+    overflow: hidden;
+    touch-action: manipulation;
+  }
+
+  /* ===== FONDO DECORATIVO ===== */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 800px 600px at 10% 20%, rgba(255,217,49,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 600px 800px at 90% 80%, rgba(255,255,255,0.05) 0%, transparent 60%),
+      linear-gradient(160deg, #2c3e6e 0%, #3E5A8B 40%, #2a4878 100%);
+    z-index: 0;
+  }
+
+  /* ===== LAYOUT TOTEM ===== */
+  #app {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+  }
+
+  /* ===== HEADER ===== */
+  #header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 36px 20px;
+    flex-shrink: 0;
+  }
+
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .logo-icon {
+    width: 52px; height: 52px;
+    background: var(--amarillo);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--azul);
+    flex-shrink: 0;
+  }
+
+  .logo-text {
+    line-height: 1.2;
+  }
+
+  .logo-text .brand {
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: -0.3px;
+  }
+
+  .logo-text .sub {
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.5px;
+  }
+
+  .status-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 100px;
+    padding: 8px 18px;
+    color: rgba(255,255,255,0.9);
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .status-dot {
+    width: 8px; height: 8px;
+    background: var(--verde);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.2); }
+  }
+
+  /* ===== CHAT CONTAINER ===== */
+  #chat-wrapper {
+    flex: 1;
+    margin: 0 36px;
+    background: var(--blanco);
+    border-radius: 28px 28px 0 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 -8px 40px rgba(0,0,0,0.2);
+    min-height: 0;
+  }
+
+  #messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 32px 28px 20px;
+    scroll-behavior: smooth;
+    min-height: 0;
+  }
+
+  #messages::-webkit-scrollbar { width: 4px; }
+  #messages::-webkit-scrollbar-track { background: transparent; }
+  #messages::-webkit-scrollbar-thumb { background: var(--borde); border-radius: 2px; }
+
+  /* ===== MENSAJES ===== */
+  .msg {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 20px;
+    animation: fadeUp 0.3s ease;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .msg.bot { align-items: flex-start; }
+  .msg.user { flex-direction: row-reverse; }
+
+  .avatar {
+    width: 44px; height: 44px;
+    border-radius: 14px;
+    background: var(--amarillo);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+    font-weight: 700;
+    color: var(--azul);
+  }
+
+  .bubble {
+    max-width: 75%;
+    padding: 16px 20px;
+    border-radius: 20px;
+    font-size: 17px;
+    line-height: 1.55;
+    font-weight: 400;
+  }
+
+  .msg.bot .bubble {
+    background: var(--gris-bg);
+    color: var(--texto);
+    border-bottom-left-radius: 6px;
+  }
+
+  .msg.user .bubble {
+    background: var(--azul);
+    color: white;
+    border-bottom-right-radius: 6px;
+  }
+
+  .bubble strong {
+    font-weight: 600;
+    color: inherit;
+  }
+
+  .bubble .highlight {
+    color: var(--azul);
+    font-weight: 600;
+  }
+
+  .msg.bot .bubble .highlight {
+    color: var(--azul);
+  }
+
+  /* ===== OPCIONES / BOTONES ===== */
+  #options-area {
+    padding: 16px 28px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .opt-btn {
+    width: 100%;
+    min-height: 64px;
+    padding: 16px 24px;
+    background: white;
+    border: 2px solid var(--borde);
+    border-radius: 16px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--texto);
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.18s ease;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    line-height: 1.3;
+  }
+
+  .opt-btn:hover, .opt-btn:active {
+    background: var(--gris-card);
+    border-color: var(--azul-light);
+    color: var(--azul);
+    transform: translateX(4px);
+  }
+
+  .opt-btn .icon {
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .opt-btn.primary {
+    background: var(--azul);
+    border-color: var(--azul);
+    color: white;
+  }
+
+  .opt-btn.primary:hover {
+    background: var(--azul-dark);
+    border-color: var(--azul-dark);
+    color: white;
+    transform: translateX(4px);
+  }
+
+  .opt-btn.amarillo {
+    background: var(--amarillo);
+    border-color: var(--amarillo-dark);
+    color: var(--azul);
+    font-weight: 600;
+  }
+
+  .opt-btn.amarillo:hover {
+    background: var(--amarillo-dark);
+    transform: translateX(4px);
+  }
+
+  /* Input numérico */
+  .input-area {
+    padding: 16px 28px 20px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+    flex-shrink: 0;
+  }
+
+  .input-wrap {
+    flex: 1;
+    position: relative;
+  }
+
+  .input-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--texto-suave);
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .num-input {
+    width: 100%;
+    height: 64px;
+    padding: 0 20px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--texto);
+    background: var(--gris-bg);
+    border: 2px solid var(--borde);
+    border-radius: 16px;
+    outline: none;
+    transition: border-color 0.2s;
+    -moz-appearance: textfield;
+  }
+
+  .num-input::-webkit-inner-spin-button,
+  .num-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+  .num-input:focus {
+    border-color: var(--azul);
+    background: white;
+  }
+
+  .send-btn {
+    height: 64px;
+    padding: 0 28px;
+    background: var(--azul);
+    border: none;
+    border-radius: 16px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    transition: all 0.18s;
+    white-space: nowrap;
+    min-width: 100px;
+  }
+
+  .send-btn:hover { background: var(--azul-dark); }
+  .send-btn:active { transform: scale(0.97); }
+
+  /* ===== TYPING ===== */
+  .typing-indicator {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    padding: 14px 18px;
+    background: var(--gris-bg);
+    border-radius: 20px;
+    border-bottom-left-radius: 6px;
+    width: fit-content;
+  }
+
+  .typing-dot {
+    width: 9px; height: 9px;
+    background: var(--azul-light);
+    border-radius: 50%;
+    animation: typingBounce 1.2s infinite;
+  }
+
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes typingBounce {
+    0%, 80%, 100% { transform: translateY(0); opacity: 0.5; }
+    40% { transform: translateY(-6px); opacity: 1; }
+  }
+
+  /* ===== RESULTADO / COTIZACIÓN ===== */
+  .result-card {
+    background: linear-gradient(135deg, var(--azul) 0%, var(--azul-dark) 100%);
+    border-radius: 20px;
+    padding: 24px;
+    color: white;
+    margin: 4px 0 8px;
+  }
+
+  .result-title {
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0.75;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  .result-ahorro {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--amarillo);
+    margin-bottom: 4px;
+    line-height: 1;
+  }
+
+  .result-sub {
+    font-size: 14px;
+    opacity: 0.8;
+    margin-bottom: 16px;
+  }
+
+  .result-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    font-size: 15px;
+  }
+
+  .result-row .label { opacity: 0.75; }
+  .result-row .value { font-weight: 600; }
+  .result-row .value.green { color: var(--amarillo); }
+
+  /* ===== QR FINAL ===== */
+  .qr-card {
+    background: var(--gris-bg);
+    border-radius: 20px;
+    padding: 28px 24px;
+    text-align: center;
+  }
+
+  .qr-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--texto);
+    margin-bottom: 6px;
+  }
+
+  .qr-sub {
+    font-size: 14px;
+    color: var(--texto-suave);
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+
+  .qr-img-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .qr-img-wrap img {
+    width: 200px; height: 200px;
+    border-radius: 16px;
+    border: 4px solid white;
+    box-shadow: var(--sombra);
+  }
+
+  .qr-msg {
+    font-size: 13px;
+    color: var(--texto-suave);
+    background: white;
+    border-radius: 12px;
+    padding: 12px 16px;
+    text-align: left;
+    border-left: 3px solid var(--amarillo);
+    font-style: italic;
+  }
+
+  /* ===== INACTIVIDAD ===== */
+  #inactivity-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(20,30,60,0.85);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+
+  #inactivity-overlay.show { display: flex; }
+
+  .inactivity-box {
+    background: white;
+    border-radius: 28px;
+    padding: 48px 40px;
+    text-align: center;
+    max-width: 420px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+
+  .inactivity-emoji {
+    font-size: 56px;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .inactivity-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--texto);
+    margin-bottom: 10px;
+  }
+
+  .inactivity-sub {
+    font-size: 17px;
+    color: var(--texto-suave);
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+
+  #countdown-num {
+    font-size: 52px;
+    font-weight: 700;
+    color: var(--azul);
+    margin: 16px 0;
+    line-height: 1;
+  }
+
+  .inactivity-btn-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .inact-btn {
+    width: 100%;
+    height: 64px;
+    border-radius: 16px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.18s;
+  }
+
+  .inact-btn.seguir {
+    background: var(--azul);
+    color: white;
+  }
+
+  .inact-btn.seguir:hover { background: var(--azul-dark); }
+
+  .inact-btn.reiniciar {
+    background: var(--gris-bg);
+    color: var(--texto-suave);
+    border: 2px solid var(--borde);
+  }
+
+  .inact-btn.reiniciar:hover { background: var(--borde); }
+
+  /* ===== SEPARADOR ===== */
+  .date-sep {
+    text-align: center;
+    font-size: 12px;
+    color: var(--texto-suave);
+    margin: 8px 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .date-sep::before, .date-sep::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--borde);
+  }
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div id="header">
+    <div class="logo-area">
+      <div class="logo-icon">N</div>
+      <div class="logo-text">
+        <div class="brand">Nepos Energy × BYD</div>
+        <div class="sub">Consultor Solar Inteligente</div>
+      </div>
+    </div>
+    <div class="status-badge">
+      <div class="status-dot"></div>
+      En línea
+    </div>
+  </div>
+
+  <div id="chat-wrapper">
+    <div id="messages">
+      <div class="date-sep">Hoy</div>
+    </div>
+    <div id="options-area"></div>
+    <div id="input-area-container"></div>
+  </div>
+</div>
+
+<!-- OVERLAY INACTIVIDAD -->
+<div id="inactivity-overlay">
+  <div class="inactivity-box">
+    <span class="inactivity-emoji">💤</span>
+    <div class="inactivity-title">¿Sigues ahí?</div>
+    <div class="inactivity-sub">La pantalla se reiniciará en</div>
+    <div id="countdown-num">30</div>
+    <div class="inactivity-sub">segundos</div>
+    <div class="inactivity-btn-wrap">
+      <button class="inact-btn seguir" onclick="dismissInactivity()">Seguir con mi consulta</button>
+      <button class="inact-btn reiniciar" onclick="resetApp()">Reiniciar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== CONFIGURACIÓN =====
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzhaVTRfbgYJKZ9ZHgxQh0OVBnz7gNmZKNqF8oGxMbJ2ZYsT4fOOW7mKbKy1nO0CtxP/exec';
+const WA_NUMBER = '593983358832';
+const WA_MSG = encodeURIComponent('Hola! Los conocí en la concesionaria BYD y quiero más información sobre paneles solares');
+const WA_URL = `https://wa.me/${WA_NUMBER}?text=${WA_MSG}`;
+
+// Generar QR con api.qrserver.com
+function getQRUrl(text) {
+  return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(text)}&color=3E5A8B&bgcolor=f4f6fa&margin=10`;
+}
+
+// ===== ESTADO =====
+let state = {};
+let inactivityTimer = null;
+let countdownTimer = null;
+let countdownVal = 30;
+
+function initState() {
+  state = {
+    step: 'bienvenida',
+    nombre: '',
+    factura: 0,
+    gasolina: 0,
+    m2: null,
+    tieneEspacio: null,
+    tipoTecho: '',
+    correo: '',
+    telefono: ''
+  };
+}
+
+// ===== INACTIVIDAD =====
+const INACTIVITY_MS = 2 * 60 * 1000; // 2 min
+
+function resetInactivityTimer() {
+  clearTimeout(inactivityTimer);
+  inactivityTimer = setTimeout(showInactivityWarning, INACTIVITY_MS);
+}
+
+function showInactivityWarning() {
+  countdownVal = 30;
+  document.getElementById('countdown-num').textContent = countdownVal;
+  document.getElementById('inactivity-overlay').classList.add('show');
+  clearInterval(countdownTimer);
+  countdownTimer = setInterval(() => {
+    countdownVal--;
+    document.getElementById('countdown-num').textContent = countdownVal;
+    if (countdownVal <= 0) {
+      clearInterval(countdownTimer);
+      resetApp();
+    }
+  }, 1000);
+}
+
+function dismissInactivity() {
+  document.getElementById('inactivity-overlay').classList.remove('show');
+  clearInterval(countdownTimer);
+  resetInactivityTimer();
+}
+
+function resetApp() {
+  document.getElementById('inactivity-overlay').classList.remove('show');
+  clearInterval(countdownTimer);
+  clearTimeout(inactivityTimer);
+  document.getElementById('messages').innerHTML = '<div class="date-sep">Hoy</div>';
+  document.getElementById('options-area').innerHTML = '';
+  document.getElementById('input-area-container').innerHTML = '';
+  initState();
+  setTimeout(() => startFlow(), 400);
+}
+
+['click','touchstart','keydown'].forEach(e => {
+  document.addEventListener(e, resetInactivityTimer, { passive: true });
+});
+
+// ===== MENSAJES =====
+function addMsg(html, type = 'bot', delay = 0) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      const msgs = document.getElementById('messages');
+      const div = document.createElement('div');
+      div.className = `msg ${type}`;
+
+      if (type === 'bot') {
+        div.innerHTML = `<div class="avatar">☀️</div><div class="bubble">${html}</div>`;
+      } else {
+        div.innerHTML = `<div class="bubble">${html}</div>`;
+      }
+
+      msgs.appendChild(div);
+      msgs.scrollTop = msgs.scrollHeight;
+      resolve();
+    }, delay);
+  });
+}
+
+function showTyping(ms = 900) {
+  return new Promise(resolve => {
+    const msgs = document.getElementById('messages');
+    const div = document.createElement('div');
+    div.className = 'msg bot';
+    div.id = 'typing-bubble';
+    div.innerHTML = `<div class="avatar">☀️</div><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+    setTimeout(() => {
+      const el = document.getElementById('typing-bubble');
+      if (el) el.remove();
+      resolve();
+    }, ms);
+  });
+}
+
+function clearOptions() {
+  document.getElementById('options-area').innerHTML = '';
+  document.getElementById('input-area-container').innerHTML = '';
+}
+
+function showOptions(opts) {
+  const area = document.getElementById('options-area');
+  area.innerHTML = '';
+  opts.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = `opt-btn${opt.primary ? ' primary' : ''}${opt.amarillo ? ' amarillo' : ''}`;
+    btn.innerHTML = `${opt.icon ? `<span class="icon">${opt.icon}</span>` : ''}${opt.label}`;
+    btn.addEventListener('click', () => {
+      resetInactivityTimer();
+      clearOptions();
+      if (opt.value !== undefined) addMsg(opt.label, 'user');
+      if (opt.action) opt.action(opt.value !== undefined ? opt.value : opt.label);
+    });
+    area.appendChild(btn);
+  });
+}
+
+function showNumericInput(label, placeholder, unit, onSubmit, min = 0) {
+  const container = document.getElementById('input-area-container');
+  container.innerHTML = `
+    <div class="input-area">
+      <div class="input-wrap">
+        <span class="input-label">${label}</span>
+        <input type="number" class="num-input" id="num-field" placeholder="${placeholder}" min="${min}" inputmode="numeric">
+      </div>
+      <button class="send-btn" id="send-num">Continuar →</button>
+    </div>
+  `;
+
+  const input = document.getElementById('num-field');
+  const btn = document.getElementById('send-num');
+
+  function submit() {
+    const val = parseFloat(input.value);
+    if (isNaN(val) || val < min) {
+      input.style.borderColor = '#ef4444';
+      setTimeout(() => input.style.borderColor = '', 1000);
+      return;
+    }
+    resetInactivityTimer();
+    clearOptions();
+    addMsg(`${val} ${unit}`, 'user');
+    onSubmit(val);
+  }
+
+  btn.addEventListener('click', submit);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') submit(); });
+  setTimeout(() => input.focus(), 100);
+}
+
+function showTextInput(label, placeholder, onSubmit) {
+  const container = document.getElementById('input-area-container');
+  container.innerHTML = `
+    <div class="input-area">
+      <div class="input-wrap">
+        <span class="input-label">${label}</span>
+        <input type="text" class="num-input" id="text-field" placeholder="${placeholder}" style="font-size:18px;font-weight:400;">
+      </div>
+      <button class="send-btn" id="send-txt">Continuar →</button>
+    </div>
+  `;
+
+  const input = document.getElementById('text-field');
+  const btn = document.getElementById('send-txt');
+
+  function submit() {
+    const val = input.value.trim();
+    if (!val) return;
+    resetInactivityTimer();
+    clearOptions();
+    addMsg(val, 'user');
+    onSubmit(val);
+  }
+
+  btn.addEventListener('click', submit);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') submit(); });
+  setTimeout(() => input.focus(), 100);
+}
+
+// ===== TABLA DE SEGMENTOS REALES NEPOS =====
+// TipoPlanilla | consumoRef | kwpInstalado | potenciaPico | costoUSDkw | costoSistema
+const SEGMENTOS = [
+  { id: 'F1', label: 'Hasta $70 / mes',       rango: '$0 – $70',   consumo: 70,  kwp: 7.7,  potencia: 6.55,  costoKw: 795,  costo: 5564  },
+  { id: 'F2', label: '$70 – $100 / mes',       rango: '$70 – $100', consumo: 100, kwp: 10.1, potencia: 9.35,  costoKw: 781,  costo: 7810  },
+  { id: 'F3', label: '$100 – $200 / mes',      rango: '$100 – $200',consumo: 200, kwp: 20.2, potencia: 18.71, costoKw: 750,  costo: 14999 },
+  { id: 'N1', label: '$200 – $300 / mes',      rango: '$200 – $300',consumo: 300, kwp: 30.3, potencia: 28.06, costoKw: 735,  costo: 22049 },
+  { id: 'N2', label: '$300 – $500 / mes',      rango: '$300 – $500',consumo: 500, kwp: 50.5, potencia: 46.76, costoKw: 720,  costo: 36003 },
+  { id: 'N3', label: 'Más de $500 / mes',      rango: 'Más de $500',consumo: 800, kwp: 80.8, potencia: 74.82, costoKw: 705,  costo: 52867 },
+];
+
+function getSegmento(id) {
+  return SEGMENTOS.find(s => s.id === id);
+}
+
+function calcAhorro(segId, gasolina) {
+  const seg = getSegmento(segId);
+  // Ahorro eléctrico: ~70% de la factura de referencia del segmento
+  const ahorroElec = Math.round(seg.consumo * 0.70);
+  // Ahorro gasolina: ~60% al combinar EV + solar
+  const ahorroGaso = Math.round(gasolina * 0.60);
+  const ahorroTotal = ahorroElec + ahorroGaso;
+  const ahorroAnual = ahorroTotal * 12;
+  const paybackAnios = (seg.costo / ahorroAnual).toFixed(1);
+
+  return {
+    seg,
+    ahorroElec,
+    ahorroGaso,
+    ahorroTotal,
+    ahorroAnual,
+    kwp: seg.kwp,
+    potencia: seg.potencia,
+    costoSistema: seg.costo,
+    costoKw: seg.costoKw,
+    paybackAnios
+  };
+}
+
+// ===== FLUJO =====
+async function startFlow() {
+  initState();
+  resetInactivityTimer();
+
+  await showTyping(800);
+  await addMsg(`¡Bienvenido! 👋<br><br>Soy el asistente solar de <strong>Nepos Energy</strong>. Juntos vamos a calcular cuánto puedes <span class="highlight">ahorrar combinando tu BYD con paneles solares</span>.<br><br>¿Cómo quieres empezar?`);
+
+  showOptions([
+    { icon: '⚡', label: 'Calcular mi ahorro personalizado', action: () => step_factura() },
+    { icon: '📋', label: 'Ver paquetes disponibles', action: () => step_paquetes() },
+    { icon: '❓', label: '¿Cómo funciona?', action: () => step_explicacion() },
+  ]);
+}
+
+async function step_explicacion() {
+  await showTyping(700);
+  await addMsg(`Con un <strong>BYD eléctrico + paneles solares Nepos</strong>:<br><br>
+    ☀️ Generas tu propia electricidad<br>
+    🚗 Cargas tu auto desde el sol<br>
+    💰 Eliminas casi totalmente la factura eléctrica<br>
+    ⛽ Dejas de depender de la gasolina<br><br>
+    <strong>El ahorro combinado puede superar $200/mes</strong> dependiendo de tu consumo.`);
+
+  await showTyping(600);
+  await addMsg('¿Te gustaría calcular exactamente cuánto ahorrarías <strong>tú</strong>?');
+
+  showOptions([
+    { icon: '✅', label: 'Sí, calcular mi ahorro', amarillo: true, action: () => step_factura() },
+    { icon: '📦', label: 'Ver paquetes primero', action: () => step_paquetes() },
+  ]);
+}
+
+async function step_paquetes() {
+  await showTyping(800);
+  await addMsg(`<strong>Nuestros sistemas más populares en Ecuador:</strong><br><br>
+    🟡 <strong>Sol Starter — 3 kWp</strong><br>Ideal para apartamento + BYD Dolphin. Ahorro est. $120/mes<br><br>
+    🟠 <strong>Sol Familiar — 5 kWp</strong><br>Casa + BYD Atto 3. Ahorro est. $180/mes<br><br>
+    🔵 <strong>Sol Premium — 8 kWp</strong><br>Casa grande + BYD Han o Seal. Ahorro est. $280/mes<br><br>
+    Los precios incluyen instalación, garantía 25 años paneles.`);
+
+  await showTyping(500);
+  await addMsg('¿Quieres que calculemos el paquete exacto para tu consumo?');
+
+  showOptions([
+    { icon: '📊', label: 'Calcular mi paquete ideal', amarillo: true, action: () => step_factura() },
+    { icon: '📱', label: 'Hablar con un asesor ahora', action: () => step_qr_final() },
+  ]);
+}
+
+async function step_factura() {
+  state.step = 'factura';
+  await showTyping(700);
+  await addMsg('¡Perfecto! Para calcular tu sistema ideal necesito un dato clave:<br><br>💡 <strong>¿Cuánto pagás aproximadamente en tu planilla de luz cada mes?</strong>');
+
+  showOptions(SEGMENTOS.map(seg => ({
+    icon: seg.id.startsWith('N') ? '🏢' : '🏠',
+    label: seg.label,
+    action: async () => {
+      state.segId = seg.id;
+      state.factura = seg.consumo;
+      await step_gasolina();
+    }
+  })));
+}
+
+async function step_gasolina() {
+  state.step = 'gasolina';
+  const seg = getSegmento(state.segId);
+  await showTyping(600);
+  await addMsg(`💛 Planilla en rango <strong>${seg.rango}</strong> — ¡excelente potencial solar!<br><br>⛽ <strong>¿Cuánto gastás en gasolina al mes?</strong><br><span style="font-size:14px;color:#556080">Si ya tenés BYD eléctrico elegí $0 — calculamos solo el ahorro solar</span>`);
+
+  showOptions([
+    { icon: '🚗', label: 'Ya tengo BYD — gasto $0 en gasolina', action: async () => { state.gasolina = 0; await step_espacio(); } },
+    { icon: '⛽', label: 'Menos de $50 / mes', action: async () => { state.gasolina = 30; await step_espacio(); } },
+    { icon: '⛽', label: '$50 – $100 / mes', action: async () => { state.gasolina = 75; await step_espacio(); } },
+    { icon: '⛽', label: 'Más de $100 / mes', action: async () => { state.gasolina = 120; await step_espacio(); } },
+  ]);
+}
+
+async function step_espacio() {
+  state.step = 'espacio';
+  await showTyping(700);
+  await addMsg('🏠 <strong>¿Tienes techo o espacio disponible para los paneles?</strong><br><br>No te preocupes si no estás seguro — hay opciones para todos los casos.');
+
+  showOptions([
+    { icon: '✅', label: 'Sí, tengo techo propio', action: (v) => { state.tieneEspacio = true; step_m2(); } },
+    { icon: '🏢', label: 'Vivo en departamento / no estoy seguro', action: (v) => { state.tieneEspacio = false; step_sin_espacio(); } },
+    { icon: '🤝', label: 'Soy arrendatario', action: (v) => { state.tieneEspacio = null; step_sin_espacio(); } },
+  ]);
+}
+
+async function step_m2() {
+  await showTyping(500);
+  await addMsg('¿Cuántos m² aproximados tiene tu techo disponible?<br><span style="font-size:14px;color:#556080">No necesitas ser exacto — una estimación está bien</span>');
+
+  showNumericInput('Área de techo disponible', 'Ej: 40', 'm²', async (val) => {
+    state.m2 = val;
+    await step_resultado();
+  }, 5);
+}
+
+async function step_sin_espacio() {
+  await showTyping(700);
+  await addMsg(`¡No es ningún problema! Tenemos alternativas perfectas para ti:<br><br>
+    🔍 <strong>Visita Técnica Gratuita</strong> — Nuestros ingenieros evalúan opciones en tu espacio<br><br>
+    ⚡ <strong>Modelo PPA</strong> — Instalamos sin costo inicial y pagas solo por la energía que generas<br><br>
+    🏢 <strong>Solar Comunitario</strong> — Paneles en instalación compartida con tu edificio<br><br>
+    <em>Muchos de nuestros clientes en departamentos ahorran igual que los de casa. ¡El sol es de todos!</em>`);
+
+  await step_resultado();
+}
+
+async function step_resultado() {
+  state.step = 'resultado';
+  const c = calcAhorro(state.segId, state.gasolina);
+
+  await showTyping(1200);
+
+  const msgs = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.className = 'msg bot';
+
+  const gasolinaLinea = state.gasolina > 0
+    ? `<div class="result-row"><span class="label">⛽ Ahorro gasolina/mes</span><span class="value green">+ $${c.ahorroGaso}</span></div>`
+    : '';
+
+  div.innerHTML = `<div class="avatar">☀️</div><div class="bubble" style="max-width:85%">
+    <div class="result-card">
+      <div class="result-title">Tu ahorro combinado estimado</div>
+      <div class="result-ahorro">$${c.ahorroTotal} / mes</div>
+      <div class="result-sub">$${c.ahorroAnual.toLocaleString()} al año</div>
+      <div class="result-row"><span class="label">💡 Ahorro factura eléctrica</span><span class="value green">+ $${c.ahorroElec}</span></div>
+      ${gasolinaLinea}
+      <div class="result-row"><span class="label">⚡ Sistema recomendado</span><span class="value">${c.kwp} kWp — ${c.potencia} kWp pico</span></div>
+      <div class="result-row"><span class="label">💰 Inversión estimada</span><span class="value">$${c.costoSistema.toLocaleString()}</span></div>
+      <div class="result-row"><span class="label">📅 Recuperación inversión</span><span class="value">${c.paybackAnios} años</span></div>
+    </div>
+  </div>`;
+
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  await new Promise(r => setTimeout(r, 600));
+  await showTyping(700);
+
+  const msgExtra = state.gasolina > 0
+    ? `Con tu BYD eléctrico <strong>ya no dependes de la gasolina</strong>, y los paneles solares eliminan casi toda tu factura. El ahorro se <strong>potencia al combinar ambos</strong>.`
+    : `Los paneles solares cubren el 70% de tu consumo eléctrico promedio en Ecuador, con una generación muy estable durante todo el año.`;
+
+  await addMsg(msgExtra);
+  await step_contacto();
+}
+
+async function step_contacto() {
+  await showTyping(700);
+  await addMsg('¿Te gustaría que un asesor de Nepos te contacte para una <strong>propuesta personalizada gratuita</strong>?');
+
+  showOptions([
+    { icon: '✅', label: '¡Sí! Quiero mi propuesta gratuita', amarillo: true, action: () => step_nombre() },
+    { icon: '📱', label: 'Ver QR para escribirnos ahora', action: () => step_qr_final() },
+    { icon: '🔄', label: 'Recalcular con otros valores', action: () => { clearOptions(); step_factura(); } },
+  ]);
+}
+
+async function step_nombre() {
+  await showTyping(500);
+  await addMsg('¡Perfecto! 🎉 ¿Cuál es tu nombre?');
+
+  showTextInput('Tu nombre', 'Ej: Ana García', async (val) => {
+    state.nombre = val;
+    await step_telefono();
+  });
+}
+
+async function step_telefono() {
+  await showTyping(500);
+  await addMsg(`Un gusto, <strong>${state.nombre}</strong>! 😊<br><br>📞 ¿Cuál es tu número de celular para que te contactemos?`);
+
+  showTextInput('Número de celular', 'Ej: 0991234567', async (val) => {
+    state.telefono = val;
+    await guardarLead();
+  });
+}
+
+async function guardarLead() {
+  const c = calcAhorro(state.segId, state.gasolina);
+
+  const payload = {
+    origen: 'Tótem BYD',
+    nombre: state.nombre,
+    telefono: state.telefono,
+    segmento: c.seg.id,
+    rango_factura: c.seg.rango,
+    gasolina_mes: state.gasolina,
+    m2: state.m2 || 'N/D',
+    tiene_espacio: state.tieneEspacio === true ? 'Sí' : state.tieneEspacio === false ? 'No' : 'Arrendatario',
+    kwp_instalado: c.kwp,
+    potencia_pico_kwp: c.potencia,
+    costo_sistema_usd: c.costoSistema,
+    ahorro_mensual_usd: c.ahorroTotal,
+    ahorro_anual_usd: c.ahorroAnual,
+    payback_anios: c.paybackAnios,
+    fecha: new Date().toLocaleDateString('es-EC')
+  };
+
+  // Fire-and-forget con no-cors
+  fetch(APPS_SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  }).catch(() => {});
+
+  await showTyping(1000);
+  await addMsg(`✅ <strong>¡Listo, ${state.nombre}!</strong><br><br>Tu información fue registrada. Un asesor de Nepos Energy te contactará dentro de las próximas <strong>24 horas</strong> para enviarte tu propuesta personalizada.<br><br>🌟 <em>Gracias por tu interés. ¡Juntos por una movilidad solar!</em>`);
+
+  await new Promise(r => setTimeout(r, 1000));
+  await step_qr_final();
+}
+
+async function step_qr_final() {
+  state.step = 'fin';
+  await showTyping(600);
+
+  const msgs = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.className = 'msg bot';
+
+  const qrSrc = getQRUrl(WA_URL);
+  const mensajeWA = 'Hola! Los conocí en la concesionaria BYD y quiero más información sobre paneles solares';
+
+  div.innerHTML = `<div class="avatar">☀️</div><div class="bubble" style="max-width:90%">
+    <div class="qr-card">
+      <div class="qr-title">📱 ¡Escríbenos por WhatsApp!</div>
+      <div class="qr-sub">Escanea el código con la cámara de tu celular para contactarnos directamente</div>
+      <div class="qr-img-wrap">
+        <img src="${qrSrc}" alt="QR WhatsApp Nepos Energy">
+      </div>
+      <div class="qr-msg">"${mensajeWA}"</div>
+    </div>
+  </div>`;
+
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  await new Promise(r => setTimeout(r, 800));
+  await showTyping(500);
+  await addMsg('¿Deseas hacer otra consulta o empezar de nuevo?');
+
+  showOptions([
+    { icon: '🔄', label: 'Nueva consulta', action: () => resetApp() },
+  ]);
+}
+
+// ===== INICIO =====
+document.addEventListener('DOMContentLoaded', () => {
+  initState();
+  setTimeout(() => startFlow(), 500);
+});
+</script>
+</body>
+</html>
