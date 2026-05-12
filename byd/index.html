@@ -164,41 +164,51 @@
   .bubble .highlight { color: var(--azul); font-weight: 600; }
 
   #options-area {
-    padding: 16px 28px 20px;
-    display: flex; flex-direction: column; gap: 10px;
+    padding: 12px 20px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
     flex-shrink: 0;
   }
 
+  /* grilla automática según cantidad de botones */
+  #options-area.grid-2 .opt-btn { width: calc(50% - 4px); }
+  #options-area.grid-1 .opt-btn { width: 100%; }
+
   .opt-btn {
-    width: 100%; min-height: 64px;
-    padding: 16px 24px;
+    min-height: 52px;
+    padding: 12px 16px;
     background: white;
     border: 2px solid var(--borde);
-    border-radius: 16px;
+    border-radius: 14px;
     font-family: 'Outfit', sans-serif;
-    font-size: 17px; font-weight: 500;
+    font-size: 15px; font-weight: 500;
     color: var(--texto);
-    cursor: pointer; text-align: left;
+    cursor: pointer; text-align: center;
     transition: all 0.18s ease;
-    display: flex; align-items: center; gap: 14px;
+    display: flex; align-items: center;
+    justify-content: center;
+    gap: 8px;
     line-height: 1.3;
+    flex: 1 1 auto;
+    min-width: 120px;
   }
 
   .opt-btn:hover, .opt-btn:active {
     background: var(--gris-card);
     border-color: var(--azul-light);
     color: var(--azul);
-    transform: translateX(4px);
+    transform: translateY(-2px);
   }
 
-  .opt-btn .icon { font-size: 22px; flex-shrink: 0; }
+  .opt-btn .icon { font-size: 18px; flex-shrink: 0; }
 
   .opt-btn.primary {
     background: var(--azul); border-color: var(--azul); color: white;
   }
   .opt-btn.primary:hover {
     background: var(--azul-dark); border-color: var(--azul-dark);
-    color: white; transform: translateX(4px);
+    color: white; transform: translateY(-2px);
   }
 
   .opt-btn.amarillo {
@@ -206,7 +216,7 @@
     color: var(--azul); font-weight: 600;
   }
   .opt-btn.amarillo:hover {
-    background: var(--amarillo-dark); transform: translateX(4px);
+    background: var(--amarillo-dark); transform: translateY(-2px);
   }
 
   .input-area {
@@ -602,6 +612,15 @@ function clearOptions() {
 function showOptions(opts) {
   const area = document.getElementById('options-area');
   area.innerHTML = '';
+
+  // Grilla automática según cantidad
+  area.classList.remove('grid-1', 'grid-2');
+  if (opts.length === 4 || opts.length >= 5) {
+    area.classList.add('grid-2');
+  } else {
+    area.classList.add('grid-1');
+  }
+
   opts.forEach(opt => {
     const btn = document.createElement('button');
     btn.className = `opt-btn${opt.primary ? ' primary' : ''}${opt.amarillo ? ' amarillo' : ''}`;
@@ -614,6 +633,12 @@ function showOptions(opts) {
     });
     area.appendChild(btn);
   });
+
+  // Scroll al fondo para que los mensajes queden visibles encima de los botones
+  setTimeout(() => {
+    const msgs = document.getElementById('messages');
+    msgs.scrollTop = msgs.scrollHeight;
+  }, 50);
 }
 
 function showNumericInput(label, placeholder, unit, onSubmit, min = 0) {
@@ -826,9 +851,18 @@ async function startFlow() {
   await addMsg(`¡Bienvenido! 👋<br><br>Soy el asistente solar de <strong>Nepos Energy</strong>. Juntos vamos a calcular cuánto podés <span class="highlight">ahorrar combinando tu BYD con paneles solares</span>.<br><br>¿Cómo querés empezar?`);
 
   showOptions([
-    { icon: '⚡', label: 'Calcular mi ahorro personalizado', amarillo: true, action: () => step_factura() },
-    { icon: '❓', label: '¿Cómo funciona?',                                  action: () => step_explicacion() },
+    { icon: '⚡', label: 'Calcular mi ahorro', amarillo: true, action: () => step_factura() },
+    { icon: '❓', label: '¿Cómo funciona?',                    action: () => step_explicacion() },
   ]);
+}
+
+// Botón reinicio persistente — aparece en pantallas intermedias
+function addRestartBtn() {
+  const area = document.getElementById('options-area');
+  const sep  = document.createElement('div');
+  sep.style.cssText = 'width:100%;text-align:center;margin-top:4px';
+  sep.innerHTML = `<button onclick="resetApp()" style="background:none;border:none;color:var(--texto-suave);font-size:13px;cursor:pointer;padding:4px 8px;font-family:Outfit,sans-serif">↩ Volver al inicio</button>`;
+  area.appendChild(sep);
 }
 
 async function step_explicacion() {
@@ -846,6 +880,7 @@ async function step_explicacion() {
   showOptions([
     { icon: '✅', label: 'Sí, calcular mi ahorro', amarillo: true, action: () => step_factura() },
   ]);
+  addRestartBtn();
 }
 
 async function step_paquetes() {
@@ -887,6 +922,7 @@ async function step_factura() {
       await step_gasolina();
     }
   })));
+  addRestartBtn();
 }
 
 async function step_gasolina() {
@@ -896,11 +932,12 @@ async function step_gasolina() {
   await addMsg(`💛 Planilla en rango <strong>${seg.rango}</strong> — ¡excelente potencial solar!<br><br>⛽ <strong>¿Cuánto gastás en gasolina al mes?</strong><br><span style="font-size:14px;color:#556080">Si ya tenés BYD eléctrico elegí $0 — calculamos solo el ahorro solar</span>`);
 
   showOptions([
-    { icon: '🚗', label: 'Ya tengo BYD — gasto $0 en gasolina', action: async () => { state.gasolina = 0;   await step_espacio(); } },
-    { icon: '⛽', label: 'Menos de $50 / mes',                   action: async () => { state.gasolina = 30;  await step_espacio(); } },
-    { icon: '⛽', label: '$50 – $100 / mes',                     action: async () => { state.gasolina = 75;  await step_espacio(); } },
-    { icon: '⛽', label: 'Más de $100 / mes',                    action: async () => { state.gasolina = 120; await step_espacio(); } },
+    { icon: '🚗', label: 'Ya tengo BYD — $0 gasolina', action: async () => { state.gasolina = 0;   await step_espacio(); } },
+    { icon: '⛽', label: 'Menos de $50 / mes',          action: async () => { state.gasolina = 30;  await step_espacio(); } },
+    { icon: '⛽', label: '$50 – $100 / mes',            action: async () => { state.gasolina = 75;  await step_espacio(); } },
+    { icon: '⛽', label: 'Más de $100 / mes',           action: async () => { state.gasolina = 120; await step_espacio(); } },
   ]);
+  addRestartBtn();
 }
 
 async function step_espacio() {
@@ -909,10 +946,11 @@ async function step_espacio() {
   await addMsg('🏠 <strong>¿Tenés techo o espacio disponible para los paneles?</strong><br><br>No te preocupes si no estás seguro — hay opciones para todos los casos.');
 
   showOptions([
-    { icon: '✅', label: 'Sí, tengo techo propio',                   action: () => { state.tieneEspacio = true;  step_m2(); } },
-    { icon: '🏢', label: 'Vivo en departamento / no estoy seguro',   action: () => { state.tieneEspacio = false; step_sin_espacio(); } },
-    { icon: '🤝', label: 'Soy arrendatario',                         action: () => { state.tieneEspacio = null;  step_sin_espacio(); } },
+    { icon: '✅', label: 'Sí, tengo techo propio',                 action: () => { state.tieneEspacio = true;  step_m2(); } },
+    { icon: '🏢', label: 'Dpto / no estoy seguro',                 action: () => { state.tieneEspacio = false; step_sin_espacio(); } },
+    { icon: '🤝', label: 'Soy arrendatario',                       action: () => { state.tieneEspacio = null;  step_sin_espacio(); } },
   ]);
+  addRestartBtn();
 }
 
 async function step_m2() {
@@ -1027,10 +1065,11 @@ async function step_contacto() {
   await addMsg('¿Te gustaría que un asesor de Nepos te contacte para una <strong>propuesta personalizada gratuita</strong>?');
 
   showOptions([
-    { icon: '✅', label: '¡Sí! Quiero mi propuesta gratuita', amarillo: true, action: () => step_nombre() },
-    { icon: '📱', label: 'Ver QR para escribirnos ahora',                    action: () => step_qr_final() },
-    { icon: '🔄', label: 'Recalcular con otros valores',                     action: () => { clearOptions(); step_factura(); } },
+    { icon: '✅', label: '¡Sí! Quiero mi propuesta', amarillo: true, action: () => step_nombre() },
+    { icon: '📱', label: 'Solo el QR de WhatsApp',                  action: () => step_qr_final() },
+    { icon: '🔄', label: 'Recalcular',                              action: () => { clearOptions(); step_factura(); } },
   ]);
+  addRestartBtn();
 }
 
 // ── Captura de datos ─────────────────────────────────────
