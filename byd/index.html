@@ -663,7 +663,12 @@ function showNumericInput(label, placeholder, unit, onSubmit, min = 0) {
   }
   btn.addEventListener('click', submit);
   input.addEventListener('keydown', e => { if (e.key === 'Enter') submit(); });
-  setTimeout(() => input.focus(), 100);
+
+  setTimeout(() => {
+    const msgs = document.getElementById('messages');
+    msgs.scrollTop = msgs.scrollHeight;
+    input.focus();
+  }, 100);
 }
 
 function showTextInput(label, placeholder, onSubmit, type = 'text') {
@@ -688,7 +693,13 @@ function showTextInput(label, placeholder, onSubmit, type = 'text') {
   }
   btn.addEventListener('click', submit);
   input.addEventListener('keydown', e => { if (e.key === 'Enter') submit(); });
-  setTimeout(() => input.focus(), 100);
+
+  // Scroll para que los mensajes anteriores queden visibles
+  setTimeout(() => {
+    const msgs = document.getElementById('messages');
+    msgs.scrollTop = msgs.scrollHeight;
+    input.focus();
+  }, 100);
 }
 
 // ═══════════════════════════════════════════════════════════
