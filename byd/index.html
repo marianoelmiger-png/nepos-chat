@@ -672,14 +672,14 @@ function showTextInput(label, placeholder, onSubmit, type = 'text') {
 //  Se sobreescriben si el Config del Sheet tiene claves byd_seg_*
 // ═══════════════════════════════════════════════════════════
 const SEGMENTOS_DEFAULT = [
-  { id:'F1', combo:'Sol Esencial',    label:'Hasta $50 / mes',     rango:'$0 – $50',      min:0,   max:50,  consumo:45,  kwp:5,    potencia:4.53,  costo:3328  },
-  { id:'F2', combo:'Sol Familiar',    label:'$50 – $100 / mes',    rango:'$50 – $100',    min:50,  max:100, consumo:75,  kwp:8,    potencia:7.55,  costo:5547  },
-  { id:'F3', combo:'Sol Confort',     label:'$100 – $150 / mes',   rango:'$100 – $150',   min:100, max:150, consumo:140, kwp:15,   potencia:14.09, costo:10355 },
-  { id:'F4', combo:'Sol Premium',     label:'$150 – $200 / mes',   rango:'$150 – $200',   min:150, max:200, consumo:150, kwp:16,   potencia:15.10, costo:11094 },
-  { id:'N1', combo:'Sol Negocio',     label:'$200 – $300 / mes',   rango:'$200 – $300',   min:200, max:300, consumo:250, kwp:26,   potencia:25.16, costo:18490 },
-  { id:'N2', combo:'Sol Empresa',     label:'$300 – $400 / mes',   rango:'$300 – $400',   min:300, max:400, consumo:360, kwp:37,   potencia:36.23, costo:26626 },
-  { id:'N3', combo:'Sol Industrial',  label:'$400 – $500 / mes',   rango:'$400 – $500',   min:400, max:500, consumo:470, kwp:48,   potencia:47.30, costo:34762 },
-  { id:'N4', combo:'Sol Corporativo', label:'Más de $500 / mes',   rango:'Más de $500',   min:500, max:9999,consumo:600, kwp:null, potencia:null,  costo:null  },
+  { id:'F1', combo:'Sol Esencial',    label:'Hasta $50 / mes',     rango:'$0 – $50',      min:0,   max:50,  consumo:45,  kwp:5,    potencia:4.53,  costo:3328,  m2:19  },
+  { id:'F2', combo:'Sol Familiar',    label:'$50 – $100 / mes',    rango:'$50 – $100',    min:50,  max:100, consumo:75,  kwp:8,    potencia:7.55,  costo:5547,  m2:32  },
+  { id:'F3', combo:'Sol Confort',     label:'$100 – $150 / mes',   rango:'$100 – $150',   min:100, max:150, consumo:140, kwp:15,   potencia:14.09, costo:10355, m2:60  },
+  { id:'F4', combo:'Sol Premium',     label:'$150 – $200 / mes',   rango:'$150 – $200',   min:150, max:200, consumo:150, kwp:16,   potencia:15.10, costo:11094, m2:65  },
+  { id:'N1', combo:'Sol Negocio',     label:'$200 – $300 / mes',   rango:'$200 – $300',   min:200, max:300, consumo:250, kwp:26,   potencia:25.16, costo:18490, m2:108 },
+  { id:'N2', combo:'Sol Empresa',     label:'$300 – $400 / mes',   rango:'$300 – $400',   min:300, max:400, consumo:360, kwp:37,   potencia:36.23, costo:26626, m2:155 },
+  { id:'N3', combo:'Sol Industrial',  label:'$400 – $500 / mes',   rango:'$400 – $500',   min:400, max:500, consumo:470, kwp:48,   potencia:47.30, costo:34762, m2:203 },
+  { id:'N4', combo:'Sol Corporativo', label:'Más de $500 / mes',   rango:'Más de $500',   min:500, max:9999,consumo:600, kwp:null, potencia:null,  costo:null,  m2:999 },
 ];
 
 // Se puebla en cargarConfig() si el Sheet tiene claves byd_seg_*
@@ -714,21 +714,56 @@ function reconstruirSegmentosDesdeConfig(cfg) {
       consumo:  parseFloat(cfg['byd_seg_' + id + '_consumo']) || def.consumo,
       kwp:      cfg['byd_seg_' + id + '_kwp']  ? parseFloat(cfg['byd_seg_' + id + '_kwp'])  : def.kwp,
       potencia: cfg['byd_seg_' + id + '_pot']  ? parseFloat(cfg['byd_seg_' + id + '_pot'])  : def.potencia,
-      costo:    id === 'N4' ? null : costo,  // N4 siempre requiere estudio
+      costo:    id === 'N4' ? null : costo,
+      m2:       cfg['SISTEMAS_byd_' + id + '_m2'] ? parseFloat(cfg['SISTEMAS_byd_' + id + '_m2']) :
+                cfg['byd_seg_' + id + '_m2'] ? parseFloat(cfg['byd_seg_' + id + '_m2']) : def.m2,  // N4 siempre requiere estudio
     };
   });
   SEGMENTOS = nuevos;
 }
 
-function getSegmento(id) { return SEGMENTOS.find(s => s.id === id); }
+// ═══════════════════════════════════════════════════════════
+//  LÓGICA DE RECOMENDACIÓN
+//  1. m² disponibles → sistema máximo que entra físicamente
+//  2. factura → segmento ideal por consumo
+//  3. Se recomienda el MENOR de los dos
+//  4. Si el espacio limita: mostrar % de cobertura de factura
+// ═══════════════════════════════════════════════════════════
 
-function calcAhorro(segId, gasolina) {
-  const seg = getSegmento(segId);
+// Segmento máximo que entra en los m² disponibles
+function segmentoPorM2(m2) {
+  // Recorre de mayor a menor y devuelve el más grande que entra
+  const orden = ['N3','N2','N1','F4','F3','F2','F1'];
+  for (const id of orden) {
+    const seg = SEGMENTOS.find(s => s.id === id);
+    if (seg && seg.m2 && m2 >= seg.m2) return seg;
+  }
+  // Si no entra ni F1, devuelve F1 igual (mínimo viable)
+  return SEGMENTOS.find(s => s.id === 'F1');
+}
 
-  // N4 requiere estudio técnico — no calculamos precio
+// Segmento ideal por consumo eléctrico (factura)
+function segmentoPorFactura(segId) {
+  return SEGMENTOS.find(s => s.id === segId);
+}
+
+function calcAhorro(segId, gasolina, m2Disponibles) {
+  const segConsumo = segmentoPorFactura(segId);
+  const segEspacio = m2Disponibles ? segmentoPorM2(m2Disponibles) : segConsumo;
+
+  // Orden de segmentos para comparar cuál es "menor"
+  const orden = ['F1','F2','F3','F4','N1','N2','N3','N4'];
+  const idxConsumo = orden.indexOf(segConsumo.id);
+  const idxEspacio = orden.indexOf(segEspacio.id);
+
+  // El sistema recomendado es el menor de los dos
+  const limitadoPorEspacio = idxEspacio < idxConsumo;
+  const seg = limitadoPorEspacio ? segEspacio : segConsumo;
+
+  // N4 requiere estudio
   if (seg.costo === null) {
     return {
-      seg,
+      seg, limitadoPorEspacio: false, coberturaPct: 100,
       ahorroElec: Math.round(seg.consumo * 0.70),
       ahorroGaso: Math.round(gasolina * 0.60),
       ahorroTotal: Math.round(seg.consumo * 0.70) + Math.round(gasolina * 0.60),
@@ -738,13 +773,24 @@ function calcAhorro(segId, gasolina) {
     };
   }
 
-  const ahorroElec  = Math.round(seg.consumo * 0.70);
+  // Cobertura: si el espacio limita, el sistema cubre menos que el 100% de la factura
+  // Estimamos proporción por kWp instalado vs kWp necesario para el consumo ideal
+  let coberturaPct = 100;
+  if (limitadoPorEspacio && segConsumo.kwp && seg.kwp) {
+    coberturaPct = Math.round((seg.kwp / segConsumo.kwp) * 100);
+    if (coberturaPct > 100) coberturaPct = 100;
+  }
+
+  const ahorroElec  = Math.round(seg.consumo * 0.70 * (coberturaPct / 100));
   const ahorroGaso  = Math.round(gasolina * 0.60);
   const ahorroTotal = ahorroElec + ahorroGaso;
   const ahorroAnual = ahorroTotal * 12;
   const paybackAnios = (seg.costo / ahorroAnual).toFixed(1);
+
   return {
-    seg, ahorroElec, ahorroGaso, ahorroTotal, ahorroAnual,
+    seg, limitadoPorEspacio, coberturaPct,
+    segConsumoId: segConsumo.id,  // para mostrar cuál sería el ideal
+    ahorroElec, ahorroGaso, ahorroTotal, ahorroAnual,
     kwp: seg.kwp, potencia: seg.potencia,
     costoSistema: seg.costo, paybackAnios,
     requiereEstudio: false
@@ -888,7 +934,7 @@ async function step_sin_espacio() {
 
 async function step_resultado() {
   state.step = 'resultado';
-  const c = calcAhorro(state.segId, state.gasolina);
+  const c = calcAhorro(state.segId, state.gasolina, state.m2);
 
   // Guardado parcial — fire & forget, sin nombre ni contacto
   // Permite registrar interés aunque el usuario no deje sus datos
@@ -922,6 +968,11 @@ async function step_resultado() {
     return;
   }
 
+  // Línea de cobertura — solo si el espacio es el factor limitante
+  const coberturaLinea = c.limitadoPorEspacio
+    ? `<div class="result-row"><span class="label">📐 Cobertura de tu factura</span><span class="value green">${c.coberturaPct}% con tu espacio disponible</span></div>`
+    : '';
+
   // Resto de segmentos: card con nombre de combo
   const gasolinaLinea = state.gasolina > 0
     ? `<div class="result-row"><span class="label">⛽ Ahorro gasolina/mes</span><span class="value green">+ $${c.ahorroGaso}</span></div>`
@@ -934,6 +985,7 @@ async function step_resultado() {
       <div class="result-sub">Ahorro estimado · $${c.ahorroAnual.toLocaleString()} al año</div>
       <div class="result-row"><span class="label">💡 Ahorro factura eléctrica</span><span class="value green">+ $${c.ahorroElec}</span></div>
       ${gasolinaLinea}
+      ${coberturaLinea}
       <div class="result-row"><span class="label">⚡ Sistema</span><span class="value">${c.kwp} kWp · ${c.potencia} kWp pico</span></div>
       <div class="result-row"><span class="label">💰 Inversión estimada</span><span class="value">$${c.costoSistema.toLocaleString()}</span></div>
       <div class="result-row"><span class="label">📅 Recuperación inversión</span><span class="value">${c.paybackAnios} años</span></div>
@@ -946,9 +998,16 @@ async function step_resultado() {
   await new Promise(r => setTimeout(r, 600));
   await showTyping(700);
 
-  const msgExtra = state.gasolina > 0
-    ? `Con tu BYD eléctrico <strong>ya no dependés de la gasolina</strong>, y los paneles solares eliminan casi toda tu factura. El ahorro se <strong>potencia al combinar ambos</strong>.`
-    : `Los paneles solares cubren el 70% de tu consumo eléctrico promedio en Ecuador, con una generación muy estable durante todo el año.`;
+  // Mensaje contextual según si el espacio limitó o no
+  let msgExtra;
+  if (c.limitadoPorEspacio) {
+    const segIdeal = SEGMENTOS.find(s => s.id === c.segConsumoId);
+    msgExtra = `En base a tu espacio disponible te recomendamos el <strong>${c.seg.combo}</strong>, que cubre el <strong>${c.coberturaPct}% de tu factura eléctrica</strong>. Si en el futuro ampliás el espacio, podés escalar al <strong>${segIdeal ? segIdeal.combo : 'siguiente sistema'}</strong> para cobertura total.`;
+  } else if (state.gasolina > 0) {
+    msgExtra = `Con tu BYD eléctrico <strong>ya no dependés de la gasolina</strong>, y los paneles solares eliminan casi toda tu factura. El ahorro se <strong>potencia al combinar ambos</strong>.`;
+  } else {
+    msgExtra = `Los paneles solares cubren el 70% de tu consumo eléctrico promedio en Ecuador, con una generación muy estable durante todo el año.`;
+  }
 
   await addMsg(msgExtra);
 
