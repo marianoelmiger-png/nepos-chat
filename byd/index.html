@@ -117,7 +117,7 @@
   #messages {
     flex: 1;
     overflow-y: auto;
-    padding: 20px 20px 100px;
+    padding: 20px 20px 32px;
     scroll-behavior: smooth;
     min-height: 0;
   }
@@ -994,15 +994,25 @@ async function step_resultado() {
 
   // N4: requiere estudio técnico — card especial
   if (c.requiereEstudio) {
-    div.innerHTML = `<div class="avatar">☀️</div><div class="bubble" style="max-width:85%">
+    div.innerHTML = `<div class="avatar">☀️</div><div class="bubble" style="max-width:72%">
       <div class="result-card">
         <div class="result-title">☀️ ${c.seg.combo}</div>
-        <div class="result-ahorro" style="font-size:26px">Diseño personalizado</div>
-        <div class="result-sub">Más de $500 / mes · requiere estudio técnico</div>
-        <div class="result-row"><span class="label">💡 Ahorro potencial estimado</span><span class="value green">$${c.ahorroTotal}+ / mes</span></div>
-        <div class="result-row"><span class="label">⚡ Sistema</span><span class="value">A dimensionar</span></div>
-        <div class="result-row"><span class="label">💰 Inversión</span><span class="value">A cotizar</span></div>
-        <div class="result-row"><span class="label">📅 Visita técnica</span><span class="value">Gratuita y sin compromiso</span></div>
+        <div class="result-ahorro" style="font-size:20px">Diseño personalizado</div>
+        <div class="result-sub">Más de $500/mes · estudio técnico requerido</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">
+          <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:8px">
+            <div style="font-size:10px;opacity:0.65;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px">Ahorro est.</div>
+            <div style="font-size:13px;font-weight:600;color:var(--amarillo)">$${c.ahorroTotal}+/mes</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:8px">
+            <div style="font-size:10px;opacity:0.65;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px">Inversión</div>
+            <div style="font-size:13px;font-weight:600">A cotizar</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:8px;grid-column:1/-1">
+            <div style="font-size:10px;opacity:0.65;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px">Siguiente paso</div>
+            <div style="font-size:12px;font-weight:500">Visita técnica gratuita · sin compromiso</div>
+          </div>
+        </div>
       </div>
     </div>`;
     msgs.appendChild(div);
@@ -1024,17 +1034,29 @@ async function step_resultado() {
     ? `<div class="result-row"><span class="label">⛽ Ahorro gasolina/mes</span><span class="value green">+ $${c.ahorroGaso}</span></div>`
     : '';
 
-  div.innerHTML = `<div class="avatar">☀️</div><div class="bubble" style="max-width:85%">
+  div.innerHTML = `<div class="avatar">☀️</div><div class="bubble" style="max-width:72%">
     <div class="result-card">
       <div class="result-title">☀️ ${c.seg.combo}</div>
-      <div class="result-ahorro">$${c.ahorroTotal} / mes</div>
-      <div class="result-sub">Ahorro estimado · $${c.ahorroAnual.toLocaleString()} al año</div>
-      <div class="result-row"><span class="label">💡 Ahorro factura eléctrica</span><span class="value green">+ $${c.ahorroElec}</span></div>
-      ${gasolinaLinea}
-      ${coberturaLinea}
-      <div class="result-row"><span class="label">⚡ Sistema</span><span class="value">${c.kwp} kWp · ${c.potencia} kWp pico</span></div>
-      <div class="result-row"><span class="label">💰 Inversión estimada</span><span class="value">$${c.costoSistema.toLocaleString()}</span></div>
-      <div class="result-row"><span class="label">📅 Recuperación inversión</span><span class="value">${c.paybackAnios} años</span></div>
+      <div class="result-ahorro">$${c.ahorroTotal}<span style="font-size:13px;font-weight:400;opacity:0.8"> / mes</span></div>
+      <div class="result-sub">$${c.ahorroAnual.toLocaleString()} al año estimado</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">
+        <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:8px">
+          <div style="font-size:10px;opacity:0.65;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px">Sistema</div>
+          <div style="font-size:13px;font-weight:600">${c.kwp} kWp</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:8px">
+          <div style="font-size:10px;opacity:0.65;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px">Inversión</div>
+          <div style="font-size:13px;font-weight:600">$${c.costoSistema.toLocaleString()}</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:8px">
+          <div style="font-size:10px;opacity:0.65;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px">Payback</div>
+          <div style="font-size:13px;font-weight:600">${c.paybackAnios} años</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:8px">
+          <div style="font-size:10px;opacity:0.65;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px">${c.limitadoPorEspacio ? 'Cobertura' : state.gasolina > 0 ? 'Ahorro gasolina' : 'Ahorro eléctrico'}</div>
+          <div style="font-size:13px;font-weight:600;color:var(--amarillo)">${c.limitadoPorEspacio ? c.coberturaPct+'%' : state.gasolina > 0 ? '+$'+c.ahorroGaso+'/mes' : '+$'+c.ahorroElec+'/mes'}</div>
+        </div>
+      </div>
     </div>
   </div>`;
 
@@ -1057,12 +1079,14 @@ async function step_resultado() {
 
   await addMsg(msgExtra);
 
-  // Disclaimer
-  await new Promise(r => setTimeout(r, 400));
-  await addMsg(`<span style="font-size:13px;color:#778aa8;line-height:1.5">
+  // Disclaimer — pausa antes para que el usuario pueda leer
+  await new Promise(r => setTimeout(r, 1500));
+  await addMsg(`<span style="font-size:11px;color:#778aa8;line-height:1.5">
     <em>📋 Esta estimación se calculó en base a los datos que nos compartiste y los parámetros vigentes de Nepos Energy. Los valores finales pueden variar según las condiciones reales de tu instalación. Un asesor te enviará una propuesta formal con todos los detalles.</em>
   </span>`);
 
+  // Pausa antes de mostrar las opciones — da tiempo para leer todo
+  await new Promise(r => setTimeout(r, 2500));
   await step_contacto();
 }
 
