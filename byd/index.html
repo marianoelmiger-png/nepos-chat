@@ -730,6 +730,8 @@ function reconstruirSegmentosDesdeConfig(cfg) {
 //  4. Si el espacio limita: mostrar % de cobertura de factura
 // ═══════════════════════════════════════════════════════════
 
+function getSegmento(id) { return SEGMENTOS.find(s => s.id === id); }
+
 // Segmento máximo que entra en los m² disponibles
 function segmentoPorM2(m2) {
   // Recorre de mayor a menor y devuelve el más grande que entra
