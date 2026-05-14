@@ -859,7 +859,7 @@ async function startFlow() {
   resetInactivityTimer();
 
   await showTyping(800);
-  await addMsg(`¡Bienvenido! 👋<br><br>Soy el asistente solar de <strong>Nepos Energy</strong>. Juntos vamos a calcular cuánto podés <span class="highlight">ahorrar combinando tu BYD con paneles solares</span>.<br><br>¿Cómo querés empezar?`);
+  await addMsg(`¡Bienvenido! 👋<br><br>Soy el asistente solar de <strong>Nepos Energy</strong>. Juntos vamos a calcular cuánto puede <span class="highlight">ahorrar combinando su BYD con paneles solares</span>.<br><br>¿Cómo desea empezar?`);
 
   showOptions([
     { icon: '⚡', label: 'Calcular mi ahorro', amarillo: true, action: () => step_factura() },
@@ -879,14 +879,14 @@ function addRestartBtn() {
 async function step_explicacion() {
   await showTyping(700);
   await addMsg(`Con un <strong>BYD eléctrico + paneles solares Nepos</strong>:<br><br>
-    ☀️ Generás tu propia electricidad<br>
-    🚗 Cargás tu auto desde el sol<br>
-    💰 Eliminás casi totalmente la factura eléctrica<br>
-    ⛽ Dejás de depender de la gasolina<br><br>
-    <strong>El ahorro combinado puede superar $200/mes</strong> dependiendo de tu consumo.`);
+    ☀️ Genera su propia electricidad<br>
+    🚗 Carga su auto desde el sol<br>
+    💰 Elimina casi totalmente la planilla eléctrica<br>
+    ⛽ Deja de depender de la gasolina<br><br>
+    <strong>El ahorro combinado puede superar $200/mes</strong> dependiendo de su consumo.`);
 
   await showTyping(600);
-  await addMsg('¿Te gustaría calcular exactamente cuánto ahorrarías <strong>vos</strong>?');
+  await addMsg('¿Le gustaría calcular exactamente cuánto ahorraría <strong>usted</strong>?');
 
   showOptions([
     { icon: '✅', label: 'Sí, calcular mi ahorro', amarillo: true, action: () => step_factura() },
@@ -922,7 +922,7 @@ async function step_paquetes() {
 async function step_factura() {
   state.step = 'factura';
   await showTyping(700);
-  await addMsg('¡Perfecto! Para calcular tu sistema ideal necesito un dato clave:<br><br>💡 <strong>¿Cuánto pagás aproximadamente en tu planilla de luz cada mes?</strong>');
+  await addMsg('¡Perfecto! Para calcular el sistema ideal necesitamos un dato clave:<br><br>💡 <strong>¿Cuánto paga aproximadamente en su planilla de luz cada mes?</strong>');
 
   showOptions(SEGMENTOS.map(seg => ({
     icon: seg.id.startsWith('N') ? '🏢' : '🏠',
@@ -940,7 +940,7 @@ async function step_gasolina() {
   state.step = 'gasolina';
   const seg = getSegmento(state.segId);
   await showTyping(600);
-  await addMsg(`💛 Planilla en rango <strong>${seg.rango}</strong> — ¡excelente potencial solar!<br><br>⛽ <strong>¿Cuánto gastás en gasolina al mes?</strong><br><span style="font-size:11px;color:#556080">Si ya tenés BYD eléctrico elegí $0 — calculamos solo el ahorro solar</span>`);
+  await addMsg(`💛 Planilla en rango <strong>${seg.rango}</strong> — ¡excelente potencial solar!<br><br>⛽ <strong>¿Cuánto gasta en gasolina al mes?</strong><br><span style="font-size:11px;color:#556080">Si ya tiene un BYD eléctrico elija $0 — calculamos solo el ahorro solar</span>`);
 
   showOptions([
     { icon: '🚗', label: 'Ya tengo BYD — $0',  action: async () => { state.gasolina = 0;   await step_modelo(); } },
@@ -967,7 +967,7 @@ const KM_MES = 1200; // km promedio mensual Ecuador
 async function step_modelo() {
   state.step = 'modelo';
   await showTyping(500);
-  await addMsg('🚗 <strong>¿Cuál es tu BYD o cuál estás por adquirir?</strong><br><span style="font-size:11px;color:#556080">Lo usamos para calcular cuánta energía necesitarás cargar desde tus paneles</span>');
+  await addMsg('🚗 <strong>¿Cuál es su BYD o cuál está por adquirir?</strong><br><span style="font-size:11px;color:#556080">Lo usamos para calcular cuánta energía necesitará cargar desde sus paneles</span>');
 
   const opts = MODELOS_BYD.map(m => ({
     icon: m.emoji,
@@ -995,19 +995,19 @@ async function step_modelo() {
 async function step_espacio() {
   state.step = 'espacio';
   await showTyping(700);
-  await addMsg('🏠 <strong>¿Tenés techo o espacio disponible para los paneles?</strong><br><br>No te preocupes si no estás seguro — hay opciones para todos los casos.');
+  await addMsg('🏠 <strong>¿Tiene techo o espacio disponible para los paneles?</strong><br><br>No se preocupe si no está seguro — tenemos opciones para todos los casos.');
 
   showOptions([
-    { icon: '✅', label: 'Sí, tengo techo propio',                 action: () => { state.tieneEspacio = true;  step_m2(); } },
-    { icon: '🏢', label: 'Dpto / no estoy seguro',                 action: () => { state.tieneEspacio = false; step_sin_espacio(); } },
-    { icon: '🤝', label: 'Soy arrendatario',                       action: () => { state.tieneEspacio = null;  step_sin_espacio(); } },
+    { icon: '✅', label: 'Sí, tengo techo propio',   action: () => { state.tieneEspacio = true;  step_m2(); } },
+    { icon: '🏢', label: 'Dpto / no estoy seguro',   action: () => { state.tieneEspacio = false; step_sin_espacio(); } },
+    { icon: '🤝', label: 'Soy arrendatario',         action: () => { state.tieneEspacio = null;  step_sin_espacio(); } },
   ]);
   addRestartBtn();
 }
 
 async function step_m2() {
   await showTyping(500);
-  await addMsg('¿Cuántos m² aproximados tiene tu techo disponible?<br><span style="font-size:14px;color:#556080">No necesitás ser exacto — una estimación está bien</span>');
+  await addMsg('¿Cuántos m² aproximados tiene su techo disponible?<br><span style="font-size:11px;color:#556080">No necesita ser exacto — una estimación está bien</span>');
   showNumericInput('Área de techo disponible', 'Ej: 40', 'm²', async (val) => {
     state.m2 = val;
     await step_resultado();
@@ -1016,11 +1016,11 @@ async function step_m2() {
 
 async function step_sin_espacio() {
   await showTyping(700);
-  await addMsg(`¡No es ningún problema! Tenemos alternativas perfectas:<br><br>
-    🔍 <strong>Visita Técnica Gratuita</strong> — Nuestros ingenieros evalúan opciones en tu espacio<br><br>
-    ⚡ <strong>Modelo PPA</strong> — Instalamos sin costo inicial y pagás solo por la energía que generás<br><br>
-    🏢 <strong>Solar Comunitario</strong> — Paneles en instalación compartida con tu edificio<br><br>
-    <em>Muchos de nuestros clientes en departamentos ahorran igual que los de casa. ¡El sol es de todos!</em>`);
+  await addMsg(`¡No hay ningún problema! Tenemos alternativas perfectas:<br><br>
+    🔍 <strong>Visita Técnica Gratuita</strong> — Nuestros ingenieros evalúan las opciones en su espacio<br><br>
+    ⚡ <strong>Modelo PPA</strong> — Instalamos sin costo inicial y paga solo por la energía que genera<br><br>
+    🏢 <strong>Solar Comunitario</strong> — Paneles en instalación compartida con su edificio<br><br>
+    <em>Muchos de nuestros clientes en departamentos ahorran igual que los de casa. ¡El sol es para todos!</em>`);
   await step_resultado();
 }
 
@@ -1065,7 +1065,7 @@ async function step_resultado() {
     msgs.scrollTop = msgs.scrollHeight;
     await new Promise(r => setTimeout(r, 600));
     await showTyping(700);
-    await addMsg(`Con un consumo de esa escala, el ahorro puede ser muy significativo. Necesitamos hacer una <strong>visita técnica gratuita</strong> para dimensionar el sistema exacto y darte una cotización formal.`);
+    await addMsg(`Con un consumo de esa escala, el ahorro puede ser muy significativo. Necesitamos realizar una <strong>visita técnica gratuita</strong> para dimensionar el sistema exacto y entregarle una cotización formal.`);
     await step_contacto();
     return;
   }
@@ -1117,11 +1117,11 @@ async function step_resultado() {
   let msgExtra;
   if (c.limitadoPorEspacio) {
     const segIdeal = SEGMENTOS.find(s => s.id === c.segConsumoId);
-    msgExtra = `En base a tu espacio disponible te recomendamos el <strong>${c.seg.combo}</strong>, que cubre el <strong>${c.coberturaPct}% de tu factura eléctrica</strong>. Si en el futuro ampliás el espacio, podés escalar al <strong>${segIdeal ? segIdeal.combo : 'siguiente sistema'}</strong> para cobertura total.`;
+    msgExtra = `En base al espacio disponible le recomendamos el <strong>${c.seg.combo}</strong>, que cubre el <strong>${c.coberturaPct}% de su planilla eléctrica</strong>. Si en el futuro amplía el espacio, puede escalar al <strong>${segIdeal ? segIdeal.combo : 'siguiente sistema'}</strong> para cobertura total.`;
   } else if (state.gasolina > 0) {
-    msgExtra = `Con tu BYD eléctrico <strong>ya no dependés de la gasolina</strong>, y los paneles solares eliminan casi toda tu factura. El ahorro se <strong>potencia al combinar ambos</strong>.`;
+    msgExtra = `Con su BYD eléctrico <strong>ya no depende de la gasolina</strong>, y los paneles solares eliminan casi toda la planilla. El ahorro se <strong>potencia al combinar ambos</strong>.`;
   } else {
-    msgExtra = `Los paneles solares cubren el 70% de tu consumo eléctrico promedio en Ecuador, con una generación muy estable durante todo el año.`;
+    msgExtra = `Los paneles solares cubren el 70% del consumo eléctrico promedio en Ecuador, con una generación muy estable durante todo el año.`;
   }
 
   await addMsg(msgExtra);
@@ -1139,7 +1139,7 @@ async function step_resultado() {
 
 async function step_contacto() {
   await showTyping(700);
-  await addMsg('¿Te gustaría que un asesor de Nepos te contacte para una <strong>propuesta personalizada gratuita</strong>?');
+  await addMsg('¿Le gustaría que un asesor de Nepos le contacte para una <strong>propuesta personalizada gratuita</strong>?');
 
   showOptions([
     { icon: '✅', label: '¡Sí! Quiero mi propuesta', amarillo: true, action: () => step_nombre() },
@@ -1153,8 +1153,8 @@ async function step_contacto() {
 
 async function step_nombre() {
   await showTyping(500);
-  await addMsg('¡Perfecto! 🎉 ¿Cuál es tu nombre?');
-  showTextInput('Tu nombre', 'Ej: Ana García', async (val) => {
+  await addMsg('¡Perfecto! 🎉 ¿Cuál es su nombre?');
+  showTextInput('Su nombre', 'Ej: Ana García', async (val) => {
     state.nombre = val;
     await step_telefono();
   });
@@ -1162,17 +1162,16 @@ async function step_nombre() {
 
 async function step_telefono() {
   await showTyping(500);
-  await addMsg(`Un gusto, <strong>${state.nombre}</strong>! 😊<br><br>📞 ¿Cuál es tu número de celular para contactarte?`);
+  await addMsg(`Mucho gusto, <strong>${state.nombre}</strong>! 😊<br><br>📞 ¿Cuál es su número de celular para contactarle?`);
   showTextInput('Número de celular', 'Ej: 0991234567', async (val) => {
     state.telefono = val;
     await step_correo();
   }, 'tel');
 }
 
-// ── NUEVO: paso de correo electrónico ──────────────────────
 async function step_correo() {
   await showTyping(500);
-  await addMsg(`📧 ¿Y tu correo electrónico? Te enviamos la cotización formal por ahí.`);
+  await addMsg(`📧 ¿Y su correo electrónico? Le enviamos la cotización formal por ahí.`);
   showTextInput('Correo electrónico', 'Ej: ana@gmail.com', async (val) => {
     state.correo = val;
     await guardarLead();
@@ -1255,8 +1254,8 @@ async function guardarLead() {
     : '';
 
   await addMsg(`✅ <strong>¡Listo, ${state.nombre}!</strong><br><br>
-    Tu información fue registrada. Un asesor de Nepos Energy te contactará dentro de las próximas <strong>24 horas</strong> para enviarte tu cotización por email.${codigoLinea}<br><br>
-    🌟 <em>¡Gracias por tu interés. Juntos por una movilidad solar!</em>`);
+    Su información fue registrada. Un asesor de Nepos Energy le contactará dentro de las próximas <strong>24 horas</strong> para enviarle su cotización por email.${codigoLinea}<br><br>
+    🌟 <em>¡Gracias por su interés. Juntos hacia una movilidad solar!</em>`);
 
   await new Promise(r => setTimeout(r, 1000));
   await step_qr_final();
@@ -1270,11 +1269,9 @@ async function step_qr_final() {
   const div    = document.createElement('div');
   div.className = 'msg bot';
 
-  // URL del QR: incluye el código BYD si existe
   const waUrl  = buildWAUrl(state.codigoBYD);
   const qrSrc  = getQRUrl(waUrl);
 
-  // Badge del código (solo si lo tenemos)
   const codigoBadge = state.codigoBYD
     ? `<div style="text-align:center;margin-bottom:14px">
          <div class="codigo-badge">
@@ -1287,15 +1284,22 @@ async function step_qr_final() {
     ? `Hola! Los conocí en la concesionaria BYD — Ref: ${state.codigoBYD}`
     : `Hola! Los conocí en la concesionaria BYD y quiero más información sobre paneles solares`;
 
+  // Link WA solo en móvil
+  const esMobil = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+  const waLinkHtml = esMobil
+    ? `<a href="${waUrl}" style="display:block;margin-top:10px;background:#25d366;color:#fff;padding:10px 16px;border-radius:10px;text-decoration:none;font-size:13px;font-weight:600;text-align:center">💬 Abrir WhatsApp</a>`
+    : '';
+
   div.innerHTML = `<div class="avatar">☀️</div><div class="bubble" style="max-width:90%">
     <div class="qr-card">
-      <div class="qr-title">📱 ¡Escribinos por WhatsApp!</div>
-      <div class="qr-sub">Escaneá el código con la cámara de tu celular para contactarnos directamente</div>
+      <div class="qr-title">📱 ¡Escríbanos por WhatsApp!</div>
+      <div class="qr-sub">Escanee el código con la cámara de su celular para contactarnos directamente</div>
       ${codigoBadge}
       <div class="qr-img-wrap">
         <img src="${qrSrc}" alt="QR WhatsApp Nepos Energy">
       </div>
       <div class="qr-msg">"${msgPreview}"</div>
+      ${waLinkHtml}
     </div>
   </div>`;
 
@@ -1304,7 +1308,7 @@ async function step_qr_final() {
 
   await new Promise(r => setTimeout(r, 800));
   await showTyping(500);
-  await addMsg('¿Deseás hacer otra consulta o empezar de nuevo?');
+  await addMsg('¿Desea hacer otra consulta o empezar de nuevo?');
 
   showOptions([
     { icon: '🔄', label: 'Nueva consulta', action: () => resetApp() },
