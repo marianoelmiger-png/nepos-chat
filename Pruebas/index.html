@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EcuaCompute — Pitch para Socios Fundadores</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&family=Spectral:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#070C18;--bg2:#0D1426;--surface:#141E35;--surf2:#1C2840;
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.14);
+  --solar:#F5C842;--teal:#2ECFB0;--blue:#4A9EFF;--green:#4AE88A;
+  --red:#FF5C5C;--orange:#FF9F43;--purple:#B07FFF;
+  --text:#EDF1FA;--muted:#7A8399;--muted2:#4A5268;
+  --serif:'Spectral',Georgia,serif;--sans:'Syne',sans-serif;--mono:'IBM Plex Mono',monospace;
+}
+html,body{height:100%;overflow:hidden;}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);display:flex;flex-direction:column;user-select:none;}
+.pb{height:2px;background:var(--surf2);flex-shrink:0;z-index:50;}
+.pf{height:100%;background:linear-gradient(90deg,var(--solar),var(--teal));transition:width .4s cubic-bezier(.4,0,.2,1);}
+.deck{flex:1;position:relative;overflow:hidden;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:42px 70px;opacity:0;pointer-events:none;transform:translateX(40px);transition:opacity .45s cubic-bezier(.4,0,.2,1),transform .45s cubic-bezier(.4,0,.2,1);overflow:hidden;}
+.slide.active{opacity:1;pointer-events:all;transform:translateX(0);}
+.slide.exit{opacity:0;transform:translateX(-40px);pointer-events:none;}
+.slide::after{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.013) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.013) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;}
+
+.s-cover{background:radial-gradient(ellipse 120% 80% at 70% 50%,rgba(245,200,66,.09),transparent 60%),var(--bg);}
+.s-prob {background:radial-gradient(ellipse 100% 100% at 20% 80%,rgba(255,92,92,.06),transparent 60%),var(--bg2);}
+.s-team {background:radial-gradient(ellipse 100% 100% at 80% 20%,rgba(74,158,255,.06),transparent 60%),var(--bg);}
+.s-infra{background:radial-gradient(ellipse 120% 80% at 60% 40%,rgba(176,127,255,.07),transparent 60%),var(--bg2);}
+.s-str  {background:radial-gradient(ellipse 120% 80% at 40% 60%,rgba(46,207,176,.07),transparent 60%),var(--bg);}
+.s-park {background:radial-gradient(ellipse 100% 100% at 70% 30%,rgba(255,159,67,.07),transparent 60%),var(--bg2);}
+.s-inv  {background:radial-gradient(ellipse 120% 100% at 50% 50%,rgba(245,200,66,.08),transparent 60%),var(--bg);}
+.s-model{background:radial-gradient(ellipse 100% 100% at 30% 70%,rgba(46,207,176,.06),transparent 60%),var(--bg2);}
+.s-road {background:radial-gradient(ellipse 100% 100% at 20% 50%,rgba(74,232,138,.05),transparent 60%),var(--bg);}
+.s-ask  {background:radial-gradient(ellipse 100% 100% at 60% 40%,rgba(245,200,66,.10),transparent 50%),var(--bg2);}
+
+.snum{position:absolute;top:24px;right:70px;font-family:var(--mono);font-size:11px;color:var(--muted2);letter-spacing:.1em;}
+
+.eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--solar);margin-bottom:12px;}
+.headline{font-size:clamp(30px,4vw,54px);font-weight:800;letter-spacing:-.04em;line-height:1.0;margin-bottom:16px;}
+.headline em{font-style:normal;color:var(--solar);}
+.headline .tc{color:var(--teal);font-style:normal;}
+.headline .oc{color:var(--orange);font-style:normal;}
+.headline .pc{color:var(--purple);font-style:normal;}
+.subhead{font-family:var(--serif);font-size:clamp(13px,1.6vw,17px);color:var(--muted);font-weight:300;font-style:italic;max-width:560px;line-height:1.65;}
+
+.cover-logo{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2);margin-bottom:48px;}
+.cover-logo span{color:var(--solar);}
+.ctag{display:inline-flex;align-items:center;gap:8px;background:rgba(245,200,66,.1);border:1px solid rgba(245,200,66,.25);border-radius:4px;padding:5px 13px;font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--solar);margin-bottom:24px;}
+.cstats{display:flex;gap:48px;margin-top:44px;padding-top:32px;border-top:1px solid var(--border);}
+.cs{display:flex;flex-direction:column;gap:4px;}
+.cs-val{font-weight:800;font-size:28px;letter-spacing:-.03em;}
+.cs-val em{color:var(--solar);font-style:normal;}
+.cs-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+
+.cols{display:grid;gap:18px;margin-top:24px;}
+.c2{grid-template-columns:1fr 1fr;}
+.c3{grid-template-columns:1fr 1fr 1fr;}
+.c12{grid-template-columns:1.15fr 1fr;}
+.c21{grid-template-columns:1fr 1.15fr;}
+
+.block{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px 24px;position:relative;overflow:hidden;}
+.block::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.b-solar::before{background:var(--solar);}
+.b-teal::before{background:var(--teal);}
+.b-blue::before{background:var(--blue);}
+.b-green::before{background:var(--green);}
+.b-orange::before{background:var(--orange);}
+.b-purple::before{background:var(--purple);}
+.b-red::before{background:var(--red);}
+.bi{font-size:20px;margin-bottom:8px;display:block;}
+.bt{font-size:13px;font-weight:700;margin-bottom:5px;letter-spacing:-.01em;}
+.bb{font-size:12px;color:var(--muted);line-height:1.6;}
+
+.hr{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:8px;}
+.hr:last-child{margin-bottom:0;}
+.hi{font-size:18px;flex-shrink:0;margin-top:1px;}
+.ht{flex:1;}
+.hl{font-size:13px;font-weight:600;line-height:1.4;}
+.hs{font-size:11.5px;color:var(--muted);margin-top:2px;line-height:1.4;}
+.hv{font-family:var(--mono);font-size:12px;color:var(--solar);flex-shrink:0;margin-top:2px;}
+
+/* INFRA DIAGRAM */
+.infra-wrap{display:grid;grid-template-columns:1fr 1.1fr;gap:24px;margin-top:20px;align-items:start;}
+.infra-stack{display:flex;flex-direction:column;gap:10px;}
+.infra-layer{border-radius:8px;padding:14px 18px;border:1px solid var(--border);}
+.infra-layer-label{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:8px;}
+.infra-items{display:flex;flex-wrap:wrap;gap:7px;}
+.infra-item{background:var(--surf2);border:1px solid var(--border);border-radius:5px;padding:5px 10px;font-size:11.5px;font-weight:500;}
+.infra-item.solar{border-color:rgba(245,200,66,.3);color:var(--solar);}
+.infra-item.compute{border-color:rgba(176,127,255,.3);color:var(--purple);}
+.infra-item.infra{border-color:rgba(74,158,255,.3);color:var(--blue);}
+.infra-item.net{border-color:rgba(46,207,176,.3);color:var(--teal);}
+.infra-item.park{border-color:rgba(255,159,67,.3);color:var(--orange);}
+
+.req-list{display:flex;flex-direction:column;gap:8px;}
+.req-item{display:flex;align-items:flex-start;gap:10px;padding:11px 15px;background:var(--surface);border:1px solid var(--border);border-radius:7px;}
+.req-icon{font-size:16px;flex-shrink:0;margin-top:1px;}
+.req-text{flex:1;}
+.req-title{font-size:12.5px;font-weight:600;margin-bottom:2px;}
+.req-sub{font-size:11.5px;color:var(--muted);line-height:1.4;}
+
+/* STRUCT */
+.struct-top{background:linear-gradient(135deg,rgba(255,159,67,.12),rgba(255,159,67,.05));border:1px solid rgba(255,159,67,.3);border-radius:10px;padding:16px 22px;text-align:center;margin-bottom:12px;}
+.struct-arrow{text-align:center;margin:0 0 8px;font-size:16px;color:var(--muted2);}
+.struct-spv{background:linear-gradient(135deg,rgba(245,200,66,.1),rgba(46,207,176,.06));border:2px solid rgba(245,200,66,.3);border-radius:12px;padding:16px 24px;text-align:center;margin-bottom:12px;}
+.struct-bottom{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px;}
+.sp{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:13px 10px;text-align:center;}
+.sp-pct{font-weight:800;font-size:22px;letter-spacing:-.03em;margin-bottom:3px;}
+.sp-name{font-size:11.5px;font-weight:700;margin-bottom:3px;}
+.sp-contrib{font-size:10px;color:var(--muted);line-height:1.4;}
+.srv-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.srv{background:var(--surf2);border:1px solid var(--border);border-radius:6px;padding:9px 13px;}
+.srv-who{font-size:11.5px;font-weight:700;margin-bottom:3px;}
+.srv-what{font-size:11px;color:var(--muted);line-height:1.4;}
+.srv-fee{font-family:var(--mono);font-size:10px;margin-top:4px;}
+
+/* INV SCENARIOS */
+.inv-scenarios{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-top:20px;}
+.inv-sc{padding:20px 16px;border-right:1px solid var(--border);}
+.inv-sc:last-child{border-right:none;}
+.inv-sc.rec{background:rgba(245,200,66,.04);}
+.inv-label{font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:6px;}
+.inv-sc:nth-child(1) .inv-label{color:var(--blue);}
+.inv-sc:nth-child(2) .inv-label{color:var(--solar);}
+.inv-sc:nth-child(3) .inv-label{color:var(--green);}
+.inv-amount{font-size:26px;font-weight:800;letter-spacing:-.03em;margin-bottom:14px;}
+.inv-row{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:12px;}
+.inv-row:last-child{border-bottom:none;}
+.inv-k{color:var(--muted);}
+.inv-v{font-family:var(--mono);font-size:12px;}
+.inv-v.pos{color:var(--green);}
+.inv-v.neg{color:var(--red);}
+.inv-struct-label{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted2);margin:12px 0 6px;}
+.inv-split{display:flex;flex-direction:column;gap:3px;}
+.inv-split-row{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);}
+.inv-split-row strong{color:var(--text);}
+
+/* FINANCIERO */
+.scenarios{display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:0;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-top:20px;}
+.sc{padding:18px 15px;border-right:1px solid var(--border);}
+.sc:last-child{border-right:none;}
+.sc-label{font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:12px;}
+.sc.cons .sc-label{color:var(--red);}
+.sc.base .sc-label{color:var(--solar);}
+.sc.base{background:rgba(245,200,66,.04);}
+.sc.agre .sc-label{color:var(--green);}
+.sc-row{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:11.5px;}
+.sc-row:last-child{border-bottom:none;}
+.sc-k{color:var(--muted);}
+.sc-v{font-family:var(--mono);font-size:12px;}
+.sc-v.pos{color:var(--green);}
+.sc-v.neg{color:var(--red);}
+.sc-v.acc{color:var(--solar);font-size:18px;font-weight:600;}
+.sc-v.accg{color:var(--green);font-size:18px;font-weight:600;}
+
+/* ROADMAP */
+.roadmap{display:flex;flex-direction:column;gap:0;margin-top:20px;}
+.rm-item{display:grid;grid-template-columns:180px 1fr;gap:0;border:1px solid var(--border);border-radius:0;}
+.rm-item:first-child{border-radius:10px 10px 0 0;}
+.rm-item:last-child{border-radius:0 0 10px 10px;}
+.rm-item+.rm-item{border-top:none;}
+.rm-left{padding:18px 20px;border-right:1px solid var(--border);background:var(--surf2);display:flex;flex-direction:column;justify-content:center;}
+.rm-phase{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--solar);margin-bottom:4px;}
+.rm-period{font-size:11.5px;font-weight:700;margin-bottom:4px;}
+.rm-capex{font-family:var(--mono);font-size:10px;color:var(--muted);}
+.rm-right{padding:18px 22px;display:flex;flex-direction:column;gap:10px;}
+.rm-title{font-size:14px;font-weight:700;margin-bottom:0;}
+.rm-hardware{display:flex;flex-wrap:wrap;gap:6px;}
+.rm-hw-item{background:var(--surf2);border:1px solid var(--border);border-radius:4px;padding:3px 9px;font-size:11px;font-family:var(--mono);}
+.rm-hw-item.solar-hw{border-color:rgba(245,200,66,.25);color:var(--solar);}
+.rm-hw-item.compute-hw{border-color:rgba(176,127,255,.25);color:var(--purple);}
+.rm-hw-item.gpu-hw{border-color:rgba(46,207,176,.25);color:var(--teal);}
+.rm-body{font-size:12px;color:var(--muted);line-height:1.6;}
+.rm-rev{font-family:var(--mono);font-size:11px;color:var(--green);}
+
+.tag{display:inline-block;padding:2px 8px;border-radius:3px;font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.05em;}
+.t-solar{background:rgba(245,200,66,.12);color:var(--solar);}
+.t-teal{background:rgba(46,207,176,.12);color:var(--teal);}
+.t-green{background:rgba(74,232,138,.12);color:var(--green);}
+.t-orange{background:rgba(255,159,67,.12);color:var(--orange);}
+.t-purple{background:rgba(176,127,255,.12);color:var(--purple);}
+.t-muted{background:rgba(255,255,255,.07);color:var(--muted);}
+
+.cta{background:rgba(245,200,66,.07);border:1px solid rgba(245,200,66,.2);border-radius:8px;padding:14px 18px;font-family:var(--serif);font-size:13.5px;font-style:italic;color:#CCA830;line-height:1.65;}
+.cta.green{background:rgba(74,232,138,.06);border-color:rgba(74,232,138,.2);color:#3AC870;}
+.cta.orange{background:rgba(255,159,67,.06);border-color:rgba(255,159,67,.2);color:#D4832A;}
+
+.controls{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;background:rgba(7,12,24,.92);backdrop-filter:blur(12px);border:1px solid var(--border2);border-radius:48px;padding:8px 16px;z-index:100;}
+.ctrl-btn{width:32px;height:32px;border:1px solid var(--border2);border-radius:50%;background:var(--surface);color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;transition:all .15s;}
+.ctrl-btn:hover:not(:disabled){background:var(--surf2);border-color:var(--solar);color:var(--solar);}
+.ctrl-btn:disabled{opacity:.22;cursor:not-allowed;}
+.ctrl-dots{display:flex;gap:5px;align-items:center;padding:0 4px;}
+.ctrl-dot{width:6px;height:6px;border-radius:50%;background:var(--muted2);cursor:pointer;transition:all .2s;}
+.ctrl-dot.active{background:var(--solar);width:18px;border-radius:3px;}
+.ctrl-dot:hover:not(.active){background:var(--muted);}
+.ctrl-counter{font-family:var(--mono);font-size:11px;color:var(--muted);padding:0 2px;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+.fu{animation:fadeUp .5s ease both;}
+.d1{animation-delay:.06s;}.d2{animation-delay:.13s;}.d3{animation-delay:.21s;}.d4{animation-delay:.29s;}.d5{animation-delay:.37s;}
+</style>
+</head>
+<body>
+<div class="pb"><div class="pf" id="progress"></div></div>
+<div class="deck" id="deck">
+
+<!-- ═══ 1. COVER ══════════════════════════════════════════════════════════ -->
+<div class="slide s-cover active" id="slide-0">
+  <div class="snum">1 / 10</div>
+  <div class="cover-logo fu"><span>Ecua</span>Compute</div>
+  <div class="ctag fu d1">☀️ Infraestructura Digital Verde · Quito 2025</div>
+  <div class="headline fu d2">Solar + Cómputo Intensivo.<br><em>Un negocio para tres.</em></div>
+  <div class="subhead fu d3">Un parque industrial que fondea e infraestructura. Nepos que genera la energía. Un equipo tecnológico que opera el cómputo y escala el modelo. Cada socio gana de dos formas: por los servicios que presta y por los dividendos del SPV.</div>
+  <div class="cstats fu d4">
+    <div class="cs"><div class="cs-val">$0.03<em>/kWh</em></div><div class="cs-lbl">LCOE solar propio</div></div>
+    <div class="cs"><div class="cs-val" style="color:var(--teal)">52<em>%</em></div><div class="cs-lbl">EBITDA año 1 (base)</div></div>
+    <div class="cs"><div class="cs-val" style="color:var(--green)">3.3<em>a</em></div><div class="cs-lbl">Payback BTC $85K</div></div>
+    <div class="cs"><div class="cs-val" style="color:var(--orange)">$13.5M</div><div class="cs-lbl">Levantado en LAC (Unblock)</div></div>
+  </div>
+</div>
+
+<!-- ═══ 2. PROBLEMA / OPORTUNIDAD ════════════════════════════════════════ -->
+<div class="slide s-prob" id="slide-1">
+  <div class="snum">2 / 10</div>
+  <div class="eyebrow fu">El contexto</div>
+  <div class="headline fu d1">Energía solar barata.<br><em style="color:var(--red)">Cómputo intensivo: inexistente.</em></div>
+  <div class="cols c2 fu d2">
+    <div>
+      <div class="hr">
+        <div class="hi">☀️</div>
+        <div class="ht"><div class="hl">Ecuador: 5 kWh/m²/día de irradiación solar</div><div class="hs">Posición ecuatorial = generación uniforme los 365 días. LCOE solar propio proyectado $0.03–0.04/kWh, una fracción de cualquier tarifa industrial.</div></div>
+      </div>
+      <div class="hr">
+        <div class="hi">💻</div>
+        <div class="ht"><div class="hl">Cero infraestructura de cómputo intensivo en la región</div><div class="hs">Empresas de AI, mineros y centros de HPC en LAC pagan servidores en Miami o Sao Paulo a 3–10× lo que costaría con energía solar local.</div></div>
+      </div>
+      <div class="hr">
+        <div class="hi">💵</div>
+        <div class="ht"><div class="hl">Ecuador dolarizado = ventaja estructural única en LAC</div><div class="hs">Sin riesgo cambiario. Ingresos y costos en USD. Lo que destruyó el modelo en Argentina aquí no existe.</div></div>
+      </div>
+      <div class="hr">
+        <div class="hi">⚖️</div>
+        <div class="ht"><div class="hl">Marco regulatorio activo desde septiembre 2024</div><div class="hs">ARCONEL 005/24 habilita generación distribuida con net metering. 60+ MW privados ya registrados. Minería de Bitcoin no regulada ni prohibida.</div></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="block b-solar">
+        <div class="bi">📍</div>
+        <div class="bt">Validación regional: $13.5M levantados</div>
+        <div class="bb">Unblock (Argentina) acaba de recaudar USD 13.5M para expandirse en LAC haciendo exactamente esto — pero con gas de Vaca Muerta y en pesos. EcuaCompute lo hace con solar y en dólares: mejor ESG, menor riesgo, mayor atractivo institucional.</div>
+      </div>
+      <div class="cta">La ventana de first-mover en Ecuador se cierra en 18–36 meses. No existe hoy ningún competidor local establecido.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 3. LOS TRES SOCIOS ════════════════════════════════════════════════ -->
+<div class="slide s-team" id="slide-2">
+  <div class="snum">3 / 10</div>
+  <div class="eyebrow fu">Las partes del negocio</div>
+  <div class="headline fu d1">Tres capacidades.<br><em class="tc">Una sola empresa.</em></div>
+  <div class="subhead fu d2" style="margin-bottom:0">Cada socio aporta lo que los otros no tienen y le factura servicios al SPV por ese aporte — además de recibir dividendos como accionista.</div>
+  <div class="cols c3 fu d3" style="margin-top:18px">
+    <div class="block b-orange">
+      <div class="bi">🏭</div>
+      <div class="bt">Parque Industrial · Quito</div>
+      <div class="bb" style="margin-bottom:12px">Capital fundador para las primeras dos fases. Terreno con conexión a red industrial como gran consumidor. Ecosistema de empresas como primeros clientes de cloud y HPC. Factura al SPV por uso de terreno e infraestructura.</div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--orange)">CAPITAL · TERRENO · RED INDUSTRIAL</div>
+    </div>
+    <div class="block b-solar">
+      <div class="bi">⚡</div>
+      <div class="bt">Nepos Energy</div>
+      <div class="bb" style="margin-bottom:12px">Diseña, construye y mantiene la planta solar. EPC a precio preferencial — el diferencial con precio de mercado es su aporte en especie al SPV. Gestiona la habilitación ARCONEL 005/24. Factura al SPV por construcción y O&M.</div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--solar)">CONSTRUCCIÓN SOLAR · EPC · O&M</div>
+    </div>
+    <div class="block b-purple">
+      <div class="bi">🖥️</div>
+      <div class="bt">EcuaCompute Tech SPV</div>
+      <div class="bb" style="margin-bottom:12px">Opera la infraestructura de cómputo día a día: gestión de ASICs y GPUs, alianzas con proveedores de hardware, desarrollo comercial AI/HPC, expansión regional. Factura al SPV por gestión operativa.</div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--purple)">CÓMPUTO · OPERACIONES · EXPANSIÓN</div>
+    </div>
+  </div>
+  <div class="cta green fu d4" style="margin-top:14px">
+    El parque no gestiona nada operativo. Aporta el capital y el espacio, recibe retorno de deuda garantizado más dividendos de equity. La planta solar instalada en su terreno protege el capital invertido independientemente del resultado del negocio de cómputo.
+  </div>
+</div>
+
+<!-- ═══ 4. LA INFRAESTRUCTURA ════════════════════════════════════════════ -->
+<div class="slide s-infra" id="slide-3">
+  <div class="snum">4 / 10</div>
+  <div class="eyebrow fu">La infraestructura de cómputo</div>
+  <div class="headline fu d1">Una sola plataforma.<br><em class="pc">Bitcoin + AI + HPC.</em></div>
+  <div class="infra-wrap fu d2">
+    <div>
+      <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:12px;font-family:var(--sans)">Stack tecnológico completo</div>
+      <div class="infra-stack">
+        <div class="infra-layer" style="background:rgba(245,200,66,.05);border-color:rgba(245,200,66,.2)">
+          <div class="infra-layer-label" style="color:var(--solar)">Capa 1 — Generación (Nepos)</div>
+          <div class="infra-items">
+            <div class="infra-item solar">Paneles FV 500 kW</div>
+            <div class="infra-item solar">Inversores</div>
+            <div class="infra-item solar">Baterías LFP 200 kWh</div>
+            <div class="infra-item solar">Medidor bidireccional</div>
+            <div class="infra-item solar">Respaldo red industrial</div>
+          </div>
+        </div>
+        <div class="infra-layer" style="background:rgba(74,158,255,.04);border-color:rgba(74,158,255,.15)">
+          <div class="infra-layer-label" style="color:var(--blue)">Capa 2 — Infraestructura física (Parque)</div>
+          <div class="infra-items">
+            <div class="infra-item park">2,000 m² terreno</div>
+            <div class="infra-item park">Contenedor data center</div>
+            <div class="infra-item park">Sistema de cooling</div>
+            <div class="infra-item park">PDUs industriales</div>
+            <div class="infra-item park">Cableado BT/MT</div>
+          </div>
+        </div>
+        <div class="infra-layer" style="background:rgba(176,127,255,.04);border-color:rgba(176,127,255,.15)">
+          <div class="infra-layer-label" style="color:var(--purple)">Capa 3 — Hardware de cómputo (Tech SPV)</div>
+          <div class="infra-items">
+            <div class="infra-item compute">ASICs minería BTC</div>
+            <div class="infra-item compute">GPUs NVIDIA H100</div>
+            <div class="infra-item compute">Servidores HPC</div>
+            <div class="infra-item compute">Immersion / air cooling</div>
+          </div>
+        </div>
+        <div class="infra-layer" style="background:rgba(46,207,176,.04);border-color:rgba(46,207,176,.15)">
+          <div class="infra-layer-label" style="color:var(--teal)">Capa 4 — Conectividad y operación (Tech SPV)</div>
+          <div class="infra-items">
+            <div class="infra-item net">Fibra 1 Gbps+</div>
+            <div class="infra-item net">Monitoreo remoto 24/7</div>
+            <div class="infra-item net">Mining pool integration</div>
+            <div class="infra-item net">Cloud management platform</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:12px;font-family:var(--sans)">Lo que necesita el parque industrial</div>
+      <div class="req-list">
+        <div class="req-item">
+          <div class="req-icon">📐</div>
+          <div class="req-text">
+            <div class="req-title">Espacio físico: ~2,000 m²</div>
+            <div class="req-sub">Superficie plana para paneles solares + área techada para contenedor data center. Sin construcción especial.</div>
+          </div>
+        </div>
+        <div class="req-item">
+          <div class="req-icon">⚡</div>
+          <div class="req-text">
+            <div class="req-title">Conexión eléctrica industrial</div>
+            <div class="req-sub">Punto de conexión a la red del parque como gran consumidor (tarifa $0.06–0.08/kWh). La solar de Nepos cubre el 60–70% del consumo diurno.</div>
+          </div>
+        </div>
+        <div class="req-item">
+          <div class="req-icon">🌐</div>
+          <div class="req-text">
+            <div class="req-title">Conectividad de fibra</div>
+            <div class="req-sub">Acceso a fibra de al menos 1 Gbps simétrico para operación de los servicios cloud y monitoreo remoto de los equipos.</div>
+          </div>
+        </div>
+        <div class="req-item">
+          <div class="req-icon">🌡️</div>
+          <div class="req-text">
+            <div class="req-title">Ventilación adecuada</div>
+            <div class="req-sub">El contenedor data center tiene su propio sistema de cooling. El parque solo necesita garantizar que el área exterior tenga circulación de aire suficiente.</div>
+          </div>
+        </div>
+      </div>
+      <div class="cta" style="margin-top:12px;font-size:12.5px">
+        La misma infraestructura corre Bitcoin mining y AI/HPC en paralelo. Lo que varía entre fases es la escala — más paneles, más hardware, más clientes — no el tipo de plataforma.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 5. ESTRUCTURA SOCIETARIA ══════════════════════════════════════════ -->
+<div class="slide s-str" id="slide-4">
+  <div class="snum">5 / 10</div>
+  <div class="eyebrow fu">La estructura</div>
+  <div class="headline fu d1">Un SPV.<br><em>Tres formas de ganar.</em></div>
+  <div class="cols c21 fu d2" style="margin-top:16px;align-items:start">
+    <div>
+      <div class="struct-top">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--orange);margin-bottom:5px">Capital Fundador · Estructura Mixta</div>
+        <div style="font-size:15px;font-weight:800">🏭 Parque Industrial</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:3px">$200K–$500K · Préstamo SPV 8% USD + Equity 40%</div>
+      </div>
+      <div class="struct-arrow">↕</div>
+      <div class="struct-spv">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--solar);margin-bottom:5px">SPV Operativo · SAS Ecuador</div>
+        <div style="font-size:16px;font-weight:800">EcuaCompute S.A.S.</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:3px">Opera el cómputo · Vende servicios · Distribuye dividendos</div>
+      </div>
+      <div class="struct-arrow">↕ servicios facturados + dividendos</div>
+      <div class="struct-bottom">
+        <div class="sp" style="border-top:2px solid var(--orange)">
+          <div class="sp-pct" style="color:var(--orange)">40%</div>
+          <div class="sp-name">Parque Industrial</div>
+          <div class="sp-contrib">Capital + terreno + red</div>
+        </div>
+        <div class="sp" style="border-top:2px solid var(--solar)">
+          <div class="sp-pct" style="color:var(--solar)">30%</div>
+          <div class="sp-name">Nepos Energy</div>
+          <div class="sp-contrib">EPC preferencial en especie</div>
+        </div>
+        <div class="sp" style="border-top:2px solid var(--purple)">
+          <div class="sp-pct" style="color:var(--purple)">30%</div>
+          <div class="sp-name">Tech SPV</div>
+          <div class="sp-contrib">Originación + gestión</div>
+        </div>
+      </div>
+      <div style="font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted2);margin-bottom:8px">Contratos de servicio al SPV</div>
+      <div class="srv-grid">
+        <div class="srv"><div class="srv-who" style="color:var(--solar)">Nepos →</div><div class="srv-what">EPC solar + O&M + ARCONEL</div><div class="srv-fee" style="color:var(--solar)">Precio preferencial socio</div></div>
+        <div class="srv"><div class="srv-who" style="color:var(--orange)">Parque →</div><div class="srv-what">Alquiler terreno + infraestructura</div><div class="srv-fee" style="color:var(--orange)">Fee fijo mensual</div></div>
+        <div class="srv"><div class="srv-who" style="color:var(--purple)">Tech SPV →</div><div class="srv-what">Gestión cómputo + comercial</div><div class="srv-fee" style="color:var(--purple)">Management fee mensual</div></div>
+        <div class="srv" style="background:rgba(245,200,66,.05);border-color:rgba(245,200,66,.15)"><div class="srv-who" style="color:var(--solar)">EBITDA →</div><div class="srv-what">Se distribuye como dividendo</div><div class="srv-fee" style="color:var(--green)">40% / 30% / 30%</div></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="block b-orange">
+        <div class="bt">Estructura mixta del parque</div>
+        <div class="bb" style="margin-top:6px">
+          <div style="margin-bottom:8px"><span class="tag t-orange">Deuda</span> &nbsp;Préstamo al SPV a 8% USD anual. Retorno garantizado independiente del precio del Bitcoin. El SPV devuelve con los primeros flujos de caja. Garantía: activo solar instalado.</div>
+          <div><span class="tag t-orange">Equity 40%</span> &nbsp;Dividendos del upside de largo plazo. Distribución cuando el SPV cubra la deuda y el capital de trabajo.</div>
+        </div>
+      </div>
+      <div class="block b-solar">
+        <div class="bt">Cómo entra Nepos en especie</div>
+        <div class="bb" style="margin-top:6px">Nepos construye a precio de costo + margen mínimo. La diferencia vs. precio de mercado se contabiliza como aporte de capital en especie = 30% de equity. Incentivo directo: cuanto mejor construye, más vale su participación.</div>
+      </div>
+      <div class="block b-teal">
+        <div class="bt">Gobernanza clave</div>
+        <div class="bb" style="margin-top:6px">
+          <div style="margin-bottom:4px">→ <strong style="color:var(--text)">Operación cómputo:</strong> Tech SPV (autonomía total)</div>
+          <div style="margin-bottom:4px">→ <strong style="color:var(--text)">Inversiones &gt;$50K:</strong> mayoría simple</div>
+          <div>→ <strong style="color:var(--text)">Cambios societarios:</strong> unanimidad</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 6. PROPUESTA AL PARQUE ════════════════════════════════════════════ -->
+<div class="slide s-park" id="slide-5">
+  <div class="snum">6 / 10</div>
+  <div class="eyebrow fu">Por qué invertir</div>
+  <div class="headline fu d1">No es solo una inversión.<br>Es <em class="oc">transformar el parque.</em></div>
+  <div class="cols c2 fu d2" style="margin-top:20px">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="hr">
+        <div class="hi">🔒</div>
+        <div class="ht">
+          <div class="hl">Protección total del capital invertido</div>
+          <div class="hs">La parte de deuda tiene retorno garantizado del 8% USD, independiente del precio del Bitcoin. La planta solar instalada en el terreno es un activo físico con valor de reventa a 25 años.</div>
+        </div>
+      </div>
+      <div class="hr">
+        <div class="hi">📈</div>
+        <div class="ht">
+          <div class="hl">40% de dividendos del SPV operativo</div>
+          <div class="hs">Escenario base (BTC $85K): $59K/año sobre ~$175K en equity. Escenario agresivo (BTC $120K): $105K/año. ROI efectivo estimado 15–25% anual.</div>
+        </div>
+      </div>
+      <div class="hr">
+        <div class="hi">🌐</div>
+        <div class="ht">
+          <div class="hl">Primer data center industrial de Quito</div>
+          <div class="hs">Las empresas del parque acceden prioritariamente a GPU cloud y HPC local, muy por debajo de tarifas AWS/Azure. El parque se diferencia como hub de infraestructura digital.</div>
+        </div>
+      </div>
+      <div class="hr">
+        <div class="hi">🌿</div>
+        <div class="ht">
+          <div class="hl">Certificación ESG + créditos carbono</div>
+          <div class="hs">Operación 100% solar verificable. El parque puede usarlo en comunicaciones institucionales y licitaciones. ~1,200 toneladas CO₂/año evitadas certificables bajo Gold Standard.</div>
+        </div>
+      </div>
+      <div class="hr">
+        <div class="hi">🚀</div>
+        <div class="ht">
+          <div class="hl">Upside de expansión sin gestión adicional</div>
+          <div class="hs">El modelo escala a otros parques industriales en Ecuador y la región. Como accionista fundador, el parque participa del upside de cada nueva instancia sin trabajo operativo.</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="block b-orange">
+        <div class="bt">Lo que el parque aporta</div>
+        <div class="bb" style="margin-top:8px">
+          <div style="margin-bottom:5px">✦ <strong style="color:var(--text)">$200K–$500K</strong> en estructura mixta deuda + equity</div>
+          <div style="margin-bottom:5px">✦ Terreno ~2,000 m² para planta solar y contenedor</div>
+          <div style="margin-bottom:5px">✦ Acceso a red industrial (gran consumidor)</div>
+          <div>✦ Fibra 1 Gbps+ para operación de servicios cloud</div>
+        </div>
+      </div>
+      <div class="block b-teal">
+        <div class="bt">Lo que el parque no tiene que hacer</div>
+        <div class="bb" style="margin-top:8px">
+          <div style="margin-bottom:5px">✗ No gestiona hardware de cómputo</div>
+          <div style="margin-bottom:5px">✗ No opera la planta solar</div>
+          <div style="margin-bottom:5px">✗ No capta clientes de cloud</div>
+          <div>✗ No toma decisiones operativas del día a día</div>
+        </div>
+      </div>
+      <div class="cta" style="font-size:12.5px">El parque pone el capital y el espacio. El Tech SPV opera. Nepos construye y mantiene. Los tres reciben retorno proporcional a su aporte.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 7. ESCENARIOS DE INVERSIÓN ════════════════════════════════════════ -->
+<div class="slide s-inv" id="slide-6">
+  <div class="snum">7 / 10</div>
+  <div class="eyebrow fu">Escenarios de inversión</div>
+  <div class="headline fu d1">Tres niveles<br>de <em>exposición.</em></div>
+  <div class="subhead fu d2" style="margin-bottom:0">Estructura mixta: parte como préstamo al SPV al 8% USD (retorno garantizado), parte como equity 40% (upside). El parque define el mix según su apetito de riesgo.</div>
+  <div class="inv-scenarios fu d3">
+    <div class="inv-sc">
+      <div class="inv-label">🔵 Conservadora</div>
+      <div class="inv-amount" style="color:var(--blue)">$200K</div>
+      <div class="inv-struct-label">Estructura</div>
+      <div class="inv-split">
+        <div class="inv-split-row"><span>Préstamo SPV (8% USD)</span><strong>$140K</strong></div>
+        <div class="inv-split-row"><span>Equity (40% SPV)</span><strong>$60K</strong></div>
+      </div>
+      <div style="margin-top:12px;border-top:1px solid rgba(255,255,255,.06);padding-top:10px">
+        <div class="inv-row"><span class="inv-k">Retorno deuda/año</span><span class="inv-v pos">$11,200</span></div>
+        <div class="inv-row"><span class="inv-k">Dividendo equity (base)</span><span class="inv-v pos">$59K/año</span></div>
+        <div class="inv-row"><span class="inv-k">Payback deuda</span><span class="inv-v">~18 meses</span></div>
+        <div class="inv-row"><span class="inv-k">Alcance</span><span class="inv-v neg">MVP + solar parcial</span></div>
+        <div class="inv-row"><span class="inv-k">Capital adicional</span><span class="inv-v">Requerido Fase 1</span></div>
+      </div>
+    </div>
+    <div class="inv-sc rec">
+      <div class="inv-label">⭐ Recomendada</div>
+      <div class="inv-amount" style="color:var(--solar)">$350K</div>
+      <div class="inv-struct-label">Estructura</div>
+      <div class="inv-split">
+        <div class="inv-split-row"><span>Préstamo SPV (8% USD)</span><strong>$175K</strong></div>
+        <div class="inv-split-row"><span>Equity (40% SPV)</span><strong>$175K</strong></div>
+      </div>
+      <div style="margin-top:12px;border-top:1px solid rgba(255,255,255,.06);padding-top:10px">
+        <div class="inv-row"><span class="inv-k">Retorno deuda/año</span><span class="inv-v pos">$14,000</span></div>
+        <div class="inv-row"><span class="inv-k">Dividendo equity (base)</span><span class="inv-v pos">$59K/año</span></div>
+        <div class="inv-row"><span class="inv-k">Payback total efectivo</span><span class="inv-v pos">~4 años</span></div>
+        <div class="inv-row"><span class="inv-k">Alcance</span><span class="inv-v pos">Fases 1 + 2 completas</span></div>
+        <div class="inv-row"><span class="inv-k">Capital adicional</span><span class="inv-v pos">Opcional (Fase 3)</span></div>
+      </div>
+      <div class="cta" style="margin-top:10px;font-size:11.5px;padding:9px 13px">Cubre el proyecto completo hasta tener el modelo validado y generando caja. Control total de las primeras dos fases.</div>
+    </div>
+    <div class="inv-sc">
+      <div class="inv-label">🚀 Agresiva</div>
+      <div class="inv-amount" style="color:var(--green)">$500K</div>
+      <div class="inv-struct-label">Estructura</div>
+      <div class="inv-split">
+        <div class="inv-split-row"><span>Préstamo SPV (8% USD)</span><strong>$150K</strong></div>
+        <div class="inv-split-row"><span>Equity (40% SPV)</span><strong>$350K</strong></div>
+      </div>
+      <div style="margin-top:12px;border-top:1px solid rgba(255,255,255,.06);padding-top:10px">
+        <div class="inv-row"><span class="inv-k">Retorno deuda/año</span><span class="inv-v pos">$12,000</span></div>
+        <div class="inv-row"><span class="inv-k">Dividendo equity (base)</span><span class="inv-v pos">$59K/año</span></div>
+        <div class="inv-row"><span class="inv-k">Dividendo equity (agresivo)</span><span class="inv-v pos">$105K/año</span></div>
+        <div class="inv-row"><span class="inv-k">Alcance</span><span class="inv-v pos">Fases 1, 2 y 3 parcial</span></div>
+        <div class="inv-row"><span class="inv-k">Capital adicional</span><span class="inv-v pos">Mínimo</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 8. MODELO FINANCIERO ══════════════════════════════════════════════ -->
+<div class="slide s-model" id="slide-7">
+  <div class="snum">8 / 10</div>
+  <div class="eyebrow fu">El modelo económico</div>
+  <div class="headline fu d1">3 fuentes de ingreso.<br><em>1 infraestructura.</em></div>
+  <div class="cols c12 fu d2" style="margin-top:18px;align-items:start">
+    <div>
+      <div class="hr">
+        <div class="hi">⛏️</div>
+        <div class="ht"><div class="hl">Mining Bitcoin propio</div><div class="hs">30 ASICs Antminer S21 Pro · energía solar Nepos · consumo total ~105 kW · BTC $85K = $191K/año brutos</div></div>
+        <div class="hv">$191K/a</div>
+      </div>
+      <div class="hr">
+        <div class="hi">🏠</div>
+        <div class="ht"><div class="hl">Hosting hardware de terceros</div><div class="hs">El cliente instala sus propios ASICs o GPUs · el SPV cobra fee por kWh consumido · ingreso estable sin riesgo de precio BTC</div></div>
+        <div class="hv">$60K/a</div>
+      </div>
+      <div class="hr">
+        <div class="hi">🤖</div>
+        <div class="ht"><div class="hl">GPU Cloud · AI · HPC</div><div class="hs">2 GPUs NVIDIA H100 · $0.60–1.20/hora · vs $4 en AWS · empresas del parque como primeros clientes con tarifa preferencial</div></div>
+        <div class="hv">$28K/a</div>
+      </div>
+      <div style="margin-top:12px;padding:12px 16px;background:rgba(245,200,66,.05);border:1px solid rgba(245,200,66,.15);border-radius:8px">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted2);margin-bottom:6px">CAPEX Fases 1 + 2</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6">
+          <div style="margin-bottom:3px">Planta solar 500 kW (Nepos, precio preferencial): <strong style="color:var(--text)">~$180K</strong></div>
+          <div style="margin-bottom:3px">Contenedor data center + cooling + PDUs: <strong style="color:var(--text)">~$60K</strong></div>
+          <div style="margin-bottom:3px">30 ASICs S21 Pro: <strong style="color:var(--text)">~$108K</strong></div>
+          <div style="margin-bottom:3px">2 GPUs H100 + networking: <strong style="color:var(--text)">~$50K</strong></div>
+          <div style="color:var(--solar);font-family:var(--mono);margin-top:6px">Total CAPEX: ~$420K (reducido por EPC Nepos)</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="scenarios">
+        <div class="sc cons">
+          <div class="sc-label">BTC $60K</div>
+          <div class="sc-row"><span class="sc-k">Ingresos</span><span class="sc-v">$205K</span></div>
+          <div class="sc-row"><span class="sc-k">OPEX</span><span class="sc-v neg">−$157K</span></div>
+          <div class="sc-row"><span class="sc-k">EBITDA</span><span class="sc-v neg acc">$48K</span></div>
+          <div class="sc-row"><span class="sc-k">Margen</span><span class="sc-v neg">23%</span></div>
+          <div class="sc-row"><span class="sc-k">Parque 40%</span><span class="sc-v neg">$19K/año</span></div>
+        </div>
+        <div class="sc base">
+          <div class="sc-label">BTC $85K ⭐</div>
+          <div class="sc-row"><span class="sc-k">Ingresos</span><span class="sc-v">$285K</span></div>
+          <div class="sc-row"><span class="sc-k">OPEX</span><span class="sc-v neg">−$138K</span></div>
+          <div class="sc-row"><span class="sc-k">EBITDA</span><span class="sc-v pos acc">$147K</span></div>
+          <div class="sc-row"><span class="sc-k">Margen</span><span class="sc-v pos">52%</span></div>
+          <div class="sc-row"><span class="sc-k">Parque 40%</span><span class="sc-v pos">$59K/año</span></div>
+        </div>
+        <div class="sc agre">
+          <div class="sc-label">BTC $120K</div>
+          <div class="sc-row"><span class="sc-k">Ingresos</span><span class="sc-v">$383K</span></div>
+          <div class="sc-row"><span class="sc-k">OPEX</span><span class="sc-v neg">−$120K</span></div>
+          <div class="sc-row"><span class="sc-k">EBITDA</span><span class="sc-v pos accg">$263K</span></div>
+          <div class="sc-row"><span class="sc-k">Margen</span><span class="sc-v pos">69%</span></div>
+          <div class="sc-row"><span class="sc-k">Parque 40%</span><span class="sc-v pos">$105K/año</span></div>
+        </div>
+      </div>
+      <div class="cta orange" style="margin-top:12px;font-size:12px">
+        Si el 40% del ingreso viene de hosting fijo + cloud (sin exposición a BTC), el negocio es rentable con Bitcoin desde $52K. La diversificación es la cobertura natural ante la volatilidad cripto.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 9. ROADMAP ════════════════════════════════════════════════════════ -->
+<div class="slide s-road" id="slide-8">
+  <div class="snum">9 / 10</div>
+  <div class="eyebrow fu">Plan de implementación</div>
+  <div class="headline fu d1">La misma infraestructura,<br><em>creciendo en escala.</em></div>
+  <div class="roadmap fu d2">
+
+    <div class="rm-item">
+      <div class="rm-left">
+        <div class="rm-phase">Fase 1</div>
+        <div class="rm-period">Q3–Q4 2025</div>
+        <div class="rm-capex">CAPEX: ~$250K</div>
+      </div>
+      <div class="rm-right">
+        <div class="rm-title">Nepos instala 250 kW solar · Primera rack de cómputo</div>
+        <div class="rm-hardware">
+          <div class="rm-hw-item solar-hw">250 kW FV</div>
+          <div class="rm-hw-item solar-hw">Inversores + medidor bidireccional</div>
+          <div class="rm-hw-item compute-hw">15 ASICs S21 Pro (mining)</div>
+          <div class="rm-hw-item gpu-hw">2 GPUs H100 (AI/HPC)</div>
+          <div class="rm-hw-item infra">Contenedor data center</div>
+          <div class="rm-hw-item infra">Cooling + PDUs</div>
+        </div>
+        <div class="rm-body">La planta solar de Nepos alimenta directamente el contenedor. Los ASICs minan Bitcoin con energía solar. Las 2 GPUs H100 corren en paralelo para los primeros contratos de AI/HPC con empresas del parque. ARCONEL 005/24 habilitado por Nepos.</div>
+        <div class="rm-rev">▸ Revenue proyectado: $120K–$160K/año</div>
+      </div>
+    </div>
+
+    <div class="rm-item">
+      <div class="rm-left">
+        <div class="rm-phase">Fase 2</div>
+        <div class="rm-period">2026</div>
+        <div class="rm-capex">CAPEX: ~$170K adicionales</div>
+      </div>
+      <div class="rm-right">
+        <div class="rm-title">Escala a 500 kW solar · Expansión del cluster</div>
+        <div class="rm-hardware">
+          <div class="rm-hw-item solar-hw">+250 kW FV (total 500 kW)</div>
+          <div class="rm-hw-item solar-hw">Baterías LFP 200 kWh</div>
+          <div class="rm-hw-item compute-hw">30 ASICs propios + 15 hosting</div>
+          <div class="rm-hw-item gpu-hw">8–16 GPUs H100</div>
+          <div class="rm-hw-item infra">Segundo rack + cooling ampliado</div>
+        </div>
+        <div class="rm-body">La misma infraestructura de cómputo escala horizontalmente. Los ASICs de hosting permiten que terceros instalen hardware en el parque pagando fee de energía. El cluster de GPUs ya tiene capacidad para contratos cloud LAC activos con SLA garantizado.</div>
+        <div class="rm-rev">▸ Revenue proyectado: $250K–$380K/año · Deuda del parque completamente devuelta</div>
+      </div>
+    </div>
+
+    <div class="rm-item">
+      <div class="rm-left">
+        <div class="rm-phase">Fase 3</div>
+        <div class="rm-period">2027–2028</div>
+        <div class="rm-capex">CAPEX: $2–6M (fin. verde)</div>
+      </div>
+      <div class="rm-right">
+        <div class="rm-title">2–5 MW solar · GPU cluster 50+ H100 · Segundo site</div>
+        <div class="rm-hardware">
+          <div class="rm-hw-item solar-hw">2–5 MW FV (PPA directo)</div>
+          <div class="rm-hw-item compute-hw">100+ ASICs</div>
+          <div class="rm-hw-item gpu-hw">50+ GPUs H100/H200</div>
+          <div class="rm-hw-item infra">Data center Tier II modular</div>
+          <div class="rm-hw-item infra">Segundo site (Nepos construye)</div>
+        </div>
+        <div class="rm-body">Financiamiento verde (CAF, IFC, BID Invest) para el componente solar. El parque fundador es accionista en el segundo site. PPA a 10 años con generadora solar fija el costo energético a $0.03/kWh estructuralmente. Posible exit parcial o ingreso de fondo de infraestructura.</div>
+        <div class="rm-rev">▸ Revenue total del grupo: $1.2M–$2.5M/año</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ 10. EL ASK ════════════════════════════════════════════════════════ -->
+<div class="slide s-ask" id="slide-9">
+  <div class="snum">10 / 10</div>
+  <div class="eyebrow fu">Propuesta concreta</div>
+  <div class="headline fu d1">Lo que necesita<br><em>cada parte.</em></div>
+  <div class="cols c3 fu d2" style="margin-top:18px">
+    <div class="block b-orange">
+      <div class="bi">🏭</div>
+      <div class="bt">Parque Industrial aporta</div>
+      <div class="bb" style="margin-bottom:14px">
+        <div style="margin-bottom:5px">✦ <strong style="color:var(--text)">$200K–$500K</strong> · deuda 8% + equity 40%</div>
+        <div style="margin-bottom:5px">✦ Terreno ~2,000 m² para planta solar + contenedor</div>
+        <div style="margin-bottom:5px">✦ Acceso a red industrial (gran consumidor)</div>
+        <div>✦ Fibra 1 Gbps+ para servicios cloud</div>
+      </div>
+      <div style="font-family:var(--mono);font-size:9px;color:var(--orange)">RECIBE → 40% equity + retorno deuda 8% + activo solar en terreno propio</div>
+    </div>
+    <div class="block b-solar">
+      <div class="bi">⚡</div>
+      <div class="bt">Nepos Energy aporta</div>
+      <div class="bb" style="margin-bottom:14px">
+        <div style="margin-bottom:5px">✦ EPC 500 kW a <strong style="color:var(--text)">precio preferencial de socio</strong></div>
+        <div style="margin-bottom:5px">✦ Garantía de performance + O&M año 1</div>
+        <div style="margin-bottom:5px">✦ Habilitación ARCONEL 005/24</div>
+        <div>✦ Expertise técnico para optimizar LCOE del sistema</div>
+      </div>
+      <div style="font-family:var(--mono);font-size:9px;color:var(--solar)">RECIBE → 30% equity + facturación EPC y O&M al SPV</div>
+    </div>
+    <div class="block b-purple">
+      <div class="bi">🖥️</div>
+      <div class="bt">Tech SPV aporta</div>
+      <div class="bb" style="margin-bottom:14px">
+        <div style="margin-bottom:5px">✦ Diseño del modelo de negocio y originación del deal</div>
+        <div style="margin-bottom:5px">✦ Procurement de hardware (Bitmain, NVIDIA distribuidores)</div>
+        <div style="margin-bottom:5px">✦ Gestión operativa diaria de ASICs y GPUs</div>
+        <div>✦ Desarrollo comercial AI/HPC y expansión regional</div>
+      </div>
+      <div style="font-family:var(--mono);font-size:9px;color:var(--purple)">RECIBE → 30% equity + management fee mensual al SPV</div>
+    </div>
+  </div>
+  <div class="cta fu d3" style="margin-top:14px;text-align:center;font-size:14px">
+    "Un parque industrial que convierte su terreno y su red eléctrica en el primer hub de infraestructura digital verde de Quito — sin gestionar nada."
+  </div>
+</div>
+
+</div>
+
+<div class="controls">
+  <button class="ctrl-btn" id="prevBtn" onclick="prev()" disabled>←</button>
+  <div class="ctrl-dots" id="dots"></div>
+  <button class="ctrl-btn" id="nextBtn" onclick="next()">→</button>
+  <div class="ctrl-counter" id="counter">1 / 10</div>
+</div>
+
+<script>
+const TOTAL=10,slides=Array.from(document.querySelectorAll('.slide'));
+let cur=0;
+const dotsEl=document.getElementById('dots'),prog=document.getElementById('progress'),
+      prevBtn=document.getElementById('prevBtn'),nextBtn=document.getElementById('nextBtn'),
+      ctr=document.getElementById('counter');
+for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='ctrl-dot'+(i===0?' active':'');d.onclick=()=>goTo(i);dotsEl.appendChild(d);}
+function ui(){document.querySelectorAll('.ctrl-dot').forEach((d,i)=>d.classList.toggle('active',i===cur));prog.style.width=((cur+1)/TOTAL*100)+'%';prevBtn.disabled=cur===0;nextBtn.disabled=cur===TOTAL-1;ctr.textContent=(cur+1)+' / '+TOTAL;}
+function goTo(n){if(n===cur)return;const f=slides[cur];f.classList.remove('active');f.classList.add('exit');setTimeout(()=>f.classList.remove('exit'),500);cur=n;slides[cur].classList.add('active');ui();slides[cur].querySelectorAll('.fu').forEach(el=>{el.style.animation='none';el.offsetHeight;el.style.animation='';});}
+function prev(){if(cur>0)goTo(cur-1);}
+function next(){if(cur<TOTAL-1)goTo(cur+1);}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();next();}if(e.key==='ArrowLeft'){e.preventDefault();prev();}});
+let tx=0;
+document.getElementById('deck').addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+document.getElementById('deck').addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50){dx<0?next():prev();}},{passive:true});
+ui();
+</script>
+</body>
+</html>
