@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modelo de Cesión de Explotación — Lavadero Automotor · Belgrano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --bg2: #161616;
+    --bg3: #1e1e1e;
+    --bg4: #252525;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #f0ede8;
+    --text2: #9e9a93;
+    --text3: #5e5b55;
+    --accent: #c8a96e;
+    --accent2: #e8c87c;
+    --accent-bg: rgba(200,169,110,0.08);
+    --accent-border: rgba(200,169,110,0.25);
+    --green: #5a9e6a;
+    --green-bg: rgba(90,158,106,0.1);
+    --red: #c25e5e;
+    --red-bg: rgba(194,94,94,0.1);
+    --amber: #c8893a;
+    --amber-bg: rgba(200,137,58,0.1);
+    --blue: #5a7fa8;
+    --blue-bg: rgba(90,127,168,0.1);
+    --radius: 8px;
+    --radius-lg: 14px;
+    --serif: 'DM Serif Display', Georgia, serif;
+    --sans: 'DM Sans', system-ui, sans-serif;
+    --mono: 'DM Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(15,15,15,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .topbar::-webkit-scrollbar { display: none; }
+  .topbar-brand {
+    font-family: var(--serif);
+    font-size: 13px;
+    color: var(--accent);
+    white-space: nowrap;
+    margin-right: 2rem;
+    padding: 14px 0;
+    flex-shrink: 0;
+    letter-spacing: 0.03em;
+  }
+  .nav-link {
+    font-size: 12px;
+    color: var(--text2);
+    text-decoration: none;
+    padding: 14px 14px;
+    white-space: nowrap;
+    transition: color .2s;
+    border-bottom: 2px solid transparent;
+    flex-shrink: 0;
+  }
+  .nav-link:hover { color: var(--text); }
+  .nav-link.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    border-bottom: 1px solid var(--border);
+    padding: 5rem 2rem 4rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+  }
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 1.2rem;
+  }
+  h1 em { font-style: italic; color: var(--accent2); }
+  .hero-sub {
+    font-size: 16px;
+    color: var(--text2);
+    max-width: 600px;
+    margin-bottom: 2.5rem;
+    line-height: 1.7;
+  }
+
+  /* KPI STRIP */
+  .kpi-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 0;
+  }
+  .kpi-cell {
+    background: var(--bg2);
+    padding: 1.1rem 1.2rem;
+    transition: background .2s;
+  }
+  .kpi-cell:hover { background: var(--bg3); }
+  .kpi-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 5px; }
+  .kpi-value { font-family: var(--serif); font-size: 1.6rem; color: var(--text); line-height: 1; }
+  .kpi-sub { font-size: 11px; color: var(--text2); margin-top: 3px; }
+
+  /* LAYOUT */
+  .main { max-width: 900px; margin: 0 auto; padding: 0 2rem 6rem; }
+
+  /* SECTIONS */
+  .section { padding-top: 5rem; border-top: 1px solid var(--border); margin-top: 5rem; }
+  .section:first-child { border-top: none; margin-top: 0; }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: .8rem;
+  }
+  h2 {
+    font-family: var(--serif);
+    font-size: 2rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+  }
+  h3 {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    color: var(--text2);
+    margin-top: 2.5rem;
+    margin-bottom: .8rem;
+  }
+  p { color: var(--text2); margin-bottom: 1rem; }
+
+  /* TABLES */
+  .table-wrap { overflow-x: auto; margin: 1rem 0 1.5rem; border-radius: var(--radius-lg); border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 500px; }
+  th {
+    text-align: left;
+    padding: 10px 14px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    font-weight: 600;
+    color: var(--text3);
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 11px 14px;
+    color: var(--text2);
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--bg3); }
+  td strong { color: var(--text); font-weight: 500; }
+
+  /* BADGES */
+  .badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .b-green { background: var(--green-bg); color: var(--green); border: 1px solid rgba(90,158,106,.2); }
+  .b-red { background: var(--red-bg); color: var(--red); border: 1px solid rgba(194,94,94,.2); }
+  .b-amber { background: var(--amber-bg); color: var(--amber); border: 1px solid rgba(200,137,58,.2); }
+  .b-blue { background: var(--blue-bg); color: var(--blue); border: 1px solid rgba(90,127,168,.2); }
+  .b-accent { background: var(--accent-bg); color: var(--accent); border: 1px solid var(--accent-border); }
+
+  /* CARDS */
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.4rem 1.6rem;
+    margin-bottom: 1rem;
+  }
+  .card-accent-left {
+    border-left: 3px solid var(--accent);
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  }
+  .card-green { border-left: 3px solid var(--green); border-radius: 0 var(--radius-lg) var(--radius-lg) 0; }
+  .card-red { border-left: 3px solid var(--red); border-radius: 0 var(--radius-lg) var(--radius-lg) 0; }
+  .card-amber { border-left: 3px solid var(--amber); border-radius: 0 var(--radius-lg) var(--radius-lg) 0; }
+  .card h4 { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: .5rem; }
+  .card p { margin-bottom: 0; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 1rem 0; }
+  @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* CALLOUT BOXES */
+  .callout {
+    border: 1px solid var(--accent-border);
+    background: var(--accent-bg);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.3rem;
+    margin: 1.2rem 0;
+    font-size: 14px;
+    color: var(--accent2);
+    line-height: 1.6;
+  }
+  .callout-warn {
+    border-color: rgba(200,137,58,.25);
+    background: rgba(200,137,58,.06);
+    color: var(--amber);
+  }
+  .callout-danger {
+    border-color: rgba(194,94,94,.25);
+    background: rgba(194,94,94,.06);
+    color: var(--red);
+  }
+
+  /* MODEL CARDS */
+  .model-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    transition: border-color .2s;
+  }
+  .model-card:hover { border-color: var(--border2); }
+  .model-card.featured { border-color: var(--accent-border); background: linear-gradient(135deg, var(--bg2) 0%, rgba(200,169,110,0.04) 100%); }
+  .model-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: .8rem; flex-wrap: wrap; }
+  .model-card-title { font-size: 15px; font-weight: 600; color: var(--text); }
+  .model-card-sub { font-size: 13px; color: var(--text2); margin-top: 3px; }
+  .pros-cons-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 1rem; }
+  @media (max-width: 600px) { .pros-cons-grid { grid-template-columns: 1fr; } }
+  .pros, .cons { background: var(--bg3); border-radius: var(--radius); padding: .8rem 1rem; }
+  .pros { border-top: 2px solid var(--green); }
+  .cons { border-top: 2px solid var(--red); }
+  .pros-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: var(--green); margin-bottom: .4rem; }
+  .cons-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: var(--red); margin-bottom: .4rem; }
+  .pros ul, .cons ul { padding-left: 1rem; }
+  .pros li, .cons li { font-size: 12px; color: var(--text2); margin-bottom: 3px; line-height: 1.4; }
+
+  /* NUMBERS ROW */
+  .nums-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 1rem 0; }
+  @media (max-width: 500px) { .nums-row { grid-template-columns: 1fr 1fr; } }
+  .num-box { background: var(--bg3); border-radius: var(--radius); padding: .8rem 1rem; }
+  .num-label { font-size: 11px; color: var(--text3); margin-bottom: 4px; }
+  .num-val { font-family: var(--serif); font-size: 1.3rem; color: var(--text); }
+  .num-hint { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+  /* TAGS */
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin: .8rem 0; }
+  .tag {
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    background: var(--bg3);
+    color: var(--text2);
+    border: 1px solid var(--border);
+  }
+
+  /* ROADMAP */
+  .roadmap { position: relative; padding-left: 2.5rem; }
+  .roadmap::before { content:''; position:absolute; left:15px; top:0; bottom:0; width:1px; background:var(--border); }
+  .rm-item { position: relative; padding-bottom: 3rem; }
+  .rm-item:last-child { padding-bottom: 0; }
+  .rm-dot {
+    position: absolute;
+    left: -2.5rem;
+    top: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: var(--mono);
+    border: 1px solid;
+  }
+  .rm-dot-1 { background: rgba(90,127,168,.12); color: var(--blue); border-color: rgba(90,127,168,.3); }
+  .rm-dot-2 { background: rgba(90,158,106,.12); color: var(--green); border-color: rgba(90,158,106,.3); }
+  .rm-dot-3 { background: rgba(200,137,58,.12); color: var(--amber); border-color: rgba(200,137,58,.3); }
+  .rm-dot-4 { background: rgba(200,169,110,.12); color: var(--accent); border-color: var(--accent-border); }
+  .rm-title { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: .4rem; }
+  .rm-period { font-family: var(--mono); font-size: 11px; color: var(--text3); margin-bottom: .8rem; }
+
+  /* SIMULATOR */
+  .sim-box {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin: 1.2rem 0;
+  }
+  .sim-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  @media (max-width: 600px) { .sim-grid { grid-template-columns: 1fr; } }
+  .sim-control label { font-size: 12px; color: var(--text2); display: block; margin-bottom: 5px; }
+  .sim-control input[type=range] {
+    width: 100%;
+    -webkit-appearance: none;
+    height: 4px;
+    background: var(--bg4);
+    border-radius: 2px;
+    outline: none;
+  }
+  .sim-control input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    border: 2px solid var(--bg);
+  }
+  .sim-val {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 500;
+    margin-left: 8px;
+  }
+
+  .result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; margin-top: 1.2rem; }
+  .result-cell { background: var(--bg3); border-radius: var(--radius); padding: .9rem 1rem; }
+  .result-cell .rl { font-size: 11px; color: var(--text3); margin-bottom: 4px; text-transform: uppercase; letter-spacing: .05em; }
+  .result-cell .rv { font-family: var(--serif); font-size: 1.4rem; color: var(--text); }
+  .result-cell .rs { font-size: 11px; color: var(--text3); margin-top: 2px; }
+  .result-cell.highlight .rv { color: var(--accent2); }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 2rem;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text3);
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  footer strong { color: var(--text2); }
+
+  /* BENCHMARK TABLE special */
+  .bm-yes { color: var(--green); font-weight: 600; }
+  .bm-no { color: var(--red); }
+  .bm-med { color: var(--amber); }
+
+  /* PRINT */
+  @media print {
+    .topbar { display: none; }
+    .section { page-break-before: always; padding-top: 2rem; margin-top: 0; border-top: none; }
+  }
+
+  /* SCROLL ANIMATION */
+  .fade-in { opacity: 0; transform: translateY(16px); transition: opacity .5s ease, transform .5s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topbar">
+  <span class="topbar-brand">Cesión de Explotación</span>
+  <a href="#resumen" class="nav-link active">Resumen</a>
+  <a href="#validacion" class="nav-link">1. Validación</a>
+  <a href="#modelos" class="nav-link">2. Modelos</a>
+  <a href="#propuesta" class="nav-link">3. Propuesta</a>
+  <a href="#legal" class="nav-link">4. Legal</a>
+  <a href="#escalabilidad" class="nav-link">5. Escala</a>
+  <a href="#roadmap" class="nav-link">6. Roadmap</a>
+  <a href="#financiero" class="nav-link">7. Financiero</a>
+  <a href="#benchmark" class="nav-link">8. Benchmark</a>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="resumen">
+  <div class="hero-eyebrow">Análisis estratégico · Borrador confidencial</div>
+  <h1>Modelo de <em>cesión de explotación</em><br>de fondo de comercio</h1>
+  <p class="hero-sub">Lavadero Automotor · Belgrano, CABA · Mayo 2025. Estructuración del modelo operativo, económico y de escalabilidad para la cesión del negocio a un operador tercero.</p>
+
+  <div class="kpi-strip">
+    <div class="kpi-cell">
+      <div class="kpi-label">Facturación actual</div>
+      <div class="kpi-value">$8M</div>
+      <div class="kpi-sub">ARS / mes</div>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-label">Resultado operativo</div>
+      <div class="kpi-value">$4M</div>
+      <div class="kpi-sub">50% margen</div>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-label">Valor del fondo</div>
+      <div class="kpi-value">USD 40K</div>
+      <div class="kpi-sub">estimado actual</div>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-label">Fee recomendado</div>
+      <div class="kpi-value">USD 12K</div>
+      <div class="kpi-sub">pago de ingreso único</div>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-label">Canon mensual base</div>
+      <div class="kpi-value">$1.2M</div>
+      <div class="kpi-sub">+ ajuste UVA</div>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-label">Retorno vs. venta</div>
+      <div class="kpi-value">3.2×</div>
+      <div class="kpi-sub">en 5 años (base)</div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- RESUMEN EJECUTIVO -->
+  <div style="padding-top:3rem" class="fade-in">
+    <h3>Conclusión principal</h3>
+    <div class="card card-accent-left">
+      <h4>El modelo de cesión supera económicamente a la venta en prácticamente todos los escenarios proyectados a más de 18 meses</h4>
+      <p>El dueño retiene el activo (cuyo valor en USD tiende a preservarse), genera ingresos recurrentes en pesos ajustados por inflación, y se posiciona como primer nodo de una red escalable de lavaderos operados bajo licencia. La venta del fondo, en contraste, genera un ingreso único que puede erosionarse rápidamente en el contexto inflacionario argentino.</p>
+    </div>
+
+    <h3>Estructura del modelo en síntesis</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Variable</th><th>Parámetro recomendado</th><th>Rango aceptable</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Fee de ingreso</strong></td><td>USD 10.000 – 12.000</td><td>USD 8K – 15K</td></tr>
+          <tr><td><strong>Canon mensual fijo</strong></td><td>ARS 1.200.000</td><td>ARS 900K – 1.6M</td></tr>
+          <tr><td><strong>Variable sobre facturación</strong></td><td>8% sobre excedente de $9M/mes</td><td>5% – 12%</td></tr>
+          <tr><td><strong>Duración del contrato</strong></td><td>36 meses + opción renovación 24m</td><td>24 – 60 meses</td></tr>
+          <tr><td><strong>Ajuste inflación</strong></td><td>UVA mensual + revisión semestral</td><td>CER / UVA / CVS</td></tr>
+          <tr><td><strong>Opción de compra futura</strong></td><td>A partir del mes 25, precio pactado</td><td>Opcional</td></tr>
+          <tr><td><strong>Depósito de garantía</strong></td><td>3 meses de canon</td><td>2 – 4 meses</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <strong>Tesis de escalabilidad:</strong> Este local debe tratarse desde el día 1 como el prototipo de una red. El sistema de gestión, los KPIs, el manual operativo y la estructura contractual deben diseñarse para ser replicables. El objetivo a 36 meses es operar 3–5 locales bajo el mismo esquema, lo que multiplica los ingresos recurrentes del dueño sin capital adicional.
+    </div>
+  </div>
+
+  <!-- 1. VALIDACIÓN -->
+  <section class="section fade-in" id="validacion">
+    <div class="section-label">01 — Validación estratégica</div>
+    <h2>¿Vender o ceder?</h2>
+    <p>El análisis comparativo muestra que el modelo de cesión de explotación genera un retorno sustancialmente superior a la venta directa del fondo de comercio en todos los escenarios con horizonte de más de 18 meses.</p>
+
+    <h3>Comparativa directa</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Criterio</th><th>Venta del fondo</th><th>Cesión de explotación</th></tr></thead>
+        <tbody>
+          <tr><td>Ingreso inmediato</td><td>USD 40.000 (único, final)</td><td>USD 10–12K + flujo mensual</td></tr>
+          <tr><td>Ingreso a 36 meses</td><td>USD 40.000 (ya cobrado, sin más)</td><td>~USD 40K + equivalente USD en cánones</td></tr>
+          <tr><td>Retención del activo</td><td class="bm-no">No. Activo vendido.</td><td class="bm-yes">Sí. El fondo sigue siendo tuyo.</td></tr>
+          <tr><td>Exposición operativa</td><td class="bm-yes">Nula</td><td>Baja (monitoreo + control)</td></tr>
+          <tr><td>Riesgo inflación</td><td class="bm-no">Cobra hoy; poder adquisitivo erosionable</td><td class="bm-yes">Canon ajustado = protección parcial</td></tr>
+          <tr><td>Upside futuro</td><td class="bm-no">Ninguno</td><td class="bm-yes">Valor de red + opción de compra pactada</td></tr>
+          <tr><td>Escalabilidad</td><td class="bm-no">No aplica</td><td class="bm-yes">Sí: replicar en más locales</td></tr>
+          <tr><td>Complejidad de gestión</td><td class="bm-yes">Muy baja</td><td class="bm-med">Media (contractual, auditoría)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Ventajas y riesgos del modelo propuesto</h3>
+    <div class="two-col">
+      <div class="card card-green">
+        <h4>Ventajas</h4>
+        <ul style="padding-left:1.2rem; color:var(--text2); font-size:13px;">
+          <li style="margin-bottom:4px">El activo se preserva en USD</li>
+          <li style="margin-bottom:4px">Ingresos recurrentes y predecibles</li>
+          <li style="margin-bottom:4px">El operador asume el riesgo operativo</li>
+          <li style="margin-bottom:4px">Permite escalar sin capex propio</li>
+          <li style="margin-bottom:4px">Opción de compra futura a precio pactado hoy</li>
+          <li style="margin-bottom:4px">Construye sistema replicable (marca)</li>
+          <li style="margin-bottom:4px">El operador tiene incentivo a mejorar el local</li>
+        </ul>
+      </div>
+      <div class="card card-red">
+        <h4>Riesgos y mitigaciones</h4>
+        <ul style="padding-left:1.2rem; color:var(--text2); font-size:13px;">
+          <li style="margin-bottom:4px"><strong style="color:var(--text)">Deterioro del local</strong> → depósito + auditorías</li>
+          <li style="margin-bottom:4px"><strong style="color:var(--text)">Conflicto por caja</strong> → POS digital con acceso remoto</li>
+          <li style="margin-bottom:4px"><strong style="color:var(--text)">Incumplimiento del canon</strong> → garantías + cláusula rescisoria</li>
+          <li style="margin-bottom:4px"><strong style="color:var(--text)">Operador desalineado</strong> → KPIs + componente variable</li>
+          <li style="margin-bottom:4px"><strong style="color:var(--text)">Riesgo laboral</strong> → contrato claro, separación de roles</li>
+          <li style="margin-bottom:4px"><strong style="color:var(--text)">Inflación > ajuste</strong> → revisión semestral obligatoria</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Alineación de incentivos</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Parte</th><th>Incentivo</th><th>Mecanismo que lo genera</th></tr></thead>
+        <tbody>
+          <tr><td>Dueño</td><td>Que el negocio facture más</td><td>Componente variable sobre excedente de facturación</td></tr>
+          <tr><td>Operador</td><td>Maximizar utilidad propia</td><td>Se queda con todo lo que excede el canon fijo</td></tr>
+          <tr><td>Ambos</td><td>Cuidar el local y los equipos</td><td>Depósito de garantía + auditoría + opción de compra</td></tr>
+          <tr><td>Ambos</td><td>Que la marca crezca</td><td>Si el modelo escala, el operador puede abrir más locales</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 2. MODELOS -->
+  <section class="section fade-in" id="modelos">
+    <div class="section-label">02 — Modelos económicos</div>
+    <h2>Alternativas de estructura</h2>
+    <p>Existen múltiples estructuras posibles para este tipo de acuerdo. A continuación se analizan las principales, con sus parámetros numéricos sugeridos para el contexto de este negocio.</p>
+
+    <!-- Modelo A -->
+    <div class="model-card">
+      <div class="model-card-header">
+        <div>
+          <div class="model-card-title">Modelo A — Fee fijo + canon fijo</div>
+          <div class="model-card-sub">El operador paga un fee de ingreso y un canon mensual fijo independiente de la facturación.</div>
+        </div>
+        <span class="badge b-amber">Seguro para el dueño</span>
+      </div>
+      <div class="nums-row">
+        <div class="num-box"><div class="num-label">Fee entrada</div><div class="num-val">USD 10K</div></div>
+        <div class="num-box"><div class="num-label">Canon mensual</div><div class="num-val">$1.5M</div></div>
+        <div class="num-box"><div class="num-label">Ingreso anual dueño</div><div class="num-val">$18M</div></div>
+      </div>
+      <div class="pros-cons-grid">
+        <div class="pros"><div class="pros-label">✓ Ventajas</div><ul><li>Ingresos totalmente predecibles</li><li>Sin disputas por facturación</li><li>Estructura simple de administrar</li></ul></div>
+        <div class="cons"><div class="cons-label">✗ Desventajas</div><ul><li>Sin upside si el negocio crece</li><li>Operador asume todo el riesgo de facturación</li><li>Si la inflación supera al ajuste, el canon se licua</li></ul></div>
+      </div>
+    </div>
+
+    <!-- Modelo B -->
+    <div class="model-card">
+      <div class="model-card-header">
+        <div>
+          <div class="model-card-title">Modelo B — Fee fijo + porcentaje de facturación</div>
+          <div class="model-card-sub">El canon es variable, proporcional a la facturación mensual. Requiere sistema de control de ventas.</div>
+        </div>
+        <span class="badge b-blue">Riesgo compartido</span>
+      </div>
+      <div class="nums-row">
+        <div class="num-box"><div class="num-label">Fee entrada</div><div class="num-val">USD 10K</div></div>
+        <div class="num-box"><div class="num-label">% sobre facturación</div><div class="num-val">15%</div></div>
+        <div class="num-box"><div class="num-label">Canon sobre $8M</div><div class="num-val">$1.2M</div></div>
+      </div>
+      <div class="pros-cons-grid">
+        <div class="pros"><div class="pros-label">✓ Ventajas</div><ul><li>Dueño crece junto al negocio</li><li>Operador tiene menor riesgo en períodos bajos</li><li>Muy alineado en incentivos</li></ul></div>
+        <div class="cons"><div class="cons-label">✗ Desventajas</div><ul><li>Requiere auditoría de ventas fiable</li><li>Conflicto si se subfactura en efectivo</li><li>Complejidad administrativa mensual</li></ul></div>
+      </div>
+    </div>
+
+    <!-- Modelo C — RECOMENDADO -->
+    <div class="model-card featured">
+      <div class="model-card-header">
+        <div>
+          <div class="model-card-title">Modelo C — Mínimo garantizado + variable sobre excedente</div>
+          <div class="model-card-sub">Combina piso fijo (protege al dueño) con variable sobre excedente (alinea incentivos). Más robusto en contexto inflacionario.</div>
+        </div>
+        <span class="badge b-accent">⭐ Recomendado</span>
+      </div>
+      <div class="nums-row">
+        <div class="num-box"><div class="num-label">Fee entrada</div><div class="num-val">USD 12K</div></div>
+        <div class="num-box"><div class="num-label">Canon fijo mensual</div><div class="num-val">$1.2M</div></div>
+        <div class="num-box"><div class="num-label">Variable (exc. $9M)</div><div class="num-val">8%</div></div>
+      </div>
+      <div class="pros-cons-grid">
+        <div class="pros"><div class="pros-label">✓ Ventajas</div><ul><li>Piso garantizado para el dueño</li><li>Upside compartido si el negocio crece</li><li>Incentivo claro para que el operador facture más</li><li>Menos conflicto que el porcentaje puro</li></ul></div>
+        <div class="cons"><div class="cons-label">✗ Desventajas</div><ul><li>Necesita definir bien el cálculo de facturación</li><li>Requiere control mensual de ventas</li></ul></div>
+      </div>
+    </div>
+
+    <!-- Modelo D -->
+    <div class="model-card">
+      <div class="model-card-header">
+        <div>
+          <div class="model-card-title">Modelo D — Management Agreement</div>
+          <div class="model-card-sub">El dueño retiene la operación jurídica. El "operador" actúa como gerente con bonus por performance. El dueño sigue siendo el empleador.</div>
+        </div>
+        <span class="badge b-amber">Alternativo</span>
+      </div>
+      <div class="pros-cons-grid">
+        <div class="pros"><div class="pros-label">✓ Ventajas</div><ul><li>Control total del dueño sobre el negocio</li><li>Sin riesgo de "mal operador independiente"</li></ul></div>
+        <div class="cons"><div class="cons-label">✗ Desventajas</div><ul><li>El dueño sigue siendo responsable laboral</li><li>No libera realmente el tiempo del dueño</li><li>No es escalable sin estructura de RRHH</li></ul></div>
+      </div>
+    </div>
+
+    <!-- Modelo E -->
+    <div class="model-card">
+      <div class="model-card-header">
+        <div>
+          <div class="model-card-title">Modelo E — Franquicia liviana</div>
+          <div class="model-card-sub">El dueño formaliza un sistema de marca + procedimientos + suministros. Cobra royalty de marca + fee de entrenamiento. Aplica principalmente desde el segundo local.</div>
+        </div>
+        <span class="badge b-blue">Evolución futura</span>
+      </div>
+      <div class="pros-cons-grid">
+        <div class="pros"><div class="pros-label">✓ Ventajas</div><ul><li>Mayor control y uniformidad de marca</li><li>Modelo muy escalable (royalties permanentes)</li><li>Puede convertirse en negocio principal</li></ul></div>
+        <div class="cons"><div class="cons-label">✗ Desventajas</div><ul><li>Requiere inversión en sistemas y manual</li><li>Marco legal más complejo (Ley 24.766)</li><li>Prematuro para un solo local</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. PROPUESTA -->
+  <section class="section fade-in" id="propuesta">
+    <div class="section-label">03 — Propuesta concreta</div>
+    <h2>Modelo recomendado en detalle</h2>
+
+    <div class="callout">
+      <strong>Instrumento:</strong> Contrato de Cesión de Explotación de Fondo de Comercio con Fee de Ingreso + Canon Híbrido (fijo + variable sobre excedente) ajustado mensualmente por UVA.
+    </div>
+
+    <h3>Estructura económica</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Componente</th><th>Valor / Parámetro</th><th>Notas</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Fee de ingreso (único)</strong></td><td>USD 10.000 – 12.000</td><td>Pagadero al firmar. En dólares o equivalente al TC vendedor del día.</td></tr>
+          <tr><td><strong>Depósito de garantía</strong></td><td>ARS 3.600.000 (3 meses de canon)</td><td>Retenido por el dueño. Devuelto al finalizar si no hay deuda.</td></tr>
+          <tr><td><strong>Canon mensual fijo</strong></td><td>ARS 1.200.000</td><td>Base mes 1. Ajustado mensualmente por variación UVA.</td></tr>
+          <tr><td><strong>Canon variable</strong></td><td>8% sobre facturación &gt; $9.000.000/mes</td><td>Se calcula sobre el excedente, no sobre el total.</td></tr>
+          <tr><td><strong>Ajuste semestral</strong></td><td>Revisión libre cada 6 meses</td><td>Si UVA acumulada &gt; 30% en el semestre, ajuste automático.</td></tr>
+          <tr><td><strong>Duración</strong></td><td>36 meses</td><td>Prorrogable 24 meses adicionales con 60 días de preaviso.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Cláusulas clave del contrato</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Cláusula</th><th>Descripción</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Rescisión por incumplimiento</strong></td><td>Falta de pago por 2 meses consecutivos → rescisión con pérdida del depósito + restitución inmediata del local.</td></tr>
+          <tr><td><strong>Prohibición de subarrendar</strong></td><td>El operador no puede ceder ni subarrendar sin autorización escrita del dueño.</td></tr>
+          <tr><td><strong>Estándares de operación</strong></td><td>El operador debe cumplir los KPIs mínimos. Dos trimestres bajo mínimos → notificación + plan de acción → eventual rescisión.</td></tr>
+          <tr><td><strong>Mantenimiento del local</strong></td><td>El operador se hace cargo del mantenimiento corriente. Las mejoras estructurales quedan incorporadas al local al finalizar.</td></tr>
+          <tr><td><strong>Auditoría de facturación</strong></td><td>El dueño tiene derecho a acceder a registros de ventas (POS, facturas ARCA/AFIP) con 48h de preaviso.</td></tr>
+          <tr><td><strong>No competencia</strong></td><td>El operador no puede abrir ni operar un lavadero en radio de 5km durante el contrato y 12 meses después.</td></tr>
+          <tr><td><strong>Opción de compra futura</strong></td><td>A partir del mes 25, el operador tiene opción preferente de compra a USD 45.000 (precio pactado hoy). Válida por 90 días desde notificación.</td></tr>
+          <tr><td><strong>Penalidades por daños</strong></td><td>Daños al local → tasación por perito + cobro del depósito + acción legal. Abandono → pérdida total del fee + depósito.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>KPIs de operación mínimos</h3>
+    <div class="tag-row">
+      <span class="tag">Facturación ≥ $6M / mes</span>
+      <span class="tag">NPS clientes ≥ 7 / 10</span>
+      <span class="tag">Canon al día (sin mora)</span>
+      <span class="tag">Personal en regla (AFIP)</span>
+      <span class="tag">Habilitaciones vigentes</span>
+      <span class="tag">Reporte mensual de ventas</span>
+      <span class="tag">Inventario de equipos actualizado</span>
+    </div>
+
+    <div class="callout callout-warn">
+      <strong>Punto crítico — Control de caja:</strong> El mayor riesgo del modelo es el conflicto por facturación. La solución es exigir desde el inicio un sistema de punto de venta (POS) con acceso remoto para el dueño, y que toda facturación pase por ARCA/AFIP. No depender de reportes manuales del operador.
+    </div>
+  </section>
+
+  <!-- 4. LEGAL -->
+  <section class="section fade-in" id="legal">
+    <div class="section-label">04 — Marco legal y contractual</div>
+    <h2>Estructura jurídica del acuerdo</h2>
+    <p>A continuación se presentan lineamientos estratégicos y operativos. No reemplazan el asesoramiento de un abogado comercial.</p>
+
+    <h3>Tipo de contrato recomendado</h3>
+    <div class="card card-accent-left">
+      <h4>Contrato de Cesión de Explotación de Fondo de Comercio</h4>
+      <p>Es el instrumento más adecuado bajo el Código Civil y Comercial argentino. No es un alquiler (no cede el inmueble), no es una venta (no transfiere la titularidad), no es una sociedad (no hay participación directa en utilidades). Es un contrato atípico de colaboración empresarial bien conocido por la práctica judicial argentina.</p>
+    </div>
+
+    <h3>Estructura societaria recomendada</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Parte</th><th>Estructura</th><th>Razón</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Dueño (cedente)</strong></td><td>Persona jurídica (SAS o SRL)</td><td>Protege patrimonio personal. Permite emitir facturas de canon. Base para escalar la red.</td></tr>
+          <tr><td><strong>Operador (cesionario)</strong></td><td>Persona jurídica o responsable inscripto</td><td>Debe tener habilitación comercial propia. Responsable empleador de su equipo.</td></tr>
+          <tr><td><strong>Relación jurídica</strong></td><td>B2B contractual</td><td>El dueño NO es empleador del personal del operador. Separación absoluta y documentada.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Mecanismos de protección</h3>
+    <div class="two-col">
+      <div class="card">
+        <h4>Control de caja y facturación</h4>
+        <ul style="padding-left:1.2rem; color:var(--text2); font-size:13px; line-height:1.6;">
+          <li>POS con acceso remoto para el dueño</li>
+          <li>Facturación 100% electrónica (ARCA)</li>
+          <li>Reporte mensual firmado por el operador</li>
+          <li>Opción: cámara IP en el local para verificación spot</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>Protección de activos e instalaciones</h4>
+        <ul style="padding-left:1.2rem; color:var(--text2); font-size:13px; line-height:1.6;">
+          <li>Inventario detallado con fotos al inicio (Acta de recepción)</li>
+          <li>Mantenimiento preventivo con frecuencias definidas</li>
+          <li>Seguro del local a cargo del operador (dueño = beneficiario)</li>
+          <li>Auditoría física semestral del estado del local</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>Control de estándares de marca</h4>
+        <ul style="padding-left:1.2rem; color:var(--text2); font-size:13px; line-height:1.6;">
+          <li>Manual operativo entregado al inicio (obligatorio)</li>
+          <li>Visitas de control no anunciadas (2 por trimestre)</li>
+          <li>Encuestas de satisfacción a clientes (acceso compartido)</li>
+          <li>Google My Business y redes bajo cuenta del dueño</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>Auditoría financiera</h4>
+        <ul style="padding-left:1.2rem; color:var(--text2); font-size:13px; line-height:1.6;">
+          <li>Acceso a datos del POS en tiempo real</li>
+          <li>Cruce ventas vs. compras de insumos (control indirecto)</li>
+          <li>Declaración jurada mensual de facturación firmada</li>
+          <li>Derecho a auditoría externa anual</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout callout-danger">
+      <strong>Riesgo laboral oculto:</strong> Si el dueño supervisa de manera directa al personal del operador, puede existir una relación laboral encubierta bajo la óptica judicial argentina. El contrato debe establecer que el operador es el empleador exclusivo de todo el personal. El dueño NO da órdenes al personal — solo controla al operador.
+    </div>
+  </section>
+
+  <!-- 5. ESCALABILIDAD -->
+  <section class="section fade-in" id="escalabilidad">
+    <div class="section-label">05 — Escalabilidad del modelo</div>
+    <h2>De un local a una red</h2>
+
+    <div class="callout">
+      Este local no es solo un negocio — es el MVP de un sistema operativo replicable. Todo lo que se diseñe hoy debe poder copiarse 5 o 10 veces sin rehacer desde cero.
+    </div>
+
+    <h3>Qué estandarizar desde el inicio</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Área</th><th>Qué documentar</th><th>Formato</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Operaciones</strong></td><td>Proceso de lavado, tiempos, insumos, control de calidad</td><td>Manual + video</td></tr>
+          <tr><td><strong>Atención al cliente</strong></td><td>Guión de recepción, manejo de quejas, fidelización</td><td>Protocolo escrito</td></tr>
+          <tr><td><strong>Caja y administración</strong></td><td>Cierre diario, registro de ventas, inventario</td><td>Planilla + SOP</td></tr>
+          <tr><td><strong>Recursos humanos</strong></td><td>Perfil de puesto, inducción, remuneración de referencia</td><td>Ficha de onboarding</td></tr>
+          <tr><td><strong>Mantenimiento</strong></td><td>Checklist semanal/mensual de equipos</td><td>Checklist físico + digital</td></tr>
+          <tr><td><strong>Marketing local</strong></td><td>Identidad visual, promociones estándar, Google Maps</td><td>Brand guidelines básico</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Arquitectura propiedad / operación</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Capa</th><th>Responsable</th><th>Qué controla</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Propiedad del activo</strong></td><td>Dueño (sociedad holding)</td><td>Local, equipos, marca, know-how del sistema</td></tr>
+          <tr><td><strong>Operación del negocio</strong></td><td>Operador (cesionario)</td><td>Personal, ventas, caja, atención al cliente</td></tr>
+          <tr><td><strong>Sistema de red</strong></td><td>Dueño (rol de franquiciador)</td><td>Manual, KPIs, auditoría, expansión, marca</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>KPIs a medir desde el día 1</h3>
+    <div class="tag-row">
+      <span class="tag">Facturación diaria / mensual</span>
+      <span class="tag">Ticket promedio</span>
+      <span class="tag">Unidades lavadas por día</span>
+      <span class="tag">Costo de insumos / % ventas</span>
+      <span class="tag">Canon cobrado vs. vencido</span>
+      <span class="tag">NPS mensual</span>
+      <span class="tag">Tasa de clientes recurrentes</span>
+      <span class="tag">Horas pico vs. valle</span>
+      <span class="tag">Quejas por mes</span>
+      <span class="tag">Estado de equipos</span>
+    </div>
+
+    <h3>Evolución del sistema por etapa</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Etapa</th><th>Modelo</th><th>Postura del dueño</th></tr></thead>
+        <tbody>
+          <tr><td>1 local</td><td>Cesión de explotación</td><td>Propietario + diseñador del sistema</td></tr>
+          <tr><td>2–5 locales</td><td>Red de cesiones</td><td>Franquiciador informal + auditor</td></tr>
+          <tr><td>5–10 locales</td><td>Licencia operativa con marca</td><td>Marca regional + proveedor de insumos</td></tr>
+          <tr><td>10+ locales</td><td>Franquicia formal o master franchise</td><td>Holding de marca + royalties permanentes</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 6. ROADMAP -->
+  <section class="section fade-in" id="roadmap">
+    <div class="section-label">06 — Roadmap de expansión</div>
+    <h2>Crecimiento por etapas</h2>
+
+    <div class="roadmap">
+      <div class="rm-item">
+        <div class="rm-dot rm-dot-1">E1</div>
+        <div class="rm-title">Etapa 1 — Validación</div>
+        <div class="rm-period">Meses 1–12</div>
+        <p style="margin-bottom:.8rem"><strong style="color:var(--text)">Objetivo:</strong> Probar el modelo con el primer operador, depurar el sistema operativo, ajustar el contrato base.</p>
+        <div class="table-wrap">
+          <table>
+            <tbody>
+              <tr><td style="width:180px"><strong>Estructura operativa</strong></td><td>1 local, 1 operador, dueño como supervisor</td></tr>
+              <tr><td><strong>Capital necesario</strong></td><td>Fee recibido USD 10–12K. Inversión en sistema y manual: $500K–1M ARS</td></tr>
+              <tr><td><strong>Equipo</strong></td><td>Operador + equipo propio (2–4 personas). Dueño: monitoreo parcial.</td></tr>
+              <tr><td><strong>Sistemas</strong></td><td>POS digital, planilla de KPIs, contrato tipo</td></tr>
+              <tr><td><strong>Métricas clave</strong></td><td>Canon cobrado en tiempo, facturación ≥ $8M, NPS ≥ 7</td></tr>
+              <tr><td><strong>Riesgo principal</strong></td><td>Operador que no rinde → cláusula de salida clara desde el inicio</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tag-row">
+          <span class="badge b-blue">Hito: contrato firmado</span>
+          <span class="badge b-blue">Hito: 3 meses sin conflictos</span>
+          <span class="badge b-blue">Hito: sistema documentado</span>
+        </div>
+      </div>
+
+      <div class="rm-item">
+        <div class="rm-dot rm-dot-2">E2</div>
+        <div class="rm-title">Etapa 2 — Replicación</div>
+        <div class="rm-period">Meses 13–30</div>
+        <p style="margin-bottom:.8rem"><strong style="color:var(--text)">Objetivo:</strong> Incorporar 2–4 locales adicionales. Pueden ser locales propios cedidos o locales de terceros incorporados a la red.</p>
+        <div class="table-wrap">
+          <table>
+            <tbody>
+              <tr><td style="width:180px"><strong>Estructura operativa</strong></td><td>2–5 locales, cada uno con su operador independiente</td></tr>
+              <tr><td><strong>Capital necesario</strong></td><td>Si los locales son de terceros: inversión mínima. Si el dueño adquiere otro fondo: USD 30–50K.</td></tr>
+              <tr><td><strong>Equipo</strong></td><td>Dueño requiere soporte administrativo (PM part-time o software de gestión)</td></tr>
+              <tr><td><strong>Sistemas</strong></td><td>Dashboard de KPIs centralizado, auditoría rotativa, manual v2.0</td></tr>
+              <tr><td><strong>Métricas clave</strong></td><td>Canon neto total / mes, tasa de retención de operadores, calidad por local</td></tr>
+              <tr><td><strong>Estructura societaria</strong></td><td>Holding SAS + eventualmente marca registrada INPI</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="rm-item">
+        <div class="rm-dot rm-dot-3">E3</div>
+        <div class="rm-title">Etapa 3 — Red escalable</div>
+        <div class="rm-period">Meses 31–60</div>
+        <p style="margin-bottom:.8rem"><strong style="color:var(--text)">Objetivo:</strong> Operar 5–10 locales, formalizar la marca, evaluar conversión a modelo de franquicia con royalties permanentes.</p>
+        <div class="table-wrap">
+          <table>
+            <tbody>
+              <tr><td style="width:180px"><strong>Estructura operativa</strong></td><td>Marca central + coordinador de red + auditores rotativos</td></tr>
+              <tr><td><strong>Capital necesario</strong></td><td>Inversión en brand + software de gestión: USD 20–40K</td></tr>
+              <tr><td><strong>Equipo</strong></td><td>1 coordinador de red, 1 administrador, soporte jurídico recurrente</td></tr>
+              <tr><td><strong>Ingresos</strong></td><td>Canon × N locales + royalty de marca 3–5% de facturación × local</td></tr>
+              <tr><td><strong>Valorización</strong></td><td>Red de 10 locales: valor estimado USD 200–400K como sistema/marca</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="rm-item">
+        <div class="rm-dot rm-dot-4">E4</div>
+        <div class="rm-title">Etapa 4 — Franquicia o marca regional</div>
+        <div class="rm-period">Mes 60 en adelante</div>
+        <p style="margin-bottom:.8rem"><strong style="color:var(--text)">Objetivo:</strong> Formalización completa del sistema de franquicia. Contrato bajo Ley 24.766, manual del franquiciado, programa de formación, proveedor oficial de insumos. Posibilidad de vender la master franchise a un inversor regional.</p>
+        <div class="nums-row">
+          <div class="num-box"><div class="num-label">Royalty por local</div><div class="num-val">5%</div><div class="num-hint">de su facturación</div></div>
+          <div class="num-box"><div class="num-label">Con 20 locales</div><div class="num-val">$8M+</div><div class="num-hint">ARS/mes en royalties</div></div>
+          <div class="num-box"><div class="num-label">Valor de marca (20 loc.)</div><div class="num-val">USD 500K+</div><div class="num-hint">estimado</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. FINANCIERO -->
+  <section class="section fade-in" id="financiero">
+    <div class="section-label">07 — Modelo financiero</div>
+    <h2>Simulación interactiva</h2>
+    <p>Ajustá los parámetros para ver cómo cambia el retorno del dueño en diferentes escenarios.</p>
+
+    <div class="sim-box">
+      <div class="sim-grid">
+        <div class="sim-control">
+          <label>Facturación base <span class="sim-val" id="lv-fact">$8M / mes</span></label>
+          <input type="range" min="5" max="15" value="8" id="sl-fact" step="0.5" oninput="recalc()">
+        </div>
+        <div class="sim-control">
+          <label>Crecimiento anual <span class="sim-val" id="lv-crec">20%</span></label>
+          <input type="range" min="0" max="80" value="20" id="sl-crec" oninput="recalc()">
+        </div>
+        <div class="sim-control">
+          <label>Canon fijo mensual <span class="sim-val" id="lv-canon">$1.2M</span></label>
+          <input type="range" min="0.8" max="2.5" value="1.2" id="sl-canon" step="0.1" oninput="recalc()">
+        </div>
+        <div class="sim-control">
+          <label>Locales al Año 3 <span class="sim-val" id="lv-loc">3</span></label>
+          <input type="range" min="1" max="10" value="3" id="sl-loc" oninput="recalc()">
+        </div>
+      </div>
+      <div id="sim-results"></div>
+    </div>
+
+    <h3>Escenarios sin simulador</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Escenario</th><th>Facturación</th><th>Canon fijo/año</th><th>Variable/año</th><th>Fee entrada</th><th>Total Año 1</th></tr></thead>
+        <tbody>
+          <tr><td><span class="badge b-red">Conservador</span></td><td>$6M / mes</td><td>$14.4M</td><td>—</td><td>USD 10K</td><td>$14.4M + USD 10K</td></tr>
+          <tr><td><span class="badge b-amber">Base</span></td><td>$8M / mes</td><td>$14.4M</td><td>—</td><td>USD 12K</td><td>$14.4M + USD 12K</td></tr>
+          <tr><td><span class="badge b-green">Agresivo</span></td><td>$12M / mes</td><td>$14.4M</td><td>$2.4M</td><td>USD 12K</td><td>$16.8M + USD 12K</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:12px; color:var(--text3)">Valores nominales en ARS sin ajuste por inflación. El ajuste UVA sobre el canon preserva el valor real.</p>
+
+    <h3>Comparativa vs. venta del fondo</h3>
+    <div class="card card-accent-left">
+      <p>Vendiendo hoy a USD 40.000 el dueño recibe ese importe una sola vez. Con el modelo de cesión, sólo los cánones del primer local en 36 meses superan ese valor en términos de equivalente USD (ajustando al tipo de cambio). El activo —cuyo valor en dólares tiende a preservarse— sigue siendo propiedad del dueño y puede ser vendido, cedido nuevamente, o incorporado a una red. <strong style="color:var(--accent2)">El modelo de cesión crea valor compuesto; la venta lo realiza una sola vez.</strong></p>
+    </div>
+  </section>
+
+  <!-- 8. BENCHMARK -->
+  <section class="section fade-in" id="benchmark">
+    <div class="section-label">08 — Benchmarking</div>
+    <h2>Comparativa con otros modelos</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Modelo</th>
+            <th>Retención activo</th>
+            <th>Ingreso recurrente</th>
+            <th>Riesgo operativo</th>
+            <th>Escalabilidad</th>
+            <th>Alineación incentivos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background: rgba(200,169,110,0.04)">
+            <td><strong style="color:var(--accent)">Cesión de explotación (propuesto)</strong></td>
+            <td class="bm-yes">✓ Sí</td>
+            <td class="bm-yes">Alto</td>
+            <td class="bm-yes">Bajo</td>
+            <td class="bm-yes">Alta</td>
+            <td class="bm-yes">Alta</td>
+          </tr>
+          <tr>
+            <td>Venta del fondo</td>
+            <td class="bm-no">✗ No</td>
+            <td class="bm-no">Ninguno</td>
+            <td class="bm-yes">Nulo</td>
+            <td class="bm-no">Nula</td>
+            <td>N/A</td>
+          </tr>
+          <tr>
+            <td>Alquiler del local (sin fondo)</td>
+            <td class="bm-yes">✓ Sí</td>
+            <td class="bm-med">Medio</td>
+            <td class="bm-yes">Bajo</td>
+            <td class="bm-med">Media</td>
+            <td class="bm-no">Baja</td>
+          </tr>
+          <tr>
+            <td>Management agreement</td>
+            <td class="bm-yes">✓ Sí</td>
+            <td class="bm-med">Medio</td>
+            <td class="bm-no">Alto</td>
+            <td class="bm-med">Media</td>
+            <td class="bm-med">Media</td>
+          </tr>
+          <tr>
+            <td>Partnership operativo (sociedad)</td>
+            <td class="bm-med">Parcial</td>
+            <td class="bm-yes">Alto</td>
+            <td class="bm-med">Medio</td>
+            <td class="bm-med">Media</td>
+            <td class="bm-yes">Alta</td>
+          </tr>
+          <tr>
+            <td>Franquicia formal</td>
+            <td class="bm-yes">✓ Sí</td>
+            <td class="bm-yes">Alto</td>
+            <td class="bm-yes">Bajo</td>
+            <td class="bm-yes">Muy alta</td>
+            <td class="bm-yes">Alta</td>
+          </tr>
+          <tr>
+            <td>Modelo asset-light (licencia pura)</td>
+            <td class="bm-med">Parcial</td>
+            <td class="bm-med">Medio</td>
+            <td class="bm-yes">Bajo</td>
+            <td class="bm-yes">Muy alta</td>
+            <td class="bm-med">Media</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Referencias de mercado similares</h3>
+    <div class="card">
+      <h4>Estaciones de servicio YPF / Shell / Axion (Argentina)</h4>
+      <p>Modelo clásico de cesión de explotación con canon fijo + variable. La petrolera retiene el activo, el concesionario opera. Es el referente local más cercano al modelo propuesto a escala industrial.</p>
+    </div>
+    <div class="card">
+      <h4>Mr. Jeff (España / Latam)</h4>
+      <p>Franquicia de lavanderías que separa propiedad del local de la operación. Royalty 8% + fee inicial. Presente en Argentina con modelo análogo al propuesto.</p>
+    </div>
+    <div class="card">
+      <h4>Kioscos en aeropuertos y centros comerciales</h4>
+      <p>Canon fijo + porcentaje de ventas. Control estricto de estándares. Duración 1–3 años renovables. Estructura contractual muy similar a la propuesta aquí.</p>
+    </div>
+
+    <h3>Riesgos ocultos a monitorear</h3>
+    <div class="callout callout-danger">
+      <strong>Riesgo 1 — Relación laboral encubierta:</strong> Si el dueño da órdenes directas al personal del operador, puede ser considerado co-empleador por la justicia laboral argentina. La separación debe ser real, no solo contractual.
+    </div>
+    <div class="callout callout-warn">
+      <strong>Riesgo 2 — Erosión del canon por inflación:</strong> Si el ajuste no sigue a la inflación real, el canon se licua y el operador captura todo el upside. La cláusula de revisión semestral es no negociable.
+    </div>
+    <div class="callout callout-warn">
+      <strong>Riesgo 3 — Deterioro de la reputación:</strong> Un mal operador daña las reseñas de Google y la reputación del local, que luego es difícil recuperar. Acceso a Google My Business y control de NPS desde el inicio.
+    </div>
+    <div class="callout callout-warn">
+      <strong>Riesgo 4 — Subfacturación:</strong> El operador puede no declarar ventas en efectivo para reducir el componente variable. Mitigación: POS digital + control cruzado con compras de insumos + auditoría sorpresa.
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>Este documento es un análisis estratégico preliminar de carácter orientativo. No constituye asesoramiento legal, contable ni financiero definitivo.<br>
+  <strong>Para uso confidencial del cliente.</strong> Mayo 2025.</p>
+</footer>
+
+<script>
+// NAV ACTIVE STATE
+const sections = document.querySelectorAll('section[id], header[id]');
+const navLinks = document.querySelectorAll('.nav-link');
+
+function updateNav() {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 80) current = s.id;
+  });
+  navLinks.forEach(l => {
+    l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+  });
+}
+window.addEventListener('scroll', updateNav, { passive: true });
+
+// SCROLL ANIMATIONS
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// SIMULATOR
+function fmt(n) {
+  if (n >= 1000) return '$' + (n / 1000).toFixed(1) + 'B';
+  return '$' + n.toFixed(1) + 'M';
+}
+
+function recalc() {
+  const fact = parseFloat(document.getElementById('sl-fact').value);
+  const crec = parseFloat(document.getElementById('sl-crec').value) / 100;
+  const canon = parseFloat(document.getElementById('sl-canon').value);
+  const locs = parseInt(document.getElementById('sl-loc').value);
+
+  document.getElementById('lv-fact').textContent = '$' + fact + 'M / mes';
+  document.getElementById('lv-crec').textContent = Math.round(crec * 100) + '%';
+  document.getElementById('lv-canon').textContent = '$' + canon.toFixed(1) + 'M';
+  document.getElementById('lv-loc').textContent = locs;
+
+  const umbral = 9;
+  const varRate = 0.08;
+  const feeUSD = 12000;
+  const tcRef = 1200;
+
+  function yr(y, n) {
+    const f = fact * Math.pow(1 + crec, y - 1);
+    const variable = f > umbral ? (f - umbral) * varRate : 0;
+    const ownerAnnual = (canon + variable) * 12 * n;
+    const opAnnual = (f * 0.5 - canon - variable) * 12;
+    return { f, variable, ownerAnnual, opAnnual };
+  }
+
+  const y1 = yr(1, 1);
+  const y2 = yr(2, Math.min(locs, 2));
+  const y3 = yr(3, locs);
+  const total3yr = y1.ownerAnnual + y2.ownerAnnual + y3.ownerAnnual;
+  const totalUSD = Math.round(total3yr / 1000 / tcRef * 1000);
+  const mult = (totalUSD / 40000).toFixed(1);
+
+  document.getElementById('sim-results').innerHTML = `
+    <div style="overflow-x:auto; margin-top:1.2rem; border-radius:8px; border:1px solid var(--border)">
+      <table style="min-width:520px">
+        <thead>
+          <tr>
+            <th>Año</th>
+            <th>Locales</th>
+            <th>Fact. / local</th>
+            <th>Canon variable</th>
+            <th>Ingreso dueño</th>
+            <th>Ingreso operador</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Año 1</td>
+            <td>1</td>
+            <td>${fmt(y1.f)}</td>
+            <td>${y1.variable > 0 ? fmt(y1.variable) : '—'}</td>
+            <td style="color:#c8a96e;font-weight:500">${fmt(y1.ownerAnnual)} + USD ${feeUSD.toLocaleString()}</td>
+            <td>${fmt(y1.opAnnual)}</td>
+          </tr>
+          <tr>
+            <td>Año 2</td>
+            <td>${Math.min(locs, 2)}</td>
+            <td>${fmt(y2.f)}</td>
+            <td>${y2.variable > 0 ? fmt(y2.variable) : '—'}</td>
+            <td style="color:#c8a96e;font-weight:500">${fmt(y2.ownerAnnual)}</td>
+            <td>${fmt(y2.opAnnual)} × ${Math.min(locs, 2)}</td>
+          </tr>
+          <tr>
+            <td>Año 3</td>
+            <td>${locs}</td>
+            <td>${fmt(y3.f)}</td>
+            <td>${y3.variable > 0 ? fmt(y3.variable) : '—'}</td>
+            <td style="color:#c8a96e;font-weight:500">${fmt(y3.ownerAnnual)}</td>
+            <td>${fmt(y3.opAnnual)} × ${locs}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="result-grid">
+      <div class="result-cell">
+        <div class="rl">Total dueño (3 años)</div>
+        <div class="rv">${fmt(total3yr)}</div>
+        <div class="rs">+ USD ${feeUSD.toLocaleString()} fee</div>
+      </div>
+      <div class="result-cell highlight">
+        <div class="rl">Equiv. USD (3 años)</div>
+        <div class="rv">~USD ${totalUSD.toLocaleString()}</div>
+        <div class="rs">TC ref. $${tcRef.toLocaleString()}</div>
+      </div>
+      <div class="result-cell highlight">
+        <div class="rl">Multiplicador vs. venta</div>
+        <div class="rv">${mult}×</div>
+        <div class="rs">vs. USD 40K único pago</div>
+      </div>
+      <div class="result-cell">
+        <div class="rl">Canon mensual Año 3</div>
+        <div class="rv">${fmt((canon + y3.variable) * locs)}</div>
+        <div class="rs">${locs} local${locs > 1 ? 'es' : ''}</div>
+      </div>
+    </div>`;
+}
+
+recalc();
+</script>
+</body>
+</html>
