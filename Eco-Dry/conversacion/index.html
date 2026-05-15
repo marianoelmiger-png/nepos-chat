@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía de Conversación — Cesión del Lavadero</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fafaf8;
+    --bg2: #f3f2ee;
+    --bg3: #eceae4;
+    --border: #e2e0d8;
+    --border2: #ccc9bf;
+    --text: #1a1917;
+    --text2: #4a4843;
+    --text3: #8a8780;
+    --accent: #1d4433;
+    --accent2: #2a6349;
+    --accent-light: #e8f0ec;
+    --accent-border: #b8d4c4;
+    --amber: #7a4f0d;
+    --amber-bg: #fdf3e3;
+    --amber-border: #e8c87a;
+    --red: #7a1f1f;
+    --red-bg: #fdf0f0;
+    --red-border: #e8b4b4;
+    --blue: #1a3a5c;
+    --blue-bg: #edf3fa;
+    --blue-border: #b4cceb;
+    --serif: 'Instrument Serif', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --radius: 8px;
+    --radius-lg: 14px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  /* PRINT */
+  @media print {
+    .topbar, .print-btn { display: none !important; }
+    body { background: white; font-size: 13px; }
+    .hero { padding: 2rem 0 1.5rem; }
+    .section { page-break-inside: avoid; margin-top: 2rem; padding-top: 2rem; }
+    .card { break-inside: avoid; }
+  }
+
+  /* NAV */
+  .topbar {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(250,250,248,0.94);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex; align-items: center; gap: 0;
+    overflow-x: auto; scrollbar-width: none;
+  }
+  .topbar::-webkit-scrollbar { display: none; }
+  .topbar-brand {
+    font-family: var(--serif);
+    font-size: 14px; color: var(--accent2);
+    white-space: nowrap; margin-right: 1.5rem;
+    padding: 13px 0; flex-shrink: 0;
+  }
+  .nav-link {
+    font-size: 12px; font-weight: 500;
+    color: var(--text3); text-decoration: none;
+    padding: 13px 12px; white-space: nowrap;
+    transition: color .15s;
+    border-bottom: 2px solid transparent;
+    flex-shrink: 0;
+  }
+  .nav-link:hover { color: var(--text2); }
+  .nav-link.active { color: var(--accent2); border-bottom-color: var(--accent2); }
+  .print-btn {
+    margin-left: auto; flex-shrink: 0;
+    font-size: 12px; font-weight: 500;
+    padding: 6px 14px; border-radius: 6px;
+    border: 1px solid var(--border2);
+    background: white; color: var(--text2);
+    cursor: pointer; transition: all .15s;
+  }
+  .print-btn:hover { background: var(--bg2); }
+
+  /* PAGE */
+  .page { max-width: 820px; margin: 0 auto; padding: 0 2rem; }
+
+  /* HERO */
+  .hero {
+    padding: 4.5rem 0 3.5rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 0;
+  }
+  .hero-eyebrow {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 11px; font-weight: 600; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--accent2);
+    margin-bottom: 1.2rem;
+  }
+  .hero-eyebrow .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent2); display: inline-block;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    font-weight: 400; line-height: 1.15;
+    color: var(--text); margin-bottom: 1rem;
+  }
+  h1 em { font-style: italic; color: var(--accent2); }
+  .hero-desc {
+    font-size: 15px; color: var(--text2);
+    max-width: 580px; line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  /* PERSONAS */
+  .persona-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 0; }
+  @media (max-width: 560px) { .persona-row { grid-template-columns: 1fr; } }
+  .persona {
+    border-radius: var(--radius-lg); padding: 1.1rem 1.3rem;
+    border: 1px solid;
+  }
+  .persona-dueno { background: var(--accent-light); border-color: var(--accent-border); }
+  .persona-operador { background: var(--blue-bg); border-color: var(--blue-border); }
+  .persona-label {
+    font-size: 10px; font-weight: 700; letter-spacing: .1em;
+    text-transform: uppercase; margin-bottom: 4px;
+  }
+  .persona-dueno .persona-label { color: var(--accent2); }
+  .persona-operador .persona-label { color: var(--blue); }
+  .persona-name { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .persona-role { font-size: 12px; color: var(--text2); }
+
+  /* SECTIONS */
+  .section {
+    padding-top: 3.5rem; margin-top: 3.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .section-label {
+    font-size: 10px; font-weight: 700; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--accent2);
+    margin-bottom: .7rem;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1; height: 1px;
+    background: var(--accent-border);
+    max-width: 40px;
+  }
+  h2 {
+    font-family: var(--serif);
+    font-size: 1.75rem; font-weight: 400;
+    color: var(--text); margin-bottom: .5rem; line-height: 1.2;
+  }
+  .section-intro { font-size: 14px; color: var(--text2); margin-bottom: 1.5rem; max-width: 620px; }
+  h3 {
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .08em;
+    color: var(--text3); margin-top: 2rem; margin-bottom: .8rem;
+  }
+
+  /* TALK BLOCKS — the core UI element */
+  .talk-block {
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    background: white;
+    overflow: hidden;
+    margin-bottom: .8rem;
+  }
+  .talk-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: .7rem 1.1rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg2);
+  }
+  .talk-who {
+    font-size: 10px; font-weight: 700; letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  .talk-who-d { color: var(--accent2); }
+  .talk-who-o { color: var(--blue); }
+  .talk-tag {
+    font-size: 10px; font-weight: 600; padding: 2px 8px;
+    border-radius: 4px; margin-left: auto;
+  }
+  .tag-preg { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+  .tag-resp { background: var(--accent-light); color: var(--accent2); border: 1px solid var(--accent-border); }
+  .tag-alert { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+  .tag-clave { background: #f0ebe0; color: #5a4010; border: 1px solid #d4b870; }
+  .talk-body { padding: 1rem 1.1rem; }
+  .talk-body p { font-size: 14px; color: var(--text2); margin-bottom: 0; line-height: 1.6; }
+  .talk-body strong { color: var(--text); font-weight: 600; }
+  .talk-note {
+    padding: .6rem 1.1rem;
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    font-size: 12px; color: var(--text3);
+    font-style: italic;
+  }
+
+  /* NUMBERED STEPS */
+  .step-list { display: flex; flex-direction: column; gap: .6rem; margin: .8rem 0; }
+  .step {
+    display: flex; gap: 12px; align-items: flex-start;
+    background: white; border: 1px solid var(--border);
+    border-radius: var(--radius); padding: .9rem 1.1rem;
+  }
+  .step-num {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--accent-light); color: var(--accent2);
+    font-size: 12px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .step-text { font-size: 14px; color: var(--text2); line-height: 1.5; }
+  .step-text strong { color: var(--text); }
+
+  /* KPI ROW */
+  .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin: 1rem 0; }
+  .kpi {
+    background: white; border: 1px solid var(--border);
+    border-radius: var(--radius); padding: .9rem 1rem;
+  }
+  .kpi-l { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: var(--text3); margin-bottom: 4px; }
+  .kpi-v { font-family: var(--serif); font-size: 1.5rem; color: var(--text); line-height: 1; }
+  .kpi-s { font-size: 11px; color: var(--text3); margin-top: 3px; }
+
+  /* TERMS TABLE */
+  .terms { display: flex; flex-direction: column; gap: 1px; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border); margin: 1rem 0; }
+  .term-row {
+    display: grid; grid-template-columns: 200px 1fr;
+    background: white;
+  }
+  @media (max-width: 560px) { .term-row { grid-template-columns: 1fr; } }
+  .term-row:not(:last-child) { border-bottom: 1px solid var(--border); }
+  .term-key {
+    padding: .9rem 1.1rem;
+    background: var(--bg2);
+    font-size: 12px; font-weight: 600; color: var(--text2);
+    border-right: 1px solid var(--border);
+    display: flex; align-items: center;
+  }
+  .term-val {
+    padding: .9rem 1.1rem;
+    font-size: 13px; color: var(--text2); line-height: 1.5;
+  }
+  .term-val strong { color: var(--text); }
+
+  /* CALLOUT */
+  .callout {
+    border-radius: var(--radius-lg); padding: 1rem 1.2rem;
+    margin: 1rem 0; font-size: 14px; line-height: 1.6;
+  }
+  .callout-green { background: var(--accent-light); border: 1px solid var(--accent-border); color: var(--accent); }
+  .callout-amber { background: var(--amber-bg); border: 1px solid var(--amber-border); color: var(--amber); }
+  .callout-red { background: var(--red-bg); border: 1px solid var(--red-border); color: var(--red); }
+  .callout-blue { background: var(--blue-bg); border: 1px solid var(--blue-border); color: var(--blue); }
+
+  /* CHECKLIST */
+  .checklist { display: flex; flex-direction: column; gap: 6px; margin: .8rem 0; }
+  .check-item {
+    display: flex; gap: 10px; align-items: flex-start;
+    font-size: 13px; color: var(--text2); line-height: 1.5;
+  }
+  .check-box {
+    width: 18px; height: 18px; border-radius: 4px;
+    border: 1.5px solid var(--border2); background: white;
+    flex-shrink: 0; margin-top: 1px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* TWO COL */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: .8rem 0; }
+  @media (max-width: 560px) { .two-col { grid-template-columns: 1fr; } }
+  .mini-card {
+    background: white; border: 1px solid var(--border);
+    border-radius: var(--radius); padding: .9rem 1rem;
+  }
+  .mini-card h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text3); margin-bottom: .5rem; }
+  .mini-card ul { padding-left: 1.1rem; }
+  .mini-card li { font-size: 13px; color: var(--text2); margin-bottom: 3px; line-height: 1.4; }
+
+  /* CLOSING */
+  .closing {
+    background: var(--accent); border-radius: var(--radius-lg);
+    padding: 2rem 2.2rem; margin-top: 3rem;
+    color: white;
+  }
+  .closing h2 { font-family: var(--serif); color: white; font-size: 1.5rem; margin-bottom: .6rem; }
+  .closing p { color: rgba(255,255,255,0.75); font-size: 14px; margin-bottom: .4rem; }
+  .closing-steps { display: flex; flex-direction: column; gap: 8px; margin-top: 1.2rem; }
+  .closing-step {
+    display: flex; gap: 12px; align-items: flex-start;
+    background: rgba(255,255,255,0.08);
+    border-radius: var(--radius); padding: .8rem 1rem;
+  }
+  .closing-num {
+    font-size: 12px; font-weight: 700;
+    font-family: var(--sans); color: rgba(255,255,255,0.5);
+    flex-shrink: 0; padding-top: 1px;
+  }
+  .closing-step p { color: rgba(255,255,255,0.85); font-size: 13px; margin: 0; }
+  .closing-step strong { color: white; }
+
+  footer {
+    max-width: 820px; margin: 0 auto;
+    padding: 2rem 2rem 3rem;
+    font-size: 11px; color: var(--text3);
+    border-top: 1px solid var(--border);
+    margin-top: 3rem;
+  }
+
+  /* ANIMATIONS */
+  .fade-in { opacity: 0; transform: translateY(12px); transition: opacity .45s ease, transform .45s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <span class="topbar-brand">Guía de Negociación</span>
+  <a href="#contexto" class="nav-link active">Contexto</a>
+  <a href="#condiciones" class="nav-link">Condiciones</a>
+  <a href="#conversacion" class="nav-link">Conversación</a>
+  <a href="#preguntas" class="nav-link">Preguntas clave</a>
+  <a href="#senales" class="nav-link">Señales de alerta</a>
+  <a href="#cierre" class="nav-link">Próximos pasos</a>
+  <button class="print-btn" onclick="window.print()">Imprimir / PDF</button>
+</nav>
+
+<div class="page">
+
+  <!-- HERO -->
+  <header class="hero fade-in" id="contexto">
+    <div class="hero-eyebrow"><span class="dot"></span>Documento de uso interno · Confidencial</div>
+    <h1>Guía para la<br><em>conversación de cesión</em></h1>
+    <p class="hero-desc">Todo lo que necesitás saber antes de sentarte a negociar. Qué ofrecer, cómo explicarlo, qué preguntar y en qué puntos no ceder.</p>
+
+    <div class="persona-row">
+      <div class="persona persona-dueno">
+        <div class="persona-label">Tu rol</div>
+        <div class="persona-name">El dueño — Cedente</div>
+        <div class="persona-role">Mantenés la titularidad del negocio. Cedés la operación a cambio de un fee y un canon mensual.</div>
+      </div>
+      <div class="persona persona-operador">
+        <div class="persona-label">La otra parte</div>
+        <div class="persona-name">El operador — Cesionario</div>
+        <div class="persona-role">Toma el control operativo del negocio. Paga un fee de ingreso y un canon mensual a cambio de quedarse con las ganancias.</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONDICIONES BASE -->
+  <section class="section fade-in" id="condiciones">
+    <div class="section-label">01 — Condiciones</div>
+    <h2>Lo que vas a ofrecer</h2>
+    <p class="section-intro">Estos son los números y condiciones sobre los que vas a negociar. Tenelos claros antes de la reunión.</p>
+
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="kpi-l">Fee de ingreso</div>
+        <div class="kpi-v">USD 12.000</div>
+        <div class="kpi-s">pago único al firmar</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-l">Canon mensual</div>
+        <div class="kpi-v">$1.200.000</div>
+        <div class="kpi-s">ARS + ajuste UVA</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-l">Duración</div>
+        <div class="kpi-v">36 meses</div>
+        <div class="kpi-s">renovable 24 meses más</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-l">Depósito</div>
+        <div class="kpi-v">$3.600.000</div>
+        <div class="kpi-s">3 meses de canon</div>
+      </div>
+    </div>
+
+    <h3>Términos completos del acuerdo</h3>
+    <div class="terms">
+      <div class="term-row">
+        <div class="term-key">Fee de ingreso</div>
+        <div class="term-val"><strong>USD 10.000 – 12.000</strong> pagaderos al momento de firmar el contrato. En dólares o equivalente al tipo de cambio vendedor del día.</div>
+      </div>
+      <div class="term-row">
+        <div class="term-key">Canon fijo mensual</div>
+        <div class="term-val"><strong>ARS 1.200.000</strong> por mes, ajustado por UVA todos los meses. El operador paga este monto independientemente de lo que facture.</div>
+      </div>
+      <div class="term-row">
+        <div class="term-key">Canon variable</div>
+        <div class="term-val"><strong>8% sobre la facturación que supere $9.000.000 por mes.</strong> Si factura $10M, el variable es 8% sobre $1M = $80.000 adicionales.</div>
+      </div>
+      <div class="term-row">
+        <div class="term-key">Depósito de garantía</div>
+        <div class="term-val"><strong>3 meses de canon ($3.600.000)</strong> que quedará retenido. Se devuelve íntegro al final del contrato si no hay deudas ni daños.</div>
+      </div>
+      <div class="term-row">
+        <div class="term-key">Duración</div>
+        <div class="term-val"><strong>36 meses.</strong> Con opción de renovación por 24 meses adicionales, con aviso de 60 días antes del vencimiento.</div>
+      </div>
+      <div class="term-row">
+        <div class="term-key">Ajuste por inflación</div>
+        <div class="term-val">Actualización mensual por <strong>variación del índice UVA.</strong> Revisión libre de común acuerdo cada 6 meses.</div>
+      </div>
+      <div class="term-row">
+        <div class="term-key">Opción de compra</div>
+        <div class="term-val">A partir del mes 25, el operador tiene opción preferente de compra del fondo a <strong>USD 45.000</strong> (precio pactado hoy). La opción es válida por 90 días desde que se notifica.</div>
+      </div>
+      <div class="term-row">
+        <div class="term-key">El negocio hoy</div>
+        <div class="term-val">Facturación actual: <strong>~$8.000.000 / mes.</strong> Resultado operativo: <strong>~$4.000.000 / mes (50% de margen).</strong> Negocio en marcha, con equipo y cartera de clientes.</div>
+      </div>
+    </div>
+
+    <div class="callout callout-green">
+      <strong>Lo que le estás ofreciendo al operador:</strong> Un negocio en marcha con $4M de resultado mensual, por un fee de ingreso de USD 12K y un canon de $1.2M/mes. Si el negocio sigue igual, el operador se queda con más de $2.5M de utilidad por mes. Si lo mejora, se queda con todo el upside por encima de $9M.
+    </div>
+  </section>
+
+  <!-- GUÍA DE CONVERSACIÓN -->
+  <section class="section fade-in" id="conversacion">
+    <div class="section-label">02 — Conversación</div>
+    <h2>Cómo manejar la reunión</h2>
+    <p class="section-intro">Este es el flujo recomendado de la conversación. No es un guión rígido — es una estructura para que nada importante quede afuera.</p>
+
+    <h3>Apertura — Qué decir al empezar</h3>
+    <div class="talk-block">
+      <div class="talk-header">
+        <span class="talk-who talk-who-d">Vos decís</span>
+        <span class="talk-tag tag-resp">Apertura</span>
+      </div>
+      <div class="talk-body">
+        <p>"La idea no es vender el negocio, sino encontrar a alguien que lo opere bien. Yo me quedo con la titularidad del fondo, vos te hacés cargo del día a día y te quedás con la ganancia. Pagás un canon mensual y un monto de ingreso. Si el negocio crece, eso es tuyo."</p>
+      </div>
+      <div class="talk-note">Esto encuadra bien la conversación desde el inicio. Evitá que el otro piense que está comprando o que es una sociedad.</div>
+    </div>
+
+    <h3>Explicar qué es lo que se cede</h3>
+    <div class="talk-block">
+      <div class="talk-header">
+        <span class="talk-who talk-who-d">Vos explicás</span>
+        <span class="talk-tag tag-clave">Punto clave</span>
+      </div>
+      <div class="talk-body">
+        <p>"Lo que te estoy cediendo es el uso del negocio completo: el local, los equipos, la cartera de clientes, el nombre. Vos ponés el personal, el día a día, las decisiones operativas. Yo me retiro de la operación pero mantengo la propiedad del fondo."</p>
+      </div>
+    </div>
+
+    <h3>Presentar los números</h3>
+    <div class="talk-block">
+      <div class="talk-header">
+        <span class="talk-who talk-who-d">Vos presentás</span>
+        <span class="talk-tag tag-resp">Números</span>
+      </div>
+      <div class="talk-body">
+        <p>"El negocio factura alrededor de $8 millones por mes, con un margen del 50%, o sea unos $4 millones de resultado. Te pido un canon fijo de $1.2M por mes, ajustado por UVA. Si facturás más de $9M, hay un pequeño variable del 8% sobre el excedente. El fee de ingreso es de USD 12.000 al firmar, más un depósito de garantía de 3 meses de canon."</p>
+      </div>
+      <div class="talk-note">Mostrá los números tranquilo. El negocio tiene margen para que el operador gane bien — eso es un argumento a tu favor.</div>
+    </div>
+
+    <h3>Cuando te pregunten "¿por qué no lo vendés?"</h3>
+    <div class="talk-block">
+      <div class="talk-header">
+        <span class="talk-who talk-who-o">El operador pregunta</span>
+        <span class="talk-tag tag-preg">Objeción frecuente</span>
+      </div>
+      <div class="talk-body">
+        <p>"¿Por qué no vendés el negocio directamente?"</p>
+      </div>
+    </div>
+    <div class="talk-block">
+      <div class="talk-header">
+        <span class="talk-who talk-who-d">Vos respondés</span>
+        <span class="talk-tag tag-resp">Tu respuesta</span>
+      </div>
+      <div class="talk-body">
+        <p>"Porque en este contexto prefiero mantener el activo en mi patrimonio. Un negocio en marcha tiene un valor que en dólares se preserva. En cambio si lo vendo hoy recibo un importe único que con la inflación pierde poder rápidamente. Esto también te conviene a vos: entrás con menos capital inicial y empezás a generar utilidad desde el primer mes."</p>
+      </div>
+    </div>
+
+    <h3>Cuando pregunten sobre el canon variable</h3>
+    <div class="talk-block">
+      <div class="talk-header">
+        <span class="talk-who talk-who-o">El operador pregunta</span>
+        <span class="talk-tag tag-preg">Objeción frecuente</span>
+      </div>
+      <div class="talk-body">
+        <p>"¿Por qué tengo que pagar un variable si ya pago el canon fijo?"</p>
+      </div>
+    </div>
+    <div class="talk-block">
+      <div class="talk-header">
+        <span class="talk-who talk-who-d">Vos respondés</span>
+        <span class="talk-tag tag-resp">Tu respuesta</span>
+      </div>
+      <div class="talk-body">
+        <p>"El variable es chico — 8% solo sobre lo que supere $9 millones. Si no llegás a $9M, no pagás nada extra. Y si superás ese número, significa que el negocio creció, y es razonable que compartamos ese crecimiento. Todo lo que exceda el canon te lo quedás vos."</p>
+      </div>
+    </div>
+
+    <h3>Sobre el ajuste por inflación</h3>
+    <div class="talk-block">
+      <div class="talk-header">
+        <span class="talk-who talk-who-o">El operador pregunta</span>
+        <span class="talk-tag tag-preg">Objeción frecuente</span>
+      </div>
+      <div class="talk-body">
+        <p>"¿Cómo se ajusta el canon?"</p>
+      </div>
+    </div>
+    <div class="talk-block">
+      <div class="talk-header">
+        <span class="talk-who talk-who-d">Vos respondés</span>
+        <span class="talk-tag tag-resp">Tu respuesta</span>
+      </div>
+      <div class="talk-body">
+        <p>"Se ajusta mensualmente por UVA, que es el índice que usa el Banco Central y refleja la inflación real. No es un número que yo decida — está publicado todos los días. Y cada 6 meses podemos revisar de común acuerdo si hay algo que no está funcionando bien para ninguno de los dos."</p>
+      </div>
+    </div>
+
+    <h3>Explicar la opción de compra</h3>
+    <div class="talk-block">
+      <div class="talk-header">
+        <span class="talk-who talk-who-d">Vos ofrecés</span>
+        <span class="talk-tag tag-clave">Punto clave</span>
+      </div>
+      <div class="talk-body">
+        <p>"A partir del mes 25 del contrato, si querés comprarlo, tenés la primera opción a USD 45.000 — el precio lo fijamos hoy. Si en ese momento el negocio creció, ese precio va a parecer barato. Si no creciste tanto, podés no ejercer la opción. Es un beneficio para vos, no una obligación."</p>
+      </div>
+      <div class="talk-note">Esto puede ser un argumento de cierre muy potente. Le da al operador un horizonte de propiedad futura con precio pactado.</div>
+    </div>
+  </section>
+
+  <!-- PREGUNTAS CLAVE -->
+  <section class="section fade-in" id="preguntas">
+    <div class="section-label">03 — Preguntas clave</div>
+    <h2>Lo que vos tenés que preguntar</h2>
+    <p class="section-intro">Antes de cerrar cualquier acuerdo, necesitás saber esto del operador. No es desconfianza — es diligencia.</p>
+
+    <div class="step-list">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text"><strong>¿Tenés experiencia operando un negocio gastronómico, de servicios o similar?</strong><br>No necesita ser exactamente un lavadero, pero sí tener experiencia manejando personal, caja y clientes.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text"><strong>¿Con qué capital contás para el fee de ingreso y el depósito?</strong><br>El fee es USD 12K y el depósito $3.6M. Tiene que tenerlo disponible al momento de firmar, no después.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text"><strong>¿Vas a operar vos personalmente o ponés a alguien a cargo?</strong><br>Preferís a alguien que esté presente. Si delega todo desde el día 1, es un riesgo operativo para el local.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-text"><strong>¿Tenés situación fiscal en orden? ¿Podés facturar el canon?</strong><br>La relación es B2B — el operador tiene que poder emitir recibos y estar inscripto correctamente.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-text"><strong>¿Qué otras actividades comerciales tenés o tuviste?</strong><br>Querés entender si es alguien con track record o si es su primera experiencia en un negocio propio.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-text"><strong>¿Tenés algún otro lavadero u operación similar en el área?</strong><br>La cláusula de no competencia lo va a restringir en un radio de 5km. Mejor saberlo antes.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">7</div>
+        <div class="step-text"><strong>¿Qué entendés que te estoy cediendo exactamente?</strong><br>Asegurate de que comprende bien la diferencia entre operar el negocio y ser el dueño. Evita malentendidos futuros.</div>
+      </div>
+    </div>
+
+    <div class="callout callout-amber">
+      <strong>Regla general:</strong> Si no podés responder con claridad las preguntas 2, 3 y 4, no sigas avanzando. El perfil financiero y operativo del operador es lo más importante — más que el entusiasmo que muestre.
+    </div>
+  </section>
+
+  <!-- SEÑALES DE ALERTA -->
+  <section class="section fade-in" id="senales">
+    <div class="section-label">04 — Señales de alerta</div>
+    <h2>Cuándo frenar o desconfiar</h2>
+    <p class="section-intro">Estas son señales de que la negociación no va por buen camino o que el operador no es el indicado. Mejor saberlas de antemano.</p>
+
+    <div class="two-col">
+      <div class="mini-card" style="border-top: 2px solid var(--red);">
+        <h4>🚫 Señales de alerta</h4>
+        <ul>
+          <li>No tiene el fee ni el depósito disponibles "ahora"</li>
+          <li>Propone pagar el fee en cuotas o después de empezar</li>
+          <li>Quiere operar sin facturar o "en negro"</li>
+          <li>No acepta que tengas acceso al POS o las ventas</li>
+          <li>Pregunta si podés "descansar" el ajuste por inflación</li>
+          <li>Habla del negocio como si ya fuera suyo</li>
+          <li>No puede explicar de dónde viene el capital</li>
+        </ul>
+      </div>
+      <div class="mini-card" style="border-top: 2px solid var(--accent2);">
+        <h4>✓ Señales positivas</h4>
+        <ul>
+          <li>Tiene el capital disponible y lo puede acreditar</li>
+          <li>Pregunta sobre los gastos reales y la operación</li>
+          <li>Quiere conocer al personal y el local en detalle</li>
+          <li>Acepta la auditoría y el control de facturación</li>
+          <li>Tiene experiencia operativa previa comprobable</li>
+          <li>Pregunta sobre la opción de compra futura</li>
+          <li>Tiene situación fiscal ordenada</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Puntos en los que no debés ceder</h3>
+    <div class="step-list">
+      <div class="step">
+        <div class="step-num" style="background:#fdf0f0; color:var(--red);">✗</div>
+        <div class="step-text"><strong>El ajuste por inflación.</strong> Sin ajuste UVA mensual, en 12 meses el canon vale la mitad. No es negociable.</div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:#fdf0f0; color:var(--red);">✗</div>
+        <div class="step-text"><strong>El acceso a los datos de ventas.</strong> Si el operador se niega a que veas la facturación, el acuerdo no puede funcionar. Es condición sine qua non.</div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:#fdf0f0; color:var(--red);">✗</div>
+        <div class="step-text"><strong>El depósito de garantía.</strong> Tres meses de canon es lo mínimo para estar cubierto ante incumplimiento. No lo bajes.</div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:#fdf0f0; color:var(--red);">✗</div>
+        <div class="step-text"><strong>La titularidad del fondo.</strong> Este acuerdo no es una venta. Si en algún momento el operador empieza a hablar de "quedarse" con el negocio sin ejercer la opción formal, cerrá la conversación.</div>
+      </div>
+    </div>
+
+    <h3>Dónde hay margen para negociar</h3>
+    <div class="terms">
+      <div class="term-row">
+        <div class="term-key">Fee de ingreso</div>
+        <div class="term-val">Podés bajar hasta <strong>USD 8.000</strong> si el perfil del operador es muy sólido y justifica la reducción.</div>
+      </div>
+      <div class="term-row">
+        <div class="term-key">Canon inicial</div>
+        <div class="term-val">Podés arrancar en <strong>$900.000 el primer mes</strong> con escalón a $1.2M desde el mes 4. Útil si el operador necesita tiempo para conocer el negocio.</div>
+      </div>
+      <div class="term-row">
+        <div class="term-key">Umbral del variable</div>
+        <div class="term-val">El umbral de $9M puede subirse a <strong>$10M</strong> si el operador negocia eso a cambio de aceptar otras condiciones.</div>
+      </div>
+      <div class="term-row">
+        <div class="term-key">Duración del contrato</div>
+        <div class="term-val">Puede ser <strong>24 meses</strong> en lugar de 36 si el operador prefiere un plazo más corto. No es ideal, pero es aceptable con buenas garantías.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRÓXIMOS PASOS -->
+  <section class="section fade-in" id="cierre">
+    <div class="section-label">05 — Cierre</div>
+    <h2>Si la conversación va bien</h2>
+    <p class="section-intro">Si llegás a esta instancia con buenas señales, estos son los pasos concretos a seguir.</p>
+
+    <div class="closing">
+      <h2>Próximos pasos para cerrar</h2>
+      <p>Una vez que hay acuerdo verbal sobre los términos principales, el proceso es el siguiente:</p>
+      <div class="closing-steps">
+        <div class="closing-step">
+          <div class="closing-num">01</div>
+          <p><strong>Carta de intención.</strong> Un documento breve (1 página) que confirma los términos acordados verbalmente y da un plazo para formalizar (ej. 15 días hábiles).</p>
+        </div>
+        <div class="closing-step">
+          <div class="closing-num">02</div>
+          <p><strong>Due diligence del operador.</strong> Pedís documentación: DNI, constancia de AFIP/ARCA, referencias comerciales, extractos bancarios recientes.</p>
+        </div>
+        <div class="closing-step">
+          <div class="closing-num">03</div>
+          <p><strong>Redacción del contrato.</strong> Un abogado comercial redacta el contrato de cesión sobre la base de los términos acordados. Proceso estimado: 5–7 días hábiles.</p>
+        </div>
+        <div class="closing-step">
+          <div class="closing-num">04</div>
+          <p><strong>Firma y pago del fee.</strong> El operador paga el fee de ingreso y el depósito al momento de firmar. La entrega del local se hace ese mismo día con el Acta de Recepción.</p>
+        </div>
+        <div class="closing-step">
+          <div class="closing-num">05</div>
+          <p><strong>Traspaso operativo.</strong> Período de transición de 5–10 días donde el operador conoce el equipo, los proveedores, los sistemas y la operación diaria.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>Checklist para la primera reunión</h3>
+    <div class="checklist">
+      <div class="check-item"><div class="check-box"></div>Tengo claros los números del negocio (facturación, margen)</div>
+      <div class="check-item"><div class="check-box"></div>Sé cuánto pido de fee y cuánto de canon</div>
+      <div class="check-item"><div class="check-box"></div>Entiendo la diferencia entre ceder y vender</div>
+      <div class="check-item"><div class="check-box"></div>Tengo lista la respuesta a "¿por qué no lo vendés?"</div>
+      <div class="check-item"><div class="check-box"></div>Sé en qué puntos no voy a ceder</div>
+      <div class="check-item"><div class="check-box"></div>Tengo las preguntas para hacerle al operador</div>
+      <div class="check-item"><div class="check-box"></div>Sé reconocer las señales de alerta</div>
+      <div class="check-item"><div class="check-box"></div>Tengo un abogado comercial listo para cuando haya acuerdo</div>
+    </div>
+  </section>
+
+</div><!-- /page -->
+
+<footer class="page">
+  Documento de uso interno. No reemplaza asesoramiento legal o financiero profesional. Elaborado como guía de negociación — Mayo 2025.
+</footer>
+
+<script>
+  // NAV ACTIVE STATE
+  const allSections = document.querySelectorAll('section[id], header[id]');
+  const navLinks = document.querySelectorAll('.nav-link');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    allSections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 90) current = s.id;
+    });
+    navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + current));
+  }, { passive: true });
+
+  // FADE IN ON SCROLL
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.07 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // INTERACTIVE CHECKBOXES
+  document.querySelectorAll('.check-box').forEach(box => {
+    box.style.cursor = 'pointer';
+    box.addEventListener('click', () => {
+      const checked = box.dataset.checked === '1';
+      box.dataset.checked = checked ? '0' : '1';
+      box.innerHTML = checked ? '' : '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9L10 3" stroke="#2a6349" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      box.style.background = checked ? 'white' : '#e8f0ec';
+      box.style.borderColor = checked ? '' : '#2a6349';
+      box.parentElement.style.color = checked ? '' : 'var(--text)';
+    });
+  });
+</script>
+</body>
+</html>
