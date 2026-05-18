@@ -1107,14 +1107,6 @@ async function step_resultado() {
   }
 
   // Línea de cobertura — solo si el espacio es el factor limitante
-  const coberturaLinea = c.limitadoPorEspacio
-    ? `<div class="result-row"><span class="label">📐 Cobertura de tu factura</span><span class="value green">${c.coberturaPct}% con tu espacio disponible</span></div>`
-    : '';
-
-  // Resto de segmentos: card con nombre de combo
-  const gasolinaLinea = state.gasolina > 0
-    ? `<div class="result-row"><span class="label">⛽ Ahorro gasolina/mes</span><span class="value green">+ $${c.ahorroGaso}</span></div>`
-    : '';
 
   div.innerHTML = `<div class="avatar">☀️</div><div class="bubble" style="max-width:72%">
     <div class="result-card">
@@ -1161,7 +1153,7 @@ async function step_resultado() {
   // Disclaimer — pausa antes para que el usuario pueda leer
   await new Promise(r => setTimeout(r, 1500));
   await addMsg(`<span style="font-size:11px;color:#778aa8;line-height:1.5">
-    <em>📋 Esta estimación se calculó en base a los datos que nos compartiste y los parámetros vigentes de Nepos Energy. Los valores finales pueden variar según las condiciones reales de tu instalación. Un asesor te enviará una propuesta formal con todos los detalles.</em>
+    <em>📋 Esta estimación se calculó en base a los datos que nos compartió y los parámetros vigentes de Nepos Energy. Los valores finales pueden variar según las condiciones reales de su instalación. Un asesor le enviará una propuesta formal con todos los detalles.</em>
   </span>`);
 
   // Pausa antes de mostrar las opciones — da tiempo para leer todo
