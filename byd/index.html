@@ -512,10 +512,11 @@ function initState() {
     segId:         '',
     factura:       0,
     gasolina:      0,
-    modeloBYD:     '',    // nombre del modelo elegido
-    consumoEV:     0,     // kWh/mes del modelo elegido
+    modeloBYD:     '',
+    consumoEV:     0,
     m2:            null,
     tieneEspacio:  null,
+    banco:         '',    // banco elegido para financiamiento
     codigoBYD:     ''
   };
 }
@@ -1083,27 +1084,25 @@ async function step_resultado() {
   div.innerHTML = `<div class="avatar">☀️</div><div class="bubble" style="max-width:72%">
     <div class="result-card">
       <div class="result-title">☀️ ${c.seg.combo}</div>
-      <div class="result-ahorro">$${c.ahorroTotal}<span style="font-size:13px;font-weight:400;opacity:0.8"> / mes</span></div>
-      <div class="result-sub">$${c.ahorroAnual.toLocaleString()} al año estimado</div>
+      <div class="result-ahorro">$${c.costoSistema.toLocaleString()}<span style="font-size:13px;font-weight:400;opacity:0.8"> inversión</span></div>
+      <div class="result-sub">Sistema ${c.kwp} kWp${c.limitadoPorEspacio ? ' · Cobertura '+c.coberturaPct+'%' : ''}</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">
         <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:8px">
           <div style="font-size:10px;opacity:0.65;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px">Sistema</div>
           <div style="font-size:13px;font-weight:600">${c.kwp} kWp</div>
         </div>
         <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:8px">
-          <div style="font-size:10px;opacity:0.65;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px">Inversión</div>
-          <div style="font-size:13px;font-weight:600">$${c.costoSistema.toLocaleString()}</div>
+          <div style="font-size:10px;opacity:0.65;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px">Potencia pico</div>
+          <div style="font-size:13px;font-weight:600">${c.potencia} kWp</div>
         </div>
-        <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:8px">
-          <div style="font-size:10px;opacity:0.65;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px">Payback</div>
-          <div style="font-size:13px;font-weight:600">${c.paybackAnios} años</div>
-        </div>
-        <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:8px">
-          <div style="font-size:10px;opacity:0.65;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px">${c.limitadoPorEspacio ? 'Cobertura' : state.gasolina > 0 ? 'Ahorro gasolina' : 'Ahorro eléctrico'}</div>
-          <div style="font-size:13px;font-weight:600;color:var(--amarillo)">${c.limitadoPorEspacio ? c.coberturaPct+'%' : state.gasolina > 0 ? '+$'+c.ahorroGaso+'/mes' : '+$'+c.ahorroElec+'/mes'}</div>
+        <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:8px;grid-column:1/-1">
+          <div style="font-size:10px;opacity:0.65;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px">Payback estimado</div>
+          <div style="font-size:13px;font-weight:600;color:var(--amarillo)">${c.paybackAnios} años</div>
         </div>
       </div>
-      ${c.ahorroEV > 0 ? `<div style="background:rgba(255,217,49,0.15);border-radius:8px;padding:8px;margin-top:6px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:11px;opacity:0.9">⚡ Carga ${c.modeloBYD} cubierta por el sol</span><span style="font-size:13px;font-weight:700;color:var(--amarillo)">+$${c.ahorroEV}/mes</span></div>` : ''}
+      <div style="background:rgba(255,255,255,0.07);border-radius:8px;padding:8px;margin-top:6px;font-size:11px;opacity:0.75;font-style:italic">
+        El asesor calculará el ahorro real según su consumo y perfil
+      </div>
     </div>
   </div>`;
 
@@ -1118,10 +1117,8 @@ async function step_resultado() {
   if (c.limitadoPorEspacio) {
     const segIdeal = SEGMENTOS.find(s => s.id === c.segConsumoId);
     msgExtra = `En base al espacio disponible le recomendamos el <strong>${c.seg.combo}</strong>, que cubre el <strong>${c.coberturaPct}% de su planilla eléctrica</strong>. Si en el futuro amplía el espacio, puede escalar al <strong>${segIdeal ? segIdeal.combo : 'siguiente sistema'}</strong> para cobertura total.`;
-  } else if (state.gasolina > 0) {
-    msgExtra = `Con su BYD eléctrico <strong>ya no depende de la gasolina</strong>, y los paneles solares eliminan casi toda la planilla. El ahorro se <strong>potencia al combinar ambos</strong>.`;
   } else {
-    msgExtra = `Los paneles solares cubren el 70% del consumo eléctrico promedio en Ecuador, con una generación muy estable durante todo el año.`;
+    msgExtra = `Con este sistema cubrirá una parte importante de su consumo eléctrico. El ahorro real dependerá de su perfil de consumo — un asesor le detallará los números exactos.`;
   }
 
   await addMsg(msgExtra);
@@ -1139,14 +1136,111 @@ async function step_resultado() {
 
 async function step_contacto() {
   await showTyping(700);
-  await addMsg('¿Le gustaría que un asesor de Nepos le contacte para una <strong>propuesta personalizada gratuita</strong>?');
+  await addMsg('¿Cómo le gustaría acceder a su sistema solar?');
 
   showOptions([
-    { icon: '✅', label: '¡Sí! Quiero mi propuesta', amarillo: true, action: () => step_nombre() },
-    { icon: '📱', label: 'Solo el QR de WhatsApp',                  action: () => step_qr_final() },
-    { icon: '🔄', label: 'Recalcular',                              action: () => { clearOptions(); step_factura(); } },
+    { icon: '💰', label: 'Compra directa',      amarillo: true, action: () => step_contacto_directo() },
+    { icon: '🏦', label: 'Con financiamiento',               action: () => step_financiamiento() },
+    { icon: '🔄', label: 'Recalcular',                       action: () => { clearOptions(); step_factura(); } },
   ]);
   addRestartBtn();
+}
+
+async function step_contacto_directo() {
+  await showTyping(500);
+  await addMsg('¡Excelente! Un asesor de Nepos le contactará para coordinar la instalación. ¿Nos deja sus datos?');
+  showOptions([
+    { icon: '✅', label: 'Sí, dejar mis datos', amarillo: true, action: () => step_nombre() },
+    { icon: '📱', label: 'Solo el QR',                         action: () => step_qr_final() },
+  ]);
+  addRestartBtn();
+}
+
+async function step_financiamiento() {
+  state.banco = '';
+  await showTyping(600);
+  await addMsg('🏦 <strong>¿Con qué banco prefiere gestionar el financiamiento?</strong><br><span style="font-size:11px;color:#556080">Un asesor financiero le contactará con las mejores opciones disponibles</span>');
+
+  showOptions([
+    { icon: '🏦', label: 'Banco Pichincha',  action: async () => { state.banco = 'Banco Pichincha';  await step_nombre_financiamiento(); } },
+    { icon: '🏦', label: 'Produbanco',       action: async () => { state.banco = 'Produbanco';       await step_nombre_financiamiento(); } },
+    { icon: '🏦', label: 'Banco Guayaquil',  action: async () => { state.banco = 'Banco Guayaquil';  await step_nombre_financiamiento(); } },
+  ]);
+  addRestartBtn();
+}
+
+async function step_nombre_financiamiento() {
+  await showTyping(500);
+  await addMsg(`Perfecto, <strong>${state.banco}</strong> seleccionado. ¿Nos deja sus datos para que el asesor financiero le contacte?`);
+  showTextInput('Su nombre', 'Ej: Ana García', async (val) => {
+    state.nombre = val;
+    await step_telefono_financiamiento();
+  });
+}
+
+async function step_telefono_financiamiento() {
+  await showTyping(500);
+  await addMsg(`Mucho gusto, <strong>${state.nombre}</strong>! 😊<br><br>📞 ¿Cuál es su número de celular?`);
+  showTextInput('Número de celular', 'Ej: 0991234567', async (val) => {
+    state.telefono = val;
+    await step_correo_financiamiento();
+  }, 'tel');
+}
+
+async function step_correo_financiamiento() {
+  await showTyping(500);
+  await addMsg('📧 ¿Y su correo electrónico?');
+  showTextInput('Correo electrónico', 'Ej: ana@gmail.com', async (val) => {
+    state.correo = val;
+    await guardarLeadFinanciamiento();
+  }, 'email');
+}
+
+async function guardarLeadFinanciamiento() {
+  const c = calcAhorro(state.segId, state.gasolina, state.m2);
+
+  const payload = {
+    action:    'crearLeadExterno',
+    nombre:    state.nombre,
+    telefono:  state.telefono,
+    email:     state.correo,
+    origen:    'Tótem BYD — Financiamiento',
+    flujo:     'financiamiento',
+    banco:     state.banco,
+    combo:     c.kwp + 'kWp',
+    consumo_kwh: Math.round((c.kwp || 0) * 108),
+    notas:     'FINANCIAMIENTO · Banco: ' + state.banco +
+               ' | Segmento: ' + (c.seg ? c.seg.id : '') +
+               ' | Planilla: ' + (c.seg ? c.seg.rango : '') +
+               ' | Modelo BYD: ' + (state.modeloBYD || 'No definido') +
+               ' | Sistema: ' + c.kwp + ' kWp ($' + (c.costoSistema || '').toLocaleString() + ')' +
+               ' | Ahorro: $' + c.ahorroTotal + '/mes'
+  };
+
+  try {
+    const res  = await fetch(APPS_SCRIPT_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (data.lead_id) state.codigoBYD = data.lead_id;
+  } catch (e) {
+    state.codigoBYD = '';
+  }
+
+  await showTyping(1000);
+
+  const codigoLinea = state.codigoBYD
+    ? `<br><br>Número de referencia: <strong style="letter-spacing:1px;font-family:monospace">${state.codigoBYD}</strong>`
+    : '';
+
+  await addMsg(`✅ <strong>¡Listo, ${state.nombre}!</strong><br><br>
+    Sus datos fueron registrados. Un asesor financiero de <strong>${state.banco}</strong> se pondrá en contacto a la brevedad para ofrecerle la mejor alternativa de financiamiento.${codigoLinea}<br><br>
+    🌟 <em>¡Gracias por su interés. Juntos hacia una movilidad solar!</em>`);
+
+  await new Promise(r => setTimeout(r, 1000));
+  await step_qr_final();
 }
 
 // ── Captura de datos ─────────────────────────────────────
@@ -1218,12 +1312,14 @@ async function guardarLead() {
     email:     state.correo,
     origen:    'Tótem BYD',
     flujo:     state.gasolina > 0 ? 'ev_hogar' : 'residencial',
+    banco:     '',
     combo:     c.kwp + 'kWp',
     consumo_kwh: Math.round(c.kwp * 108),   // kwp × producción mensual referencial
     notas:     'Segmento: ' + c.seg.id +
                ' | Planilla: ' + c.seg.rango +
                ' | Modelo BYD: ' + (state.modeloBYD || 'No definido') +
                ' | Gasolina/mes: $' + state.gasolina +
+               ' | Modalidad: Compra directa' +
                ' | M2: ' + (state.m2 || 'N/D') +
                ' | Espacio: ' + (state.tieneEspacio === true ? 'Sí' : state.tieneEspacio === false ? 'No' : 'Arrendatario') +
                ' | Sistema: ' + c.kwp + ' kWp ($' + c.costoSistema.toLocaleString() + ')' +
