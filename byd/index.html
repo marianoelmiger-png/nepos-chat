@@ -1076,6 +1076,9 @@ async function step_resultado() {
     await step_contacto();
     return;
   }
+
+  // N4: requiere estudio técnico
+  if (c.requiereEstudio) {
     div.innerHTML = `<div class="avatar">☀️</div><div class="bubble" style="max-width:72%">
       <div class="result-card">
         <div class="result-title">☀️ ${c.seg.combo}</div>
@@ -1083,16 +1086,12 @@ async function step_resultado() {
         <div class="result-sub">Más de $500/mes · estudio técnico requerido</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">
           <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:8px">
-            <div style="font-size:10px;opacity:0.65;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px">Ahorro est.</div>
-            <div style="font-size:13px;font-weight:600;color:var(--amarillo)">$${c.ahorroTotal}+/mes</div>
-          </div>
-          <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:8px">
             <div style="font-size:10px;opacity:0.65;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px">Inversión</div>
             <div style="font-size:13px;font-weight:600">A cotizar</div>
           </div>
-          <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:8px;grid-column:1/-1">
+          <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:8px">
             <div style="font-size:10px;opacity:0.65;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px">Siguiente paso</div>
-            <div style="font-size:12px;font-weight:500">Visita técnica gratuita · sin compromiso</div>
+            <div style="font-size:12px;font-weight:500">Visita técnica gratuita</div>
           </div>
         </div>
       </div>
